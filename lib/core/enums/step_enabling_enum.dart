@@ -1,0 +1,1 @@
+enum StepEnablingEnum { sequential, individual }
