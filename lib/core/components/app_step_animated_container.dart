@@ -1,11 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
-class StepAnimatedContent extends StatelessWidget {
+class AppStepAnimatedContent extends StatelessWidget {
   final bool isGoingForward;
   final Widget child;
 
-  const StepAnimatedContent({
+  const AppStepAnimatedContent({
     super.key,
     required this.isGoingForward,
     required this.child,
@@ -14,6 +14,32 @@ class StepAnimatedContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 100),
+      transitionBuilder: (child, animation) {
+        return FadeTransition(
+          opacity: animation,
+          child: isGoingForward
+              ? SlideInRight(
+                  key: const ValueKey('right'),
+                  from: 10,
+                  duration: const Duration(milliseconds: 300),
+                  child: FadeIn(
+                    key: const ValueKey('right-fade'),
+                    child: child,
+                  ),
+                )
+              : SlideInLeft(
+                  key: const ValueKey('left'),
+                  from: 10,
+                  duration: const Duration(milliseconds: 300),
+                  child: FadeIn(key: const ValueKey('left-fade'), child: child),
+                ),
+        );
+      },
+      child: child,
+    );
+
+    /* return AnimatedSwitcher(
       duration: const Duration(milliseconds: 100),
       transitionBuilder: (child, animation) {
         return FadeTransition(
@@ -34,6 +60,6 @@ class StepAnimatedContent extends StatelessWidget {
         );
       },
       child: child,
-    );
+    ); */
   }
 }

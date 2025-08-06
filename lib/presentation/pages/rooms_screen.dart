@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:edutainstem/core/components/app_button.dart';
 import 'package:edutainstem/core/components/app_glass_container.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
-import 'package:edutainstem/presentation/widgets/room_widgets/room_create_dialog_widget.dart';
+import 'package:edutainstem/presentation/widgets/room_widgets/room_code_dialog_widget.dart';
 import 'package:edutainstem/presentation/widgets/room_widgets/room_table_widget.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +18,10 @@ class RoomsScreen extends StatelessWidget {
   void _showCreateNewRoomDialog(BuildContext context) {
     showDialog(
       context: context,
-      // barrierDismissible: false, // dialog can't be dismissed by tapping outside
+      barrierDismissible: false, // dialog can't be dismissed by tapping outside
       builder: (BuildContext context) {
-        return const RoomCreateDialogWidget();
+        // return const RoomCreateDialogWidget();
+        return const RoomCodeDialogWidget();
       },
     );
   }

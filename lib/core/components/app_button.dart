@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class AppButton extends StatelessWidget {
     this.visualDensity,
     this.buttonStyle,
     this.useAnimatedGradient = false,
+    this.wrapButtonContent = false,
     super.key,
   });
 
@@ -45,6 +47,7 @@ class AppButton extends StatelessWidget {
   final VisualDensity? visualDensity;
   final ButtonStyle? buttonStyle;
   final bool useAnimatedGradient;
+  final bool wrapButtonContent;
 
   static TextStyle get getDefaultTextStyle => _textStyle;
 
@@ -100,6 +103,29 @@ class AppButton extends StatelessWidget {
 
     final alpha = 50;
 
+    final contents = [
+      if (hasIcon)
+        Row(
+          children: [
+            icon ??
+                const Icon(
+                  Icons.chevron_right_rounded,
+                  size: 28,
+                  color: AppColors.secondary,
+                ),
+            SizedBox(width: buttonIconSpacing ?? 0.w),
+          ],
+        ),
+      if (title.isNotEmpty)
+        AutoSizeText(
+          maxLines: 2,
+          wrapWords: false,
+          title.toUpperCase(),
+          textAlign: TextAlign.center,
+          style: textStyle ?? defaultTextStyle,
+        ),
+    ];
+
     final buttonContent = TextButton(
       onPressed: onPressed,
       style:
@@ -116,31 +142,20 @@ class AppButton extends StatelessWidget {
             padding:
                 padding ?? EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.w),
           ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          if (hasIcon)
-            Row(
-              children: [
-                icon ??
-                    const Icon(
-                      Icons.chevron_right_rounded,
-                      size: 28,
-                      color: AppColors.secondary,
-                    ),
-                SizedBox(width: buttonIconSpacing ?? 0.w),
-              ],
+      child: wrapButtonContent
+          ? Wrap(
+              // mainAxisSize: MainAxisSize.max,
+              // mainAxisAlignment: MainAxisAlignment.center,
+              alignment: WrapAlignment.center,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: contents,
+            )
+          : Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: contents,
             ),
-          if (title.isNotEmpty)
-            Text(
-              title.toUpperCase(),
-              textAlign: TextAlign.center,
-              style: textStyle ?? defaultTextStyle,
-            ),
-        ],
-      ),
     );
 
     if (!useAnimatedGradient) {

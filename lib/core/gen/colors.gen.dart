@@ -23,6 +23,44 @@ class AppColors {
   static const Color black = Color(0xFF000000);
 
   /// MaterialColor:
+  ///   50: #FFF7FBFF
+  ///   100: #FFECF6FF
+  ///   200: #FFE0F0FF
+  ///   300: #FFD3E9FF
+  ///   400: #FFC9E5FF
+  ///   500: #FFC0E0FF
+  ///   600: #FFBADCFF
+  ///   700: #FFB2D8FF
+  ///   800: #FFAAD3FF
+  ///   900: #FF9CCBFF
+  static const MaterialColor diamondBlue =
+      MaterialColor(0xFFC0E0FF, <int, Color>{
+        50: Color(0xFFF7FBFF),
+        100: Color(0xFFECF6FF),
+        200: Color(0xFFE0F0FF),
+        300: Color(0xFFD3E9FF),
+        400: Color(0xFFC9E5FF),
+        500: Color(0xFFC0E0FF),
+        600: Color(0xFFBADCFF),
+        700: Color(0xFFB2D8FF),
+        800: Color(0xFFAAD3FF),
+        900: Color(0xFF9CCBFF),
+      });
+
+  /// MaterialAccentColor:
+  ///   100: #FFFFFFFF
+  ///   200: #FFFFFFFF
+  ///   400: #FFFFFFFF
+  ///   700: #FFFFFFFF
+  static const MaterialAccentColor diamondBlueAccent =
+      MaterialAccentColor(0xFFFFFFFF, <int, Color>{
+        100: Color(0xFFFFFFFF),
+        200: Color(0xFFFFFFFF),
+        400: Color(0xFFFFFFFF),
+        700: Color(0xFFFFFFFF),
+      });
+
+  /// MaterialColor:
   ///   50: #FFF0F0F0
   ///   100: #FFD9D9D9
   ///   200: #FFC0C0C0
@@ -57,6 +95,44 @@ class AppColors {
         200: Color(0xFFED5E5E),
         400: Color(0xFFFF3333),
         700: Color(0xFFFF2424),
+      });
+
+  /// MaterialColor:
+  ///   50: #FFFFFBF5
+  ///   100: #FFFFF4E6
+  ///   200: #FFFFEDD6
+  ///   300: #FFFFE6C6
+  ///   400: #FFFFE0B9
+  ///   500: #FFFFDBAD
+  ///   600: #FFFFD7A6
+  ///   700: #FFFFD29C
+  ///   800: #FFFFCD93
+  ///   900: #FFFFC483
+  static const MaterialColor navajoOrange =
+      MaterialColor(0xFFFFDBAD, <int, Color>{
+        50: Color(0xFFFFFBF5),
+        100: Color(0xFFFFF4E6),
+        200: Color(0xFFFFEDD6),
+        300: Color(0xFFFFE6C6),
+        400: Color(0xFFFFE0B9),
+        500: Color(0xFFFFDBAD),
+        600: Color(0xFFFFD7A6),
+        700: Color(0xFFFFD29C),
+        800: Color(0xFFFFCD93),
+        900: Color(0xFFFFC483),
+      });
+
+  /// MaterialAccentColor:
+  ///   100: #FFFFFFFF
+  ///   200: #FFFFFFFF
+  ///   400: #FFFFFFFF
+  ///   700: #FFFFFFFF
+  static const MaterialAccentColor navajoOrangeAccent =
+      MaterialAccentColor(0xFFFFFFFF, <int, Color>{
+        100: Color(0xFFFFFFFF),
+        200: Color(0xFFFFFFFF),
+        400: Color(0xFFFFFFFF),
+        700: Color(0xFFFFFFFF),
       });
 
   /// MaterialColor:
@@ -209,6 +285,44 @@ class AppColors {
         200: Color(0xFF56CA00),
         400: Color(0xFF4BB000),
         700: Color(0xFF45A100),
+      });
+
+  /// MaterialColor:
+  ///   50: #FFFFF9FD
+  ///   100: #FFFFF1F9
+  ///   200: #FFFFE8F6
+  ///   300: #FFFFDEF2
+  ///   400: #FFFFD7EF
+  ///   500: #FFFFD0EC
+  ///   600: #FFFFCBEA
+  ///   700: #FFFFC4E7
+  ///   800: #FFFFBEE4
+  ///   900: #FFFFB3DF
+  static const MaterialColor shampooPink =
+      MaterialColor(0xFFFFD0EC, <int, Color>{
+        50: Color(0xFFFFF9FD),
+        100: Color(0xFFFFF1F9),
+        200: Color(0xFFFFE8F6),
+        300: Color(0xFFFFDEF2),
+        400: Color(0xFFFFD7EF),
+        500: Color(0xFFFFD0EC),
+        600: Color(0xFFFFCBEA),
+        700: Color(0xFFFFC4E7),
+        800: Color(0xFFFFBEE4),
+        900: Color(0xFFFFB3DF),
+      });
+
+  /// MaterialAccentColor:
+  ///   100: #FFFFFFFF
+  ///   200: #FFFFFFFF
+  ///   400: #FFFFFFFF
+  ///   700: #FFFFFFFF
+  static const MaterialAccentColor shampooPinkAccent =
+      MaterialAccentColor(0xFFFFFFFF, <int, Color>{
+        100: Color(0xFFFFFFFF),
+        200: Color(0xFFFFFFFF),
+        400: Color(0xFFFFFFFF),
+        700: Color(0xFFFFFFFF),
       });
 
   /// MaterialColor:

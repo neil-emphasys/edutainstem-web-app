@@ -97,7 +97,7 @@ class MainScreenShell extends StatelessWidget {
                       ),
                     ],
                   ),
-                  iconTheme: const IconThemeData(color: Colors.white, size: 20),
+                  iconTheme: IconThemeData(color: Colors.white, size: 20.r),
                 ),
                 footerItems: [
                   SidebarXItem(
@@ -175,7 +175,7 @@ class MainScreenShell extends StatelessWidget {
                       selected: selected,
                       hovered: hovered,
                       assetPath: Assets.icons.png.sideMenuProfile.path,
-                      iconSize: 24.r,
+                      iconSize: 14.r,
                     ),
                   ),
                 ],
@@ -264,7 +264,7 @@ class MainScreenShell extends StatelessWidget {
     double? iconSize,
   }) {
     Color iconColor;
-    final iconWidth = iconSize ?? 20.r;
+    final iconWidth = iconSize ?? 12.r;
 
     if (selected) {
       iconColor = AppColors.white;

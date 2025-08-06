@@ -12,4 +12,7 @@
     <color name="secondary" type="material material-accent">#093515</color>
     <color name="tertiary" type="material material-accent">#41DF6C</color>
     <color name="tertiary-variant-one" type="material material-accent">#0D9732</color>
+    <color name="shampoo-pink" type="material material-accent">#FFD0EC</color>
+    <color name="navajo-orange" type="material material-accent">#FFDBAD</color>
+    <color name="diamond-blue" type="material material-accent">#C0E0FF</color>
 </resources>

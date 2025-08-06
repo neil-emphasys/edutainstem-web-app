@@ -30,6 +30,8 @@ class AppTextFormField extends StatefulWidget {
     this.hasStrengthIndicator = false,
     this.hasValidationRules = false,
     this.radius,
+    this.readOnly = false,
+    this.onTap,
     super.key,
   });
 
@@ -57,6 +59,8 @@ class AppTextFormField extends StatefulWidget {
   final bool hasStrengthIndicator;
   final bool hasValidationRules;
   final BorderRadius? radius;
+  final bool readOnly;
+  final void Function()? onTap;
 
   @override
   State<AppTextFormField> createState() => _AppTextFormFieldState();
@@ -89,7 +93,7 @@ class AppTextFormField extends StatefulWidget {
       controller: controller,
       fieldTitleColor: fieldTitleColor,
       fieldTitleTextStyle: fieldTitleTextStyle,
-      style: TextStyle(color: AppColors.secondary),
+      style: const TextStyle(color: AppColors.secondary),
       spacing: spacing,
       obscureText: obscureText,
       textInputType: textInputType,
@@ -199,12 +203,14 @@ class _AppTextFormFieldState extends State<AppTextFormField>
           height: widget.isMultiline ? 200 : null,
           child: (widget.obscureText ?? defaultObscureTextStatus)
               ? FancyPasswordField(
+                  onTap: widget.onTap,
+                  readOnly: widget.readOnly,
                   focusNode: fieldFocusNode,
                   controller: widget.controller,
                   style:
                       widget.style ??
                       switch (widget.fieldType) {
-                        AppTextFormFieldType.outlined => TextStyle(
+                        AppTextFormFieldType.outlined => const TextStyle(
                           color: AppColors.white,
                         ),
                         AppTextFormFieldType.filled => AppTextStyles.getStyle(
@@ -477,6 +483,8 @@ class _AppTextFormFieldState extends State<AppTextFormField>
                   onChanged: widget.onChanged,
                 )
               : TextFormField(
+                  readOnly: widget.readOnly,
+                  onTap: widget.onTap,
                   focusNode: fieldFocusNode,
                   controller: widget.controller,
                   obscureText: widget.obscureText ?? defaultObscureTextStatus,

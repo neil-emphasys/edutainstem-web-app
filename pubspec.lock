@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.13.0"
+  auto_size_text:
+    dependency: "direct main"
+    description:
+      name: auto_size_text
+      sha256: "3f5261cd3fb5f2a9ab4e2fc3fba84fd9fcaac8821f20a1d4e71f557521b22599"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0"
   bloc:
     dependency: transitive
     description:
@@ -169,6 +177,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.4"
+  choice:
+    dependency: "direct main"
+    description:
+      name: choice
+      sha256: "52d07065e8056beba5b26cff7786134cbfa24927b1f5bf60a05d50058597b2d9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.2"
   clock:
     dependency: transitive
     description:
@@ -249,6 +265,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  duration_picker:
+    dependency: "direct main"
+    description:
+      name: duration_picker
+      sha256: e505a749c93f3218aa4194d339e5d5480d927df23a81f075b5282511f6ac11ab
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   easy_stepper:
     dependency: "direct main"
     description:
@@ -387,6 +411,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_time_picker_spinner:
+    dependency: "direct main"
+    description:
+      name: flutter_time_picker_spinner
+      sha256: "95600709910ad0cd5fcaec6c371dbe2e81a78989a9ee8c08a356433e2ccff041"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -824,6 +856,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.5.0"
+  qr:
+    dependency: transitive
+    description:
+      name: qr
+      sha256: "5a1d2586170e172b8a8c8470bbbffd5eb0cd38a66c0d77155ea138d3af3a4445"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.2"
+  qr_flutter:
+    dependency: "direct main"
+    description:
+      name: qr_flutter
+      sha256: "5095f0fc6e3f71d08adef8feccc8cea4f12eec18a2e31c2e8d82cb6019f4b097"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
   recase:
     dependency: transitive
     description:
@@ -1061,6 +1109,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.3"
+  wheel_chooser:
+    dependency: transitive
+    description:
+      name: wheel_chooser
+      sha256: "3fee36f081f321c58a0b7b4afcdd92599f2ca520b3a1420084774e6b19cca1d8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.2"
+  wheel_slider:
+    dependency: "direct main"
+    description:
+      name: wheel_slider
+      sha256: "6e29d2be088591fdc8d63fff647fe7ec0bd87f872165eabf8b73e59168d9b733"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.2"
   xdg_directories:
     dependency: transitive
     description:
