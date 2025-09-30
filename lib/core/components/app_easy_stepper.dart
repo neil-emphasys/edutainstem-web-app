@@ -8,10 +8,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class AppEasyStepper extends StatefulWidget {
   final List<StepModel> steps;
   final int reachedStep;
+  final double? lineLength;
 
   const AppEasyStepper({
     required this.steps,
     required this.reachedStep,
+    this.lineLength,
     super.key,
   });
 
@@ -33,7 +35,7 @@ class _AppEasyStepperState extends State<AppEasyStepper> {
       activeStep: widget.reachedStep,
       maxReachedStep: widget.reachedStep,
       lineStyle: LineStyle(
-        lineLength: 16.w,
+        lineLength: widget.lineLength ?? 16.w,
         lineSpace: 0,
         lineType: LineType.normal,
         unreachedLineColor: AppColors.gray.withOpacity(0.5),

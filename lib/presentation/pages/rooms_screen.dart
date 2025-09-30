@@ -1,29 +1,49 @@
 import 'dart:math';
 
+import 'package:edutainstem/application/rooms/room_bloc/room_bloc.dart';
 import 'package:edutainstem/core/components/app_button.dart';
 import 'package:edutainstem/core/components/app_glass_container.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
-import 'package:edutainstem/presentation/widgets/room_widgets/room_code_dialog_widget.dart';
+import 'package:edutainstem/domain/models/rooms/room_model.dart';
+import 'package:edutainstem/presentation/widgets/room_widgets/room_create_dialog_widget.dart';
 import 'package:edutainstem/presentation/widgets/room_widgets/room_table_widget.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:motion/motion.dart';
 
-class RoomsScreen extends StatelessWidget {
+class RoomsScreen extends StatefulWidget {
   static const String routeName = '/main-dashboard/rooms';
 
   const RoomsScreen({super.key});
 
-  void _showCreateNewRoomDialog(BuildContext context) {
+  @override
+  State<RoomsScreen> createState() => _RoomsScreenState();
+}
+
+class _RoomsScreenState extends State<RoomsScreen> {
+  void _showCreateNewRoomDialog(BuildContext context, {RoomModel? room}) {
     showDialog(
       context: context,
       barrierDismissible: false, // dialog can't be dismissed by tapping outside
       builder: (BuildContext context) {
-        // return const RoomCreateDialogWidget();
-        return const RoomCodeDialogWidget();
+        return RoomCreateDialogWidget(room: room);
+        // return const TestDialogWidget();
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<RoomBloc>().add(const RoomEvent.getRooms());
+      // RoomDataSourceImpl().getEnrolledStudents(roomId: 'aBKtzPs5VG017q99EOjy');
+      // RoomDataSourceImpl().getAssessmentStatistics(
+      //   roomId: 'aBKtzPs5VG017q99EOjy',
+      // );
+    });
   }
 
   @override
@@ -136,7 +156,12 @@ class RoomsScreen extends StatelessWidget {
                 SizedBox(height: 2.w),
                 const Divider(color: AppColors.white),
                 SizedBox(height: 2.w),
-                Expanded(child: RoomTableWidget()),
+                Expanded(
+                  child: RoomTableWidget(
+                    onViewClick: (room) =>
+                        _showCreateNewRoomDialog(context, room: room),
+                  ),
+                ),
               ],
             ),
           ),

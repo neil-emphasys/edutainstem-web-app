@@ -21,6 +21,7 @@ abstract class StepperModel<T> with _$StepperModel<T> {
     required int activeStep,
     required int previousStep,
     required int maxReachedStep,
+    required int maxStep,
     required T data,
   }) = _StepperModel<T>;
 
@@ -34,6 +35,7 @@ abstract class StepperModel<T> with _$StepperModel<T> {
       activeStep: 0,
       previousStep: 0,
       maxReachedStep: 0,
+      maxStep: 0,
       data: initialData,
     );
   }

@@ -140,7 +140,7 @@ class MainScreenShell extends StatelessWidget {
                     child: Center(
                       child: Image.asset(
                         Assets.images.logo.logo2.path,
-                        width: 16.w,
+                        width: 12.w,
                       ),
                     ),
                   );

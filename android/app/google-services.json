@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "152856451676",
+    "project_id": "edutainstem",
+    "storage_bucket": "edutainstem.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152856451676:android:7e166d141c174928eae499",
+        "android_client_info": {
+          "package_name": "com.emphasyscentre.edutainstem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "152856451676-h7l8fq575qictkik1sj7uluo5ock8fsg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-VrSye2l5nFemm6GhPPW9_UX1CCnSZjg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "152856451676-h7l8fq575qictkik1sj7uluo5ock8fsg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "152856451676-22b0aufmv0rnnqotggt3falthk3jp7ph.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.emphasyscentre.edutainstem"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

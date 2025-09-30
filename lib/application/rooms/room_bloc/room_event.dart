@@ -1,6 +1,7 @@
 part of 'room_bloc.dart';
 
 @freezed
-class RoomEvent with _$RoomEvent {
+abstract class RoomEvent with _$RoomEvent {
   const factory RoomEvent.started() = _Started;
+  const factory RoomEvent.getRooms() = _GetRooms;
 }

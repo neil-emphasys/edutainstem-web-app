@@ -3,6 +3,7 @@ import 'package:edutainstem/presentation/pages/lessons_screen.dart';
 import 'package:edutainstem/presentation/pages/main_dashboard_screen.dart';
 import 'package:edutainstem/presentation/pages/rooms_screen.dart';
 import 'package:edutainstem/presentation/pages/sign_in_screen.dart';
+import 'package:edutainstem/presentation/pages/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sidebarx/sidebarx.dart';
@@ -47,6 +48,11 @@ class Routes {
           path: SignInScreen.routeName,
           name: SignInScreen.routeName,
           builder: (context, state) => const SignInScreen(),
+        ),
+        GoRoute(
+          path: SignUpScreen.routeName,
+          name: SignUpScreen.routeName,
+          builder: (context, state) => const SignUpScreen(),
         ),
         ShellRoute(
           builder: (context, state, child) =>

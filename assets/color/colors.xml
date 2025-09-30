@@ -15,4 +15,8 @@
     <color name="shampoo-pink" type="material material-accent">#FFD0EC</color>
     <color name="navajo-orange" type="material material-accent">#FFDBAD</color>
     <color name="diamond-blue" type="material material-accent">#C0E0FF</color>
+    <color name="cyan-cornflower-blue" type="material material-accent">#2492b9</color>
+    <color name="maroon" type="material material-accent">#b32a66</color>
+    <color name="tiger-eye-orange" type="material material-accent">#eb9438</color>
+    <color name="yankees-blue" type="material material-accent">#111b45</color>
 </resources>

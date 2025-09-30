@@ -85,13 +85,13 @@ class SignInScreen extends StatelessWidget {
                   AppTextFormField(
                     fieldTitle: 'Email'.toUpperCase(),
                     fieldType: AppTextFormFieldType.filled,
-                    isFieldTitleSeperated: true,
+                    isFieldTitleSeparated: true,
                   ),
                   SizedBox(height: 6.w),
                   AppTextFormField(
                     fieldTitle: 'Password'.toUpperCase(),
                     fieldType: AppTextFormFieldType.filled,
-                    isFieldTitleSeperated: true,
+                    isFieldTitleSeparated: true,
                     obscureText: true,
                   ),
                   SizedBox(height: 10.w),

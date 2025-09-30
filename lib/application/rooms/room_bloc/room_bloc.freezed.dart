@@ -12,11 +12,17 @@ part of 'room_bloc.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$RoomEvent {
+mixin _$RoomEvent implements DiagnosticableTreeMixin {
 
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'RoomEvent'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -28,7 +34,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'RoomEvent()';
 }
 
@@ -55,11 +61,12 @@ extension RoomEventPatterns on RoomEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _GetRooms value)?  getRooms,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that);case _:
+return started(_that);case _GetRooms() when getRooms != null:
+return getRooms(_that);case _:
   return orElse();
 
 }
@@ -77,11 +84,12 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _GetRooms value)  getRooms,}){
 final _that = this;
 switch (_that) {
 case _Started():
-return started(_that);case _:
+return started(_that);case _GetRooms():
+return getRooms(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -98,11 +106,12 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _GetRooms value)?  getRooms,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started(_that);case _:
+return started(_that);case _GetRooms() when getRooms != null:
+return getRooms(_that);case _:
   return null;
 
 }
@@ -119,10 +128,11 @@ return started(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  getRooms,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started();case _:
+return started();case _GetRooms() when getRooms != null:
+return getRooms();case _:
   return orElse();
 
 }
@@ -140,10 +150,11 @@ return started();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  getRooms,}) {final _that = this;
 switch (_that) {
 case _Started():
-return started();case _:
+return started();case _GetRooms():
+return getRooms();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -160,10 +171,11 @@ return started();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  getRooms,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
-return started();case _:
+return started();case _GetRooms() when getRooms != null:
+return getRooms();case _:
   return null;
 
 }
@@ -174,7 +186,7 @@ return started();case _:
 /// @nodoc
 
 
-class _Started implements RoomEvent {
+class _Started with DiagnosticableTreeMixin implements RoomEvent {
   const _Started();
   
 
@@ -182,6 +194,12 @@ class _Started implements RoomEvent {
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'RoomEvent.started'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -193,7 +211,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'RoomEvent.started()';
 }
 
@@ -204,11 +222,55 @@ String toString() {
 
 
 /// @nodoc
-mixin _$RoomState {
+
+
+class _GetRooms with DiagnosticableTreeMixin implements RoomEvent {
+  const _GetRooms();
+  
 
 
 
 
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'RoomEvent.getRooms'))
+    ;
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GetRooms);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'RoomEvent.getRooms()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+mixin _$RoomState implements DiagnosticableTreeMixin {
+
+
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'RoomState'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -220,7 +282,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'RoomState()';
 }
 
@@ -247,11 +309,13 @@ extension RoomStatePatterns on RoomState {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Initial value)?  initial,TResult Function( _Loading value)?  loading,TResult Function( _Done value)?  done,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
-return initial(_that);case _:
+return initial(_that);case _Loading() when loading != null:
+return loading(_that);case _Done() when done != null:
+return done(_that);case _:
   return orElse();
 
 }
@@ -269,11 +333,13 @@ return initial(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Initial value)  initial,required TResult Function( _Loading value)  loading,required TResult Function( _Done value)  done,}){
 final _that = this;
 switch (_that) {
 case _Initial():
-return initial(_that);case _:
+return initial(_that);case _Loading():
+return loading(_that);case _Done():
+return done(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -290,11 +356,13 @@ return initial(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Initial value)?  initial,TResult? Function( _Loading value)?  loading,TResult? Function( _Done value)?  done,}){
 final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
-return initial(_that);case _:
+return initial(_that);case _Loading() when loading != null:
+return loading(_that);case _Done() when done != null:
+return done(_that);case _:
   return null;
 
 }
@@ -311,10 +379,12 @@ return initial(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( List<RoomModel> rooms)?  done,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
-return initial();case _:
+return initial();case _Loading() when loading != null:
+return loading();case _Done() when done != null:
+return done(_that.rooms);case _:
   return orElse();
 
 }
@@ -332,10 +402,12 @@ return initial();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( List<RoomModel> rooms)  done,}) {final _that = this;
 switch (_that) {
 case _Initial():
-return initial();case _:
+return initial();case _Loading():
+return loading();case _Done():
+return done(_that.rooms);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -352,10 +424,12 @@ return initial();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( List<RoomModel> rooms)?  done,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
-return initial();case _:
+return initial();case _Loading() when loading != null:
+return loading();case _Done() when done != null:
+return done(_that.rooms);case _:
   return null;
 
 }
@@ -366,7 +440,7 @@ return initial();case _:
 /// @nodoc
 
 
-class _Initial implements RoomState {
+class _Initial with DiagnosticableTreeMixin implements RoomState {
   const _Initial();
   
 
@@ -374,6 +448,12 @@ class _Initial implements RoomState {
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'RoomState.initial'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -385,7 +465,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'RoomState.initial()';
 }
 
@@ -394,5 +474,121 @@ String toString() {
 
 
 
+
+/// @nodoc
+
+
+class _Loading with DiagnosticableTreeMixin implements RoomState {
+  const _Loading();
+  
+
+
+
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'RoomState.loading'))
+    ;
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'RoomState.loading()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _Done with DiagnosticableTreeMixin implements RoomState {
+  const _Done({required final  List<RoomModel> rooms}): _rooms = rooms;
+  
+
+ final  List<RoomModel> _rooms;
+ List<RoomModel> get rooms {
+  if (_rooms is EqualUnmodifiableListView) return _rooms;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_rooms);
+}
+
+
+/// Create a copy of RoomState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$DoneCopyWith<_Done> get copyWith => __$DoneCopyWithImpl<_Done>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'RoomState.done'))
+    ..add(DiagnosticsProperty('rooms', rooms));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Done&&const DeepCollectionEquality().equals(other._rooms, _rooms));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_rooms));
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'RoomState.done(rooms: $rooms)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$DoneCopyWith<$Res> implements $RoomStateCopyWith<$Res> {
+  factory _$DoneCopyWith(_Done value, $Res Function(_Done) _then) = __$DoneCopyWithImpl;
+@useResult
+$Res call({
+ List<RoomModel> rooms
+});
+
+
+
+
+}
+/// @nodoc
+class __$DoneCopyWithImpl<$Res>
+    implements _$DoneCopyWith<$Res> {
+  __$DoneCopyWithImpl(this._self, this._then);
+
+  final _Done _self;
+  final $Res Function(_Done) _then;
+
+/// Create a copy of RoomState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? rooms = null,}) {
+  return _then(_Done(
+rooms: null == rooms ? _self._rooms : rooms // ignore: cast_nullable_to_non_nullable
+as List<RoomModel>,
+  ));
+}
+
+
+}
 
 // dart format on

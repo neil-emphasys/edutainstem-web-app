@@ -58,6 +58,18 @@ class $AssetsIconsPngGen {
   AssetGenImage get sideMenuSettings =>
       const AssetGenImage('assets/icons/png/side-menu-settings.png');
 
+  /// File path: assets/icons/png/table-delete.png
+  AssetGenImage get tableDelete =>
+      const AssetGenImage('assets/icons/png/table-delete.png');
+
+  /// File path: assets/icons/png/table-edit.png
+  AssetGenImage get tableEdit =>
+      const AssetGenImage('assets/icons/png/table-edit.png');
+
+  /// File path: assets/icons/png/table-view.png
+  AssetGenImage get tableView =>
+      const AssetGenImage('assets/icons/png/table-view.png');
+
   /// List of all assets
   List<AssetGenImage> get values => [
     checkMark,
@@ -68,6 +80,9 @@ class $AssetsIconsPngGen {
     sideMenuProfile,
     sideMenuRoom,
     sideMenuSettings,
+    tableDelete,
+    tableEdit,
+    tableView,
   ];
 }
 

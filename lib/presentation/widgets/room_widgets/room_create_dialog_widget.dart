@@ -1,39 +1,105 @@
 import 'package:choice/choice.dart';
+import 'package:edutainstem/application/rooms/room_bloc/room_bloc.dart';
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
+import 'package:edutainstem/core/components/app_bar_chart.dart';
 import 'package:edutainstem/core/components/app_button.dart';
+import 'package:edutainstem/core/components/app_dropdown_field.dart';
 import 'package:edutainstem/core/components/app_easy_stepper.dart';
 import 'package:edutainstem/core/components/app_step_animated_container.dart';
+import 'package:edutainstem/core/components/app_table.dart';
 import 'package:edutainstem/core/components/app_text_form_field.dart';
 import 'package:edutainstem/core/components/app_time_picker_dialog.dart';
+import 'package:edutainstem/core/enums/difficulty_enum.dart';
 import 'package:edutainstem/core/gen/assets.gen.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
+import 'package:edutainstem/core/helpers/string_helpers.dart';
+import 'package:edutainstem/core/services/validator_service.dart';
+import 'package:edutainstem/domain/models/lessons/lesson_model.dart';
+import 'package:edutainstem/domain/models/rooms/room_model.dart';
 import 'package:edutainstem/domain/models/steps/step_model.dart';
+import 'package:edutainstem/domain/repositories/room_repository.dart';
+import 'package:edutainstem/injection.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
-class RoomCreateDialogWidget extends StatelessWidget {
-  const RoomCreateDialogWidget({super.key});
+class RoomCreateDialogWidget extends StatefulWidget {
+  const RoomCreateDialogWidget({this.room, super.key});
 
-  Widget buildStep(int currentStep) {
+  final RoomModel? room;
+
+  @override
+  State<RoomCreateDialogWidget> createState() => _RoomCreateDialogWidgetState();
+}
+
+class _RoomCreateDialogWidgetState extends State<RoomCreateDialogWidget> {
+  final blocInstance = RoomCreateBloc(it());
+
+  final List<GlobalKey<FormState>> formKeys = [
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+    GlobalKey<FormState>(),
+  ];
+
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final hoursController = TextEditingController();
+  final minutesController = TextEditingController();
+  List<LessonModel> lessonsSelected = [];
+
+  Widget buildStep(int currentStep, {List<LessonModel> lessons = const []}) {
     switch (currentStep) {
       case 0:
-        return const _FirstStepWidget();
+        return _FirstStepWidget(
+          formKey: formKeys[currentStep],
+          titleController: titleController,
+          descriptionController: descriptionController,
+        );
       case 1:
-        return const _SecondStepWidget();
+        return _SecondStepWidget(
+          formKey: formKeys[currentStep],
+          hoursController: hoursController,
+          minutesController: minutesController,
+        );
       case 2:
-        return const _ThirdStepWidget();
+        return _ThirdStepWidget(
+          formKey: formKeys[currentStep],
+          lessons: lessons,
+          selected: lessonsSelected,
+          onChanged: (p0) {
+            lessonsSelected = p0 ?? [];
+            setState(() {});
+          },
+        );
       default:
         return const SizedBox.shrink();
     }
   }
 
+  int totalMinutes(int hours, int minutes) {
+    return Duration(hours: hours, minutes: minutes).inMinutes;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.room != null) {
+        blocInstance.add(RoomCreateEvent.setRoom(widget.room!));
+      } else {
+        blocInstance.add(const RoomCreateEvent.setInitialData(maxStep: 3));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final blocInstance = RoomCreateBloc();
-
     return Center(
       child: SingleChildScrollView(
         child: Dialog(
@@ -42,12 +108,38 @@ class RoomCreateDialogWidget extends StatelessWidget {
           ),
           elevation: 0,
           backgroundColor: Colors.white,
-          child: BlocBuilder<RoomCreateBloc, RoomCreateState>(
+          child: BlocConsumer<RoomCreateBloc, RoomCreateState>(
+            listener: (context, state) {
+              state.maybeWhen(
+                orElse: () {},
+                closed: (data, refetch, isDifficultyView) => (refetch)
+                    ? context.read<RoomBloc>().add(const RoomEvent.getRooms())
+                    : null,
+                created: (data, refetch) => (refetch)
+                    ? context.read<RoomBloc>().add(const RoomEvent.getRooms())
+                    : null,
+              );
+            },
             bloc: blocInstance,
             builder: (context, state) {
               return state.maybeWhen(
                 orElse: () => const SizedBox.shrink(),
-                initial: (data) => Container(
+                loading: () => const CircularProgressIndicator(),
+                doneLoading: () => const _DoneLoadingStepWidget(),
+                // done: () => _RoomCodeWidget(blocInstance: blocInstance),
+                created: (data, refetch) =>
+                    _RoomCodeWidget(blocInstance: blocInstance),
+                // closed: (room, refetch) => _SampleBarChartWidget(
+                closed: (room, refetch, isDifficultyView) => (isDifficultyView)
+                    ? _DifficultyChartWidget(
+                        blocInstance: blocInstance,
+                        room: room,
+                      )
+                    : _SampleBarChartWidget(
+                        blocInstance: blocInstance,
+                        room: room,
+                      ),
+                done: (data, lessons) => Container(
                   // color: Colors.red,
                   // constraints: BoxConstraints(minHeight: 0.6.sh),
                   width: 0.5.sw,
@@ -56,9 +148,7 @@ class RoomCreateDialogWidget extends StatelessWidget {
                     horizontal: 20.r,
                   ),
                   child: Column(
-                    // shrinkWrap: true,
-
-                    // mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,24 +187,22 @@ class RoomCreateDialogWidget extends StatelessWidget {
                         ],
                       ),
                       SizedBox(height: 2.w),
-                      Align(
+                      Container(
+                        width: 0.35.sw,
                         alignment: Alignment.centerLeft,
-                        child: SizedBox(
-                          width: 0.35.sw,
-                          child: AppStepAnimatedContent(
-                            isGoingForward:
-                                state.data.activeStep > state.data.previousStep,
-                            child: buildStep(
-                              state.data.activeStep,
-                            ), // e.g. Step 1, 2, 3 widget
-                          ),
+                        child: AppStepAnimatedContent(
+                          isGoingForward:
+                              data.activeStep >
+                              data.previousStep, // e.g. Step 1, 2, 3 widget
+                          childKey: ValueKey(data.activeStep),
+                          child: buildStep(data.activeStep, lessons: lessons),
                         ),
                       ),
                       SizedBox(height: 80.h),
                       Row(
                         children: [
                           const Spacer(),
-                          if (state.data.activeStep > 0) ...[
+                          if (data.activeStep > 0) ...[
                             AppButton.text(
                               width: 40.w,
                               title: 'Back',
@@ -127,12 +215,37 @@ class RoomCreateDialogWidget extends StatelessWidget {
                           ],
                           AppButton(
                             width: 56.w,
-                            title: (state.data.activeStep >= 2)
+                            title: (data.activeStep >= data.maxStep - 1)
                                 ? 'Done'
                                 : 'Next',
-                            onPressed: () => blocInstance.add(
-                              const RoomCreateEvent.nextStep(),
-                            ),
+                            onPressed: () {
+                              if (formKeys[data.activeStep].currentState
+                                      ?.validate() ??
+                                  false) {
+                                if ((data.activeStep >= data.maxStep - 1)) {
+                                  blocInstance.add(
+                                    const RoomCreateEvent.createRoom(),
+                                  );
+                                } else {
+                                  blocInstance.add(
+                                    RoomCreateEvent.nextStep(
+                                      title: (titleController.text.isNotEmpty)
+                                          ? titleController.text
+                                          : null,
+                                      description: descriptionController.text,
+                                      duration: totalMinutes(
+                                        int.tryParse(hoursController.text) ?? 0,
+                                        int.tryParse(minutesController.text) ??
+                                            0,
+                                      ),
+                                      preferredLessons: lessonsSelected
+                                          .map((e) => e.id ?? '')
+                                          .toList(),
+                                    ),
+                                  );
+                                }
+                              }
+                            },
                           ),
                         ],
                       ),
@@ -149,65 +262,94 @@ class RoomCreateDialogWidget extends StatelessWidget {
 }
 
 class _FirstStepWidget extends StatelessWidget {
-  const _FirstStepWidget({super.key});
+  const _FirstStepWidget({
+    required this.formKey,
+    required this.titleController,
+    required this.descriptionController,
+    super.key,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController titleController;
+  final TextEditingController descriptionController;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Step 1/3',
-          style: AppTextStyles.getStyle(
-            AppTextStyle.bodySmall,
-            modifier: (base) => base.copyWith(
-              // fontWeight: FontWeight.bold,
-              letterSpacing: 0.3.sp,
+    final v = it<ValidatorService>();
+
+    return Form(
+      key: formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Step 1/3',
+            style: AppTextStyles.getStyle(
+              AppTextStyle.bodySmall,
+              modifier: (base) => base.copyWith(
+                // fontWeight: FontWeight.bold,
+                letterSpacing: 0.3.sp,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          'Can you tell us what this room is all about?',
-          style: AppTextStyles.getStyle(
-            AppTextStyle.bodyNormal,
-            modifier: (base) => base.copyWith(
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.3.sp,
+          SizedBox(height: 4.h),
+          Text(
+            'Can you tell us what this room is all about?',
+            style: AppTextStyles.getStyle(
+              AppTextStyle.bodyNormal,
+              modifier: (base) => base.copyWith(
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.3.sp,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 2.h),
-        Text(
-          'Please fill in the details of this room below.',
-          style: AppTextStyles.getStyle(
-            AppTextStyle.overline,
-            modifier: (base) => base.copyWith(
-              // fontWeight: FontWeight.bold,
-              letterSpacing: 0.3.sp,
+          SizedBox(height: 2.h),
+          Text(
+            'Please fill in the details of this room below.',
+            style: AppTextStyles.getStyle(
+              AppTextStyle.overline,
+              modifier: (base) => base.copyWith(
+                // fontWeight: FontWeight.bold,
+                letterSpacing: 0.3.sp,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 24.h),
-        AppTextFormField(
-          fieldTitle: 'Title'.toUpperCase(),
-          fieldType: AppTextFormFieldType.filled,
-          isFieldTitleSeperated: true,
-        ),
-        SizedBox(height: 24.h),
-        AppTextFormField(
-          fieldTitle: 'Description'.toUpperCase(),
-          fieldType: AppTextFormFieldType.filled,
-          isFieldTitleSeperated: true,
-          isMultiline: true,
-        ),
-      ],
+          SizedBox(height: 24.h),
+          AppTextFormField(
+            controller: titleController,
+            fieldTitle: 'Title'.toUpperCase(),
+            fieldType: AppTextFormFieldType.filled,
+            isFieldTitleSeparated: true,
+            validator: v.compose([v.required(fieldName: 'Title')]),
+          ),
+          SizedBox(height: 24.h),
+          AppTextFormField(
+            controller: descriptionController,
+            fieldTitle: 'Description'.toUpperCase(),
+            fieldType: AppTextFormFieldType.filled,
+            isFieldTitleSeparated: true,
+            isMultiline: true,
+            validator: v.compose([v.required(fieldName: 'Description')]),
+          ),
+        ],
+      ),
     );
   }
 }
 
 class _ThirdStepWidget extends StatefulWidget {
-  const _ThirdStepWidget({super.key});
+  const _ThirdStepWidget({
+    required this.lessons,
+    required this.selected,
+    required this.onChanged,
+    required this.formKey,
+    super.key,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final List<LessonModel> lessons;
+  final List<LessonModel> selected;
+  final void Function(List<LessonModel>?) onChanged;
 
   @override
   State<_ThirdStepWidget> createState() => _ThirdStepWidgetState();
@@ -240,12 +382,14 @@ class _ThirdStepWidgetState extends State<_ThirdStepWidget> {
 
   Widget openFilterDialog({
     required String title,
-    required List<String> options,
-    required List<String> selected,
-    required void Function(List<String>?) onChanged,
+    required List<LessonModel> options,
+    required List<LessonModel> selected,
+    required void Function(List<LessonModel>?) onChanged,
     bool isSingleSelection = true,
     Color selectedColor = AppColors.primary,
   }) {
+    final v = it<ValidatorService>();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -257,131 +401,168 @@ class _ThirdStepWidgetState extends State<_ThirdStepWidget> {
           ).copyWith(fontWeight: FontWeight.w300, letterSpacing: 0.5.sp),
         ),
         SizedBox(height: 8.h),
-        SizedBox(
-          height: 200.h,
-          child: PromptedChoice<String>.multiple(
-            // title: 'Category',
-            clearable: true,
-            confirmation: true,
-            searchable: true,
-            value: selected,
-            onChanged: onChanged,
-            itemCount: options.length,
-            // itemSkip: (state, i) =>
-            //     !ChoiceSearch.match(options[i], state.search?.value),
-            itemBuilder: (state, i) {
-              return ChoiceChip(
-                selected: state.selected(options[i]),
-                onSelected: state.onSelected(options[i]),
-                selectedColor: AppColors.primaryAccent.shade100,
-                label: ChoiceText(
-                  options[i],
-                  highlight: state.search?.value,
-                  style: AppTextStyles.getStyle(
-                    AppTextStyle.overline,
-                    modifier: (base) => base.copyWith(
-                      // fontWeight: FontWeight.bold,
-                      letterSpacing: 0.3.sp,
-                    ),
-                  ),
-                ),
-              );
-            },
-            listBuilder: ChoiceList.createWrapped(
-              padding: EdgeInsets.all(16.r),
-              spacing: 10,
-              runSpacing: 10,
-            ),
-            modalHeaderBuilder: ChoiceModal.createHeader(
-              automaticallyImplyLeading: false,
-              title: Text(
-                'Select $title/s',
-                style: AppTextStyles.getStyle(
-                  AppTextStyle.subtitle2,
-                  modifier: (base) => base.copyWith(
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 0.3.sp,
-                  ),
-                ),
-              ),
-              actionsBuilder: [
-                ChoiceModal.createConfirmButton(),
-                ChoiceModal.createSpacer(width: 10),
-              ],
-            ),
-            promptDelegate: ChoicePrompt.delegatePopupDialog(
-              constraints: const BoxConstraints(maxWidth: 400),
-            ),
-            // anchorBuilder: ChoiceAnchor.create(),
-            anchorBuilder: (state, openModal) {
-              final asd = state.value;
-
-              return IntrinsicHeight(
-                child: Container(
-                  padding: EdgeInsets.all(16.r),
-                  decoration: BoxDecoration(
-                    color: AppColors.gray.shade50,
-                    borderRadius: BorderRadius.all(Radius.circular(16.r)),
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 8.h),
-                          child: SingleChildScrollView(
-                            child: Wrap(
-                              alignment: WrapAlignment.start,
-                              crossAxisAlignment: WrapCrossAlignment.start,
-                              runAlignment: WrapAlignment.start,
-                              runSpacing: 4.sp,
-                              spacing: 4.sp,
-                              children: [
-                                for (final String i in asd) ...[
-                                  Chip(
-                                    label: Text(
-                                      i,
-                                      style: AppTextStyles.getStyle(
-                                        AppTextStyle.overline,
-                                        modifier: (base) => base.copyWith(
-                                          // fontWeight: FontWeight.bold,
-                                          letterSpacing: 0.3.sp,
-                                        ),
-                                      ),
-                                    ),
-                                    side: BorderSide.none,
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(
-                                        16.r,
-                                      ), // Adjust this value as needed
-                                    ),
-                                    backgroundColor: selectedColor,
-                                  ),
-                                ],
-                              ],
+        FormField(
+          validator: (value) {
+            return null;
+          },
+          builder: (field) {
+            return Column(
+              children: [
+                SizedBox(
+                  height: 200.h,
+                  width: 80.w,
+                  child: PromptedChoice<LessonModel>.multiple(
+                    // title: 'Category',
+                    clearable: true,
+                    confirmation: true,
+                    searchable: true,
+                    value: selected,
+                    onChanged: onChanged,
+                    itemCount: options.length,
+                    // itemSkip: (state, i) =>
+                    //     !ChoiceSearch.match(options[i], state.search?.value),
+                    itemBuilder: (state, i) {
+                      return ChoiceChip(
+                        selected: state.selected(options[i]),
+                        onSelected: state.onSelected(options[i]),
+                        selectedColor: AppColors.primaryAccent.shade100,
+                        label: ChoiceText(
+                          options[i].title,
+                          highlight: state.search?.value,
+                          style: AppTextStyles.getStyle(
+                            AppTextStyle.overline,
+                            modifier: (base) => base.copyWith(
+                              // fontWeight: FontWeight.bold,
+                              letterSpacing: 0.3.sp,
                             ),
                           ),
                         ),
+                      );
+                    },
+                    listBuilder: ChoiceList.createWrapped(
+                      padding: EdgeInsets.all(16.r),
+                      spacing: 10,
+                      runSpacing: 10,
+                    ),
+                    modalHeaderBuilder: ChoiceModal.createHeader(
+                      automaticallyImplyLeading: false,
+                      title: Text(
+                        'Select $title/s',
+                        style: AppTextStyles.getStyle(
+                          AppTextStyle.subtitle2,
+                          modifier: (base) => base.copyWith(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.3.sp,
+                          ),
+                        ),
                       ),
-                      AppButton(
-                        title: 'Add/Remove ${title}s',
-                        onPressed: () => openModal(),
-                      ),
-                    ],
+                      actionsBuilder: [
+                        ChoiceModal.createConfirmButton(),
+                        ChoiceModal.createSpacer(width: 10),
+                      ],
+                    ),
+                    promptDelegate: ChoicePrompt.delegatePopupDialog(
+                      constraints: const BoxConstraints(maxWidth: 400),
+                    ),
+                    // anchorBuilder: ChoiceAnchor.create(),
+                    anchorBuilder: (state, openModal) {
+                      final asd = state.value;
+
+                      return IntrinsicHeight(
+                        child: Container(
+                          padding: EdgeInsets.all(16.r),
+                          decoration: BoxDecoration(
+                            color: AppColors.gray.shade50,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(16.r),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                                  child: SingleChildScrollView(
+                                    child: Wrap(
+                                      alignment: WrapAlignment.start,
+                                      crossAxisAlignment:
+                                          WrapCrossAlignment.start,
+                                      runAlignment: WrapAlignment.start,
+                                      runSpacing: 4.sp,
+                                      spacing: 4.sp,
+                                      children: [
+                                        for (final LessonModel i in asd) ...[
+                                          Chip(
+                                            label: Text(
+                                              i.title,
+                                              style: AppTextStyles.getStyle(
+                                                AppTextStyle.overline,
+                                                modifier: (base) => base.copyWith(
+                                                  // fontWeight: FontWeight.bold,
+                                                  letterSpacing: 0.3.sp,
+                                                ),
+                                              ),
+                                            ),
+                                            side: BorderSide.none,
+                                            shape: RoundedRectangleBorder(
+                                              side: BorderSide.none,
+                                              borderRadius: BorderRadius.circular(
+                                                16.r,
+                                              ), // Adjust this value as needed
+                                            ),
+                                            backgroundColor: selectedColor,
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 8.r,
+                                  vertical: 8.r,
+                                ),
+                                child: AppButton(
+                                  wrapButtonContent: true,
+                                  title: 'Add/Remove ${title}s',
+                                  onPressed: () => openModal(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ),
-              );
-            },
-          ),
+                if (field.hasError)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4),
+                    child: Text(
+                      field.errorText!,
+                      style: AppTextStyles.getStyle(
+                        AppTextStyle.overline,
+                        modifier: (base) => base.copyWith(
+                          // fontWeight: FontWeight.bold,
+                          letterSpacing: 0.3.sp,
+                          color: AppColors.red,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            );
+          },
         ),
       ],
     );
   }
 
-  void onSubjectApply(List<String>? list) {
-    setState(() {
+  void onSubjectApply(List<LessonModel>? list) {
+    /* setState(() {
       subjectSelected = List.from(list ?? []);
-    });
+    }); */
   }
 
   void onTopicApply(List<String>? list) {
@@ -398,72 +579,84 @@ class _ThirdStepWidgetState extends State<_ThirdStepWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Step 3/3',
-          style: AppTextStyles.getStyle(
-            AppTextStyle.bodySmall,
-            modifier: (base) => base.copyWith(
-              // fontWeight: FontWeight.bold,
-              letterSpacing: 0.3.sp,
+    return Form(
+      key: widget.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Step 3/3',
+            style: AppTextStyles.getStyle(
+              AppTextStyle.bodySmall,
+              modifier: (base) => base.copyWith(
+                // fontWeight: FontWeight.bold,
+                letterSpacing: 0.3.sp,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          'Select the tags that we should consider of?',
-          style: AppTextStyles.getStyle(
-            AppTextStyle.bodyNormal,
-            modifier: (base) => base.copyWith(
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.3.sp,
+          SizedBox(height: 4.h),
+          Text(
+            'Select the tags that we should consider of?',
+            style: AppTextStyles.getStyle(
+              AppTextStyle.bodyNormal,
+              modifier: (base) => base.copyWith(
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.3.sp,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 2.h),
-        Text(
-          'Please fill in the details of this room below.',
-          style: AppTextStyles.getStyle(
-            AppTextStyle.overline,
-            modifier: (base) => base.copyWith(
-              // fontWeight: FontWeight.bold,
-              letterSpacing: 0.3.sp,
+          SizedBox(height: 2.h),
+          Text(
+            'Please fill in the details of this room below.',
+            style: AppTextStyles.getStyle(
+              AppTextStyle.overline,
+              modifier: (base) => base.copyWith(
+                // fontWeight: FontWeight.bold,
+                letterSpacing: 0.3.sp,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 24.h),
-        openFilterDialog(
-          title: 'Subject',
-          options: subjectOptions,
-          selected: subjectSelected,
-          onChanged: onSubjectApply,
-          selectedColor: AppColors.diamondBlue,
-        ),
-        SizedBox(height: 24.h),
-        openFilterDialog(
-          title: 'Topic',
-          options: topicOptions,
-          selected: topicSelected,
-          onChanged: onTopicApply,
-          selectedColor: AppColors.shampooPink,
-        ),
-        SizedBox(height: 24.h),
-        openFilterDialog(
-          title: 'Subtopic',
-          options: subtopicOptions,
-          selected: subtopicSelected,
-          onChanged: onSubtopicApply,
-          selectedColor: AppColors.navajoOrange,
-        ),
-      ],
+          SizedBox(height: 24.h),
+          openFilterDialog(
+            title: 'Subject',
+            options: widget.lessons,
+            selected: widget.selected,
+            onChanged: widget.onChanged,
+            selectedColor: AppColors.diamondBlue,
+          ),
+          /* SizedBox(height: 24.h),
+          openFilterDialog(
+            title: 'Topic',
+            options: topicOptions,
+            selected: topicSelected,
+            onChanged: onTopicApply,
+            selectedColor: AppColors.shampooPink,
+          ),
+          SizedBox(height: 24.h),
+          openFilterDialog(
+            title: 'Subtopic',
+            options: subtopicOptions,
+            selected: subtopicSelected,
+            onChanged: onSubtopicApply,
+            selectedColor: AppColors.navajoOrange,
+          ), */
+        ],
+      ),
     );
   }
 }
 
 class _SecondStepWidget extends StatefulWidget {
-  const _SecondStepWidget({super.key});
+  const _SecondStepWidget({
+    required this.hoursController,
+    required this.minutesController,
+    required this.formKey,
+    super.key,
+  });
+
+  final GlobalKey<FormState> formKey;
+  final TextEditingController hoursController;
+  final TextEditingController minutesController;
 
   @override
   State<_SecondStepWidget> createState() => _SecondStepWidgetState();
@@ -471,89 +664,632 @@ class _SecondStepWidget extends StatefulWidget {
 
 class _SecondStepWidgetState extends State<_SecondStepWidget> {
   // DateTime _dateTime = DateTime.now().copyWith(hour: 0, minute: 0);
-  final TimeOfDay _time = const TimeOfDay(hour: 0, minute: 0);
+  // final TimeOfDay _time = const TimeOfDay(hour: 0, minute: 0);
+  final v = it<ValidatorService>();
 
   void _showHourDialog() {
     showDialog(
       context: context,
-      builder: (context) =>
-          AppTimePickerDialog(onPicked: (p0) {}, totalCount: 12),
+      builder: (context) => AppTimePickerDialog(
+        onPicked: (p0) {
+          widget.hoursController.text = p0.toString();
+        },
+        totalCount: 12,
+      ),
     );
   }
 
   void _showMinuteDialog() {
     showDialog(
       context: context,
-      builder: (context) =>
-          AppTimePickerDialog(onPicked: (p0) {}, totalCount: 60, interval: 5),
+      builder: (context) => AppTimePickerDialog(
+        onPicked: (p0) => widget.minutesController.text = p0.toString(),
+        totalCount: 60,
+        interval: 5,
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Step 2/3',
-          style: AppTextStyles.getStyle(
-            AppTextStyle.bodySmall,
-            modifier: (base) => base.copyWith(
-              // fontWeight: FontWeight.bold,
-              letterSpacing: 0.3.sp,
+    return Form(
+      key: widget.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Step 2/3',
+            style: AppTextStyles.getStyle(
+              AppTextStyle.bodySmall,
+              modifier: (base) => base.copyWith(
+                // fontWeight: FontWeight.bold,
+                letterSpacing: 0.3.sp,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 4.h),
-        Text(
-          'Can you approximately tell us how long the lesson should last?',
-          style: AppTextStyles.getStyle(
-            AppTextStyle.bodyNormal,
-            modifier: (base) => base.copyWith(
-              fontWeight: FontWeight.bold,
-              letterSpacing: 0.3.sp,
+          SizedBox(height: 4.h),
+          Text(
+            'Can you approximately tell us how long the lesson should last?',
+            style: AppTextStyles.getStyle(
+              AppTextStyle.bodyNormal,
+              modifier: (base) => base.copyWith(
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.3.sp,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 2.h),
-        Text(
-          'This will help us narrow down the set of topics to the duration of the course.',
-          style: AppTextStyles.getStyle(
-            AppTextStyle.overline,
-            modifier: (base) => base.copyWith(
-              // fontWeight: FontWeight.bold,
-              letterSpacing: 0.3.sp,
+          SizedBox(height: 2.h),
+          Text(
+            'This will help us narrow down the set of topics to the duration of the course.',
+            style: AppTextStyles.getStyle(
+              AppTextStyle.overline,
+              modifier: (base) => base.copyWith(
+                // fontWeight: FontWeight.bold,
+                letterSpacing: 0.3.sp,
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 24.h),
-        Row(
+          SizedBox(height: 24.h),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 40.w,
+                child: AppTextFormField(
+                  controller: widget.hoursController,
+                  fieldTitle: 'Hours'.toUpperCase(),
+                  fieldType: AppTextFormFieldType.filled,
+                  isFieldTitleSeparated: true,
+                  readOnly: true,
+                  onTap: _showHourDialog,
+                ),
+              ),
+              SizedBox(width: 8.w),
+              SizedBox(
+                width: 40.w,
+                child: AppTextFormField(
+                  controller: widget.minutesController,
+                  fieldTitle: 'Minutes'.toUpperCase(),
+                  fieldType: AppTextFormFieldType.filled,
+                  isFieldTitleSeparated: true,
+                  readOnly: true,
+                  onTap: _showMinuteDialog,
+                  validator: v.compose([
+                    v.required(fieldName: 'Minutes'),
+                    v.numberRange(min: 1, fieldName: 'Minutes'),
+                  ]),
+                ),
+              ),
+              const Spacer(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DoneLoadingStepWidget extends StatelessWidget {
+  const _DoneLoadingStepWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return IntrinsicWidth(
+      child: Container(
+        // width: 0.5.sw,
+        padding: const EdgeInsets.all(40),
+        child: Column(
           children: [
-            SizedBox(
-              width: 40.w,
-              child: AppTextFormField(
-                fieldTitle: 'Hours'.toUpperCase(),
-                fieldType: AppTextFormFieldType.filled,
-                isFieldTitleSeperated: true,
-                readOnly: true,
-                onTap: _showHourDialog,
+            const SpinKitFoldingCube(color: AppColors.primary, size: 50.0),
+            SizedBox(height: 40.h),
+            Text(
+              'Creating Room . . .',
+              style: AppTextStyles.getStyle(
+                AppTextStyle.bodyNormal,
+                modifier: (base) => base.copyWith(
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 0.3.sp,
+                ),
               ),
             ),
-            SizedBox(width: 8.w),
-            SizedBox(
-              width: 40.w,
-              child: AppTextFormField(
-                fieldTitle: 'Minutes'.toUpperCase(),
-                fieldType: AppTextFormFieldType.filled,
-                isFieldTitleSeperated: true,
-                readOnly: true,
-                onTap: _showMinuteDialog,
-              ),
-            ),
-            const Spacer(),
           ],
         ),
-      ],
+      ),
+    );
+  }
+}
+
+class _RoomCodeWidget extends StatelessWidget {
+  const _RoomCodeWidget({required this.blocInstance, super.key});
+
+  final RoomCreateBloc blocInstance;
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = it<RoomRepository>();
+
+    return Container(
+      // color: Colors.red,
+      // constraints: BoxConstraints(minHeight: 0.6.sh),
+      width: 0.5.sw,
+      padding: EdgeInsets.symmetric(vertical: 16.r, horizontal: 20.r),
+      child: BlocBuilder<RoomCreateBloc, RoomCreateState>(
+        bloc: blocInstance,
+        builder: (context, state) {
+          return state.maybeWhen(
+            orElse: () => const SizedBox.shrink(),
+            created: (data, refetch) => Column(
+              // shrinkWrap: true,
+
+              // mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () => context.pop(),
+                          icon: Image.asset(
+                            Assets.icons.png.goBack.path,
+                            width: 4.w,
+                          ),
+                        ),
+                        SizedBox(width: 4.w),
+                        Text(
+                          'Join Room',
+                          style: AppTextStyles.getStyle(
+                            AppTextStyle.bodySmall,
+                            modifier: (base) => base.copyWith(
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.3.sp,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    StreamBuilder(
+                      stream: repo.watchAssessmentStudents(
+                        roomId: data.id ?? '',
+                      ),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData)
+                          return const CircularProgressIndicator();
+                        final either = snapshot.data!;
+                        return either.fold(
+                          (f) {
+                            debugPrint('F: ${f.message}');
+
+                            return Text('Error: $f');
+                          },
+                          (answers) {
+                            final listStudentsAnswers = answers.data;
+
+                            // return PollWidget(questions: answers.data);
+
+                            return Text(
+                              listStudentsAnswers.length.toString(),
+                              style: AppTextStyles.getStyle(
+                                AppTextStyle.bodySmall,
+                                modifier: (base) => base.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.3.sp,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+
+                    Text(
+                      ' Students Joined',
+                      style: AppTextStyles.getStyle(
+                        AppTextStyle.bodySmall,
+                        modifier: (base) => base.copyWith(
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.3.sp,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 40.h),
+                SizedBox(
+                  width: 160.w,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Join Via Code',
+                              style: AppTextStyles.getStyle(
+                                AppTextStyle.subtitle1,
+                                modifier: (base) => base.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.3.sp,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 16.h),
+                            Container(
+                              width: 60.sp,
+                              height: 80.sp,
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.all(16.r),
+                              decoration: BoxDecoration(
+                                color: AppColors.gray.shade50,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(16.r),
+                                ),
+                              ),
+                              child: Text(
+                                data.roomCode,
+                                style: AppTextStyles.getStyle(
+                                  AppTextStyle.headline3,
+                                  modifier: (base) => base.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.3.sp,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              'Join Via QR Code',
+                              style: AppTextStyles.getStyle(
+                                AppTextStyle.subtitle1,
+                                modifier: (base) => base.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 0.3.sp,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 16.h),
+                            Container(
+                              width: 60.sp,
+                              height: 80.sp,
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.all(16.r),
+                              decoration: BoxDecoration(
+                                color: AppColors.gray.shade50,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(16.r),
+                                ),
+                              ),
+                              child: QrImageView(
+                                data: data.roomCode,
+                                version: QrVersions.auto,
+                                size: 200.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 40.h),
+                SizedBox(
+                  width: 160.w,
+                  child: ExpandablePanel(
+                    controller: ExpandableController(initialExpanded: true),
+                    header: Padding(
+                      padding: EdgeInsets.only(bottom: 8.h),
+                      child: Text(
+                        'See students who joined',
+                        style: AppTextStyles.getStyle(
+                          AppTextStyle.bodySmall,
+                          modifier: (base) => base.copyWith(
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 0.3.sp,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ),
+                    ),
+                    collapsed: const SizedBox.shrink(),
+                    expanded: StreamBuilder(
+                      stream: repo.watchAssessmentStudents(
+                        roomId: data.id ?? '',
+                      ),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData)
+                          return const CircularProgressIndicator();
+                        final either = snapshot.data!;
+                        return either.fold((f) => Text('Error: $f'), (answers) {
+                          final listStudentsAnswers = answers.data;
+
+                          // return PollWidget(questions: answers.data);
+
+                          return AppTable(
+                            columns: 2,
+                            data: listStudentsAnswers
+                                .map((e) => e.name)
+                                .toList(),
+                          );
+                        });
+                      },
+                    ),
+                    theme: const ExpandableThemeData(
+                      headerAlignment: ExpandablePanelHeaderAlignment.center,
+                      iconColor: AppColors.primary,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 60.h),
+                AppButton(
+                  title: 'Close Room and Start SEE Assessment',
+                  backgroundColor: AppColors.red,
+                  onPressed: () =>
+                      blocInstance.add(RoomCreateEvent.close(data)),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _SampleBarChartWidget extends StatelessWidget {
+  const _SampleBarChartWidget({
+    required this.blocInstance,
+    required this.room,
+    super.key,
+  });
+
+  final RoomCreateBloc blocInstance;
+  final RoomModel room;
+
+  @override
+  Widget build(BuildContext context) {
+    final repo = it<RoomRepository>();
+
+    return Container(
+      // color: Colors.red,
+      // constraints: BoxConstraints(minHeight: 0.6.sh),
+      width: 0.5.sw,
+      padding: EdgeInsets.symmetric(vertical: 16.r, horizontal: 20.r),
+      child: Column(
+        // shrinkWrap: true,
+
+        // mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => context.pop(),
+                    icon: Image.asset(Assets.icons.png.goBack.path, width: 4.w),
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    'SEE Assessment Statistics',
+                    style: AppTextStyles.getStyle(
+                      AppTextStyle.bodySmall,
+                      modifier: (base) => base.copyWith(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.3.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              AppButton(
+                width: 40.w,
+                title: 'ReOpen',
+                onPressed: () =>
+                    blocInstance.add(const RoomCreateEvent.reOpen()),
+              ),
+              SizedBox(width: 4.w),
+              AppButton(
+                width: 48.w,
+                title: 'Switch View',
+                onPressed: () =>
+                    blocInstance.add(const RoomCreateEvent.switchCloseView()),
+              ),
+            ],
+          ),
+          SizedBox(height: 40.h),
+
+          StreamBuilder(
+            stream: repo.watchAssessmentStatistics(roomId: room.id ?? ''),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return const CircularProgressIndicator();
+              final either = snapshot.data!;
+              return either.fold(
+                (f) => Text('Error: $f'),
+                (answers) => PollWidget(questions: answers.data),
+              );
+            },
+          ),
+          // PollWidget(questions: seeSamplePolls),
+        ],
+      ),
+    );
+  }
+}
+
+class _DifficultyChartWidget extends StatefulWidget {
+  const _DifficultyChartWidget({
+    required this.blocInstance,
+    required this.room,
+    super.key,
+  });
+
+  final RoomCreateBloc blocInstance;
+  final RoomModel room;
+
+  @override
+  State<_DifficultyChartWidget> createState() => _DifficultyChartWidgetState();
+}
+
+class _DifficultyChartWidgetState extends State<_DifficultyChartWidget> {
+  @override
+  Widget build(BuildContext context) {
+    final repo = it<RoomRepository>();
+
+    return Container(
+      // color: Colors.red,
+      // constraints: BoxConstraints(minHeight: 0.6.sh),
+      width: 0.5.sw,
+      padding: EdgeInsets.symmetric(vertical: 16.r, horizontal: 20.r),
+      child: Column(
+        // shrinkWrap: true,
+
+        // mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => context.pop(),
+                    icon: Image.asset(Assets.icons.png.goBack.path, width: 4.w),
+                  ),
+                  SizedBox(width: 4.w),
+                  Text(
+                    'SEE Assessment Statistics',
+                    style: AppTextStyles.getStyle(
+                      AppTextStyle.bodySmall,
+                      modifier: (base) => base.copyWith(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.3.sp,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              AppButton(
+                width: 48.w,
+                title: 'Switch View',
+                onPressed: () => widget.blocInstance.add(
+                  const RoomCreateEvent.switchCloseView(),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 40.h),
+          StreamBuilder(
+            stream: repo.watchAssessmentStudents(roomId: widget.room.id ?? ''),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) return const CircularProgressIndicator();
+              final either = snapshot.data!;
+              return either.fold(
+                (f) {
+                  debugPrint('F: ${f.message}');
+
+                  return Text('Error: $f');
+                },
+                (answers) {
+                  final listStudentsAnswers = answers.data;
+
+                  // Build rows
+                  final List<TableRow> rows = [];
+                  for (int i = 0; i < listStudentsAnswers.length; i++) {
+                    final difficulty = listStudentsAnswers[i].difficulty ?? '';
+
+                    if (difficulty.isEmpty) continue;
+
+                    final preferredLanguageController =
+                        TextEditingController.fromValue(
+                          TextEditingValue(
+                            text: listStudentsAnswers[i].difficulty ?? '',
+                          ),
+                        );
+
+                    preferredLanguageController.text =
+                        listStudentsAnswers[i].difficulty ?? '';
+
+                    final rowCells = <Widget>[
+                      Container(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                            listStudentsAnswers[i].name,
+                            style: AppTextStyles.getStyle(
+                              AppTextStyle.bodySmall,
+                              modifier: (base) => base.copyWith(
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.3.sp,
+                              ),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(12),
+                        child: AppDropdownField(
+                          fieldTitle: '',
+                          controller: preferredLanguageController,
+                          fieldType: AppTextFormFieldType.filled,
+                          isFieldTitleSeparated: false,
+                          dropdownItems: DifficultyEnum.values
+                              .map((e) => e.name.toString().capitalize())
+                              .toList(),
+                          // validator: validator.compose([
+                          //   validator.required(fieldName: 'Preferred Language'),
+                          // ]),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(24),
+                        child: AppButton(
+                          width: 8,
+                          title: 'Update',
+                          onPressed: () {},
+                        ),
+                      ),
+                    ];
+
+                    rows.add(TableRow(children: rowCells));
+                  }
+
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(8.r),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 1.5),
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Table(
+                        defaultVerticalAlignment:
+                            TableCellVerticalAlignment.intrinsicHeight,
+                        border: const TableBorder.symmetric(
+                          inside: BorderSide(
+                            color: Colors.black,
+                            width: 1.2,
+                          ), // inner borders
+                        ),
+                        children: rows,
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+          // PollWidget(questions: seeSamplePolls),
+        ],
+      ),
     );
   }
 }

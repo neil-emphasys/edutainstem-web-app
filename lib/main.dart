@@ -1,8 +1,10 @@
 import 'package:edutainstem/application/rooms/room_bloc/room_bloc.dart';
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
+import 'package:edutainstem/firebase_options.dart';
 import 'package:edutainstem/injection.dart' as di;
 import 'package:edutainstem/presentation/routes/routes.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +15,8 @@ import 'package:motion/motion.dart';
 void main() async {
   final WidgetsBinding widgetsBinding =
       WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   await Motion.instance.initialize();
 

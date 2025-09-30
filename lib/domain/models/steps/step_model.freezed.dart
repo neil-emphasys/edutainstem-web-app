@@ -284,7 +284,7 @@ as bool,
 /// @nodoc
 mixin _$StepperModel<T> {
 
- int get activeStep; int get previousStep; int get maxReachedStep; T get data;
+ int get activeStep; int get previousStep; int get maxReachedStep; int get maxStep; T get data;
 /// Create a copy of StepperModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -297,16 +297,16 @@ $StepperModelCopyWith<T, StepperModel<T>> get copyWith => _$StepperModelCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StepperModel<T>&&(identical(other.activeStep, activeStep) || other.activeStep == activeStep)&&(identical(other.previousStep, previousStep) || other.previousStep == previousStep)&&(identical(other.maxReachedStep, maxReachedStep) || other.maxReachedStep == maxReachedStep)&&const DeepCollectionEquality().equals(other.data, data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StepperModel<T>&&(identical(other.activeStep, activeStep) || other.activeStep == activeStep)&&(identical(other.previousStep, previousStep) || other.previousStep == previousStep)&&(identical(other.maxReachedStep, maxReachedStep) || other.maxReachedStep == maxReachedStep)&&(identical(other.maxStep, maxStep) || other.maxStep == maxStep)&&const DeepCollectionEquality().equals(other.data, data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,activeStep,previousStep,maxReachedStep,const DeepCollectionEquality().hash(data));
+int get hashCode => Object.hash(runtimeType,activeStep,previousStep,maxReachedStep,maxStep,const DeepCollectionEquality().hash(data));
 
 @override
 String toString() {
-  return 'StepperModel<$T>(activeStep: $activeStep, previousStep: $previousStep, maxReachedStep: $maxReachedStep, data: $data)';
+  return 'StepperModel<$T>(activeStep: $activeStep, previousStep: $previousStep, maxReachedStep: $maxReachedStep, maxStep: $maxStep, data: $data)';
 }
 
 
@@ -317,7 +317,7 @@ abstract mixin class $StepperModelCopyWith<T,$Res>  {
   factory $StepperModelCopyWith(StepperModel<T> value, $Res Function(StepperModel<T>) _then) = _$StepperModelCopyWithImpl;
 @useResult
 $Res call({
- int activeStep, int previousStep, int maxReachedStep, T data
+ int activeStep, int previousStep, int maxReachedStep, int maxStep, T data
 });
 
 
@@ -334,11 +334,12 @@ class _$StepperModelCopyWithImpl<T,$Res>
 
 /// Create a copy of StepperModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? activeStep = null,Object? previousStep = null,Object? maxReachedStep = null,Object? data = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? activeStep = null,Object? previousStep = null,Object? maxReachedStep = null,Object? maxStep = null,Object? data = freezed,}) {
   return _then(_self.copyWith(
 activeStep: null == activeStep ? _self.activeStep : activeStep // ignore: cast_nullable_to_non_nullable
 as int,previousStep: null == previousStep ? _self.previousStep : previousStep // ignore: cast_nullable_to_non_nullable
 as int,maxReachedStep: null == maxReachedStep ? _self.maxReachedStep : maxReachedStep // ignore: cast_nullable_to_non_nullable
+as int,maxStep: null == maxStep ? _self.maxStep : maxStep // ignore: cast_nullable_to_non_nullable
 as int,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as T,
   ));
@@ -425,10 +426,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int activeStep,  int previousStep,  int maxReachedStep,  T data)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int activeStep,  int previousStep,  int maxReachedStep,  int maxStep,  T data)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StepperModel() when $default != null:
-return $default(_that.activeStep,_that.previousStep,_that.maxReachedStep,_that.data);case _:
+return $default(_that.activeStep,_that.previousStep,_that.maxReachedStep,_that.maxStep,_that.data);case _:
   return orElse();
 
 }
@@ -446,10 +447,10 @@ return $default(_that.activeStep,_that.previousStep,_that.maxReachedStep,_that.d
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int activeStep,  int previousStep,  int maxReachedStep,  T data)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int activeStep,  int previousStep,  int maxReachedStep,  int maxStep,  T data)  $default,) {final _that = this;
 switch (_that) {
 case _StepperModel():
-return $default(_that.activeStep,_that.previousStep,_that.maxReachedStep,_that.data);case _:
+return $default(_that.activeStep,_that.previousStep,_that.maxReachedStep,_that.maxStep,_that.data);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -466,10 +467,10 @@ return $default(_that.activeStep,_that.previousStep,_that.maxReachedStep,_that.d
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int activeStep,  int previousStep,  int maxReachedStep,  T data)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int activeStep,  int previousStep,  int maxReachedStep,  int maxStep,  T data)?  $default,) {final _that = this;
 switch (_that) {
 case _StepperModel() when $default != null:
-return $default(_that.activeStep,_that.previousStep,_that.maxReachedStep,_that.data);case _:
+return $default(_that.activeStep,_that.previousStep,_that.maxReachedStep,_that.maxStep,_that.data);case _:
   return null;
 
 }
@@ -481,12 +482,13 @@ return $default(_that.activeStep,_that.previousStep,_that.maxReachedStep,_that.d
 @JsonSerializable(genericArgumentFactories: true)
 
 class _StepperModel<T> implements StepperModel<T> {
-  const _StepperModel({required this.activeStep, required this.previousStep, required this.maxReachedStep, required this.data});
+  const _StepperModel({required this.activeStep, required this.previousStep, required this.maxReachedStep, required this.maxStep, required this.data});
   factory _StepperModel.fromJson(Map<String, dynamic> json,T Function(Object?) fromJsonT) => _$StepperModelFromJson(json,fromJsonT);
 
 @override final  int activeStep;
 @override final  int previousStep;
 @override final  int maxReachedStep;
+@override final  int maxStep;
 @override final  T data;
 
 /// Create a copy of StepperModel
@@ -502,16 +504,16 @@ Map<String, dynamic> toJson(Object? Function(T) toJsonT) {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StepperModel<T>&&(identical(other.activeStep, activeStep) || other.activeStep == activeStep)&&(identical(other.previousStep, previousStep) || other.previousStep == previousStep)&&(identical(other.maxReachedStep, maxReachedStep) || other.maxReachedStep == maxReachedStep)&&const DeepCollectionEquality().equals(other.data, data));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StepperModel<T>&&(identical(other.activeStep, activeStep) || other.activeStep == activeStep)&&(identical(other.previousStep, previousStep) || other.previousStep == previousStep)&&(identical(other.maxReachedStep, maxReachedStep) || other.maxReachedStep == maxReachedStep)&&(identical(other.maxStep, maxStep) || other.maxStep == maxStep)&&const DeepCollectionEquality().equals(other.data, data));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,activeStep,previousStep,maxReachedStep,const DeepCollectionEquality().hash(data));
+int get hashCode => Object.hash(runtimeType,activeStep,previousStep,maxReachedStep,maxStep,const DeepCollectionEquality().hash(data));
 
 @override
 String toString() {
-  return 'StepperModel<$T>(activeStep: $activeStep, previousStep: $previousStep, maxReachedStep: $maxReachedStep, data: $data)';
+  return 'StepperModel<$T>(activeStep: $activeStep, previousStep: $previousStep, maxReachedStep: $maxReachedStep, maxStep: $maxStep, data: $data)';
 }
 
 
@@ -522,7 +524,7 @@ abstract mixin class _$StepperModelCopyWith<T,$Res> implements $StepperModelCopy
   factory _$StepperModelCopyWith(_StepperModel<T> value, $Res Function(_StepperModel<T>) _then) = __$StepperModelCopyWithImpl;
 @override @useResult
 $Res call({
- int activeStep, int previousStep, int maxReachedStep, T data
+ int activeStep, int previousStep, int maxReachedStep, int maxStep, T data
 });
 
 
@@ -539,11 +541,12 @@ class __$StepperModelCopyWithImpl<T,$Res>
 
 /// Create a copy of StepperModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? activeStep = null,Object? previousStep = null,Object? maxReachedStep = null,Object? data = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? activeStep = null,Object? previousStep = null,Object? maxReachedStep = null,Object? maxStep = null,Object? data = freezed,}) {
   return _then(_StepperModel<T>(
 activeStep: null == activeStep ? _self.activeStep : activeStep // ignore: cast_nullable_to_non_nullable
 as int,previousStep: null == previousStep ? _self.previousStep : previousStep // ignore: cast_nullable_to_non_nullable
 as int,maxReachedStep: null == maxReachedStep ? _self.maxReachedStep : maxReachedStep // ignore: cast_nullable_to_non_nullable
+as int,maxStep: null == maxStep ? _self.maxStep : maxStep // ignore: cast_nullable_to_non_nullable
 as int,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as T,
   ));

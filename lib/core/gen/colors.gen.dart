@@ -23,6 +23,44 @@ class AppColors {
   static const Color black = Color(0xFF000000);
 
   /// MaterialColor:
+  ///   50: #FFE5F2F7
+  ///   100: #FFBDDEEA
+  ///   200: #FF92C9DC
+  ///   300: #FF66B3CE
+  ///   400: #FF45A2C4
+  ///   500: #FF2492B9
+  ///   600: #FF208AB2
+  ///   700: #FF1B7FAA
+  ///   800: #FF1675A2
+  ///   900: #FF0D6393
+  static const MaterialColor cyanCornflowerBlue =
+      MaterialColor(0xFF2492B9, <int, Color>{
+        50: Color(0xFFE5F2F7),
+        100: Color(0xFFBDDEEA),
+        200: Color(0xFF92C9DC),
+        300: Color(0xFF66B3CE),
+        400: Color(0xFF45A2C4),
+        500: Color(0xFF2492B9),
+        600: Color(0xFF208AB2),
+        700: Color(0xFF1B7FAA),
+        800: Color(0xFF1675A2),
+        900: Color(0xFF0D6393),
+      });
+
+  /// MaterialAccentColor:
+  ///   100: #FF7CE5FF
+  ///   200: #FF3FD8FF
+  ///   400: #FF25D3FF
+  ///   700: #FF16D0FF
+  static const MaterialAccentColor cyanCornflowerBlueAccent =
+      MaterialAccentColor(0xFF3FD8FF, <int, Color>{
+        100: Color(0xFF7CE5FF),
+        200: Color(0xFF3FD8FF),
+        400: Color(0xFF25D3FF),
+        700: Color(0xFF16D0FF),
+      });
+
+  /// MaterialColor:
   ///   50: #FFF7FBFF
   ///   100: #FFECF6FF
   ///   200: #FFE0F0FF
@@ -95,6 +133,43 @@ class AppColors {
         200: Color(0xFFED5E5E),
         400: Color(0xFFFF3333),
         700: Color(0xFFFF2424),
+      });
+
+  /// MaterialColor:
+  ///   50: #FFF6E5ED
+  ///   100: #FFE8BFD1
+  ///   200: #FFD995B3
+  ///   300: #FFCA6A94
+  ///   400: #FFBE4A7D
+  ///   500: #FFB32A66
+  ///   600: #FFAC255E
+  ///   700: #FFA31F53
+  ///   800: #FF9A1949
+  ///   900: #FF8B0F38
+  static const MaterialColor maroon = MaterialColor(0xFFB32A66, <int, Color>{
+    50: Color(0xFFF6E5ED),
+    100: Color(0xFFE8BFD1),
+    200: Color(0xFFD995B3),
+    300: Color(0xFFCA6A94),
+    400: Color(0xFFBE4A7D),
+    500: Color(0xFFB32A66),
+    600: Color(0xFFAC255E),
+    700: Color(0xFFA31F53),
+    800: Color(0xFF9A1949),
+    900: Color(0xFF8B0F38),
+  });
+
+  /// MaterialAccentColor:
+  ///   100: #FFFF73B7
+  ///   200: #FFFF3697
+  ///   400: #FFFF1C8A
+  ///   700: #FFFF0D82
+  static const MaterialAccentColor maroonAccent =
+      MaterialAccentColor(0xFFFF3697, <int, Color>{
+        100: Color(0xFFFF73B7),
+        200: Color(0xFFFF3697),
+        400: Color(0xFFFF1C8A),
+        700: Color(0xFFFF0D82),
       });
 
   /// MaterialColor:
@@ -401,6 +476,44 @@ class AppColors {
       });
 
   /// MaterialColor:
+  ///   50: #FFFDF2E7
+  ///   100: #FFF9DFC3
+  ///   200: #FFF5CA9C
+  ///   300: #FFF1B474
+  ///   400: #FFEEA456
+  ///   500: #FFEB9438
+  ///   600: #FFE98C32
+  ///   700: #FFE5812B
+  ///   800: #FFE27724
+  ///   900: #FFDD6517
+  static const MaterialColor tigerEyeOrange =
+      MaterialColor(0xFFEB9438, <int, Color>{
+        50: Color(0xFFFDF2E7),
+        100: Color(0xFFF9DFC3),
+        200: Color(0xFFF5CA9C),
+        300: Color(0xFFF1B474),
+        400: Color(0xFFEEA456),
+        500: Color(0xFFEB9438),
+        600: Color(0xFFE98C32),
+        700: Color(0xFFE5812B),
+        800: Color(0xFFE27724),
+        900: Color(0xFFDD6517),
+      });
+
+  /// MaterialAccentColor:
+  ///   100: #FFFFFEFE
+  ///   200: #FFFFCEC1
+  ///   400: #FFFFB9A7
+  ///   700: #FFFFAD98
+  static const MaterialAccentColor tigerEyeOrangeAccent =
+      MaterialAccentColor(0xFFFFCEC1, <int, Color>{
+        100: Color(0xFFFFFEFE),
+        200: Color(0xFFFFCEC1),
+        400: Color(0xFFFFB9A7),
+        700: Color(0xFFFFAD98),
+      });
+
+  /// MaterialColor:
   ///   50: #FFFFFFFF
   ///   100: #FFFFFFFF
   ///   200: #FFFFFFFF
@@ -435,5 +548,43 @@ class AppColors {
         200: Color(0xFFFFFFFF),
         400: Color(0xFFFFFFFF),
         700: Color(0xFFFFFFFF),
+      });
+
+  /// MaterialColor:
+  ///   50: #FFE2E4E9
+  ///   100: #FFB8BBC7
+  ///   200: #FF888DA2
+  ///   300: #FF585F7D
+  ///   400: #FF353D61
+  ///   500: #FF111B45
+  ///   600: #FF0F183E
+  ///   700: #FF0C1436
+  ///   800: #FF0A102E
+  ///   900: #FF05081F
+  static const MaterialColor yankeesBlue =
+      MaterialColor(0xFF111B45, <int, Color>{
+        50: Color(0xFFE2E4E9),
+        100: Color(0xFFB8BBC7),
+        200: Color(0xFF888DA2),
+        300: Color(0xFF585F7D),
+        400: Color(0xFF353D61),
+        500: Color(0xFF111B45),
+        600: Color(0xFF0F183E),
+        700: Color(0xFF0C1436),
+        800: Color(0xFF0A102E),
+        900: Color(0xFF05081F),
+      });
+
+  /// MaterialAccentColor:
+  ///   100: #FF0D8DFF
+  ///   200: #FF006DCF
+  ///   400: #FF0060B5
+  ///   700: #FF0058A6
+  static const MaterialAccentColor yankeesBlueAccent =
+      MaterialAccentColor(0xFF006DCF, <int, Color>{
+        100: Color(0xFF0D8DFF),
+        200: Color(0xFF006DCF),
+        400: Color(0xFF0060B5),
+        700: Color(0xFF0058A6),
       });
 }

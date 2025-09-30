@@ -20,7 +20,7 @@ class AppTextFormField extends StatefulWidget {
     this.textInputAction,
     this.validator,
     this.onChanged,
-    this.isFieldTitleSeperated = false,
+    this.isFieldTitleSeparated = false,
     this.fieldType = AppTextFormFieldType.outlined,
     this.hintText,
     this.isMultiline = false,
@@ -49,7 +49,7 @@ class AppTextFormField extends StatefulWidget {
   final TextInputAction? textInputAction;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
-  final bool isFieldTitleSeperated;
+  final bool isFieldTitleSeparated;
   final AppTextFormFieldType fieldType;
   final String? hintText;
   final bool isMultiline;
@@ -100,7 +100,7 @@ class AppTextFormField extends StatefulWidget {
       textInputAction: textInputAction,
       validator: validator,
       onChanged: onChanged,
-      isFieldTitleSeperated: isFieldTitleSeperated,
+      isFieldTitleSeparated: isFieldTitleSeperated,
       fieldType: AppTextFormFieldType.outlined,
       hintText: hintText,
       isMultiline: isMultiline,
@@ -124,7 +124,7 @@ class _AppTextFormFieldState extends State<AppTextFormField>
   double defaultSpacing = 8.h;
   bool defaultObscureTextStatus = false;
   double defaultEnabledBorderWidth = 0.5.sp;
-  double defaultFocusedBorderWidth = 1.sp;
+  double defaultFocusedBorderWidth = 1;
   double defaultBorderRadius = 6.r;
   double defaultContentPaddingHorizontal = 4.w;
   double defaultContentPaddingVertical = 5.w;
@@ -169,7 +169,7 @@ class _AppTextFormFieldState extends State<AppTextFormField>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (widget.isFieldTitleSeperated)
+        if (widget.isFieldTitleSeparated)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -345,7 +345,7 @@ class _AppTextFormFieldState extends State<AppTextFormField>
                     // * ============= OUTLINED =============
                     // * ====================================
                     AppTextFormFieldType.outlined => InputDecoration(
-                      labelText: !(widget.isFieldTitleSeperated)
+                      labelText: !(widget.isFieldTitleSeparated)
                           ? widget.fieldTitle
                           : null,
                       labelStyle: TextStyle(
@@ -355,6 +355,13 @@ class _AppTextFormFieldState extends State<AppTextFormField>
                       hintText: widget.hintText,
                       floatingLabelStyle: TextStyle(
                         color: widget.primaryColor ?? AppColors.primary,
+                      ),
+                      errorStyle: AppTextStyles.getStyle(
+                        AppTextStyle.overline,
+                        modifier: (base) => base.copyWith(
+                          // fontWeight: FontWeight.bold,
+                          letterSpacing: 0.3.sp,
+                        ),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
@@ -406,7 +413,7 @@ class _AppTextFormFieldState extends State<AppTextFormField>
                     // * ============== FILLED ==============
                     // * ====================================
                     AppTextFormFieldType.filled => InputDecoration(
-                      labelText: !(widget.isFieldTitleSeperated)
+                      labelText: !(widget.isFieldTitleSeparated)
                           ? widget.fieldTitle
                           : null,
                       labelStyle: TextStyle(
@@ -419,6 +426,13 @@ class _AppTextFormFieldState extends State<AppTextFormField>
                             fontWeight: FontWeight.w500,
                             color: AppColors.gray.shade300,
                           ),
+                      errorStyle: AppTextStyles.getStyle(
+                        AppTextStyle.overline,
+                        modifier: (base) => base.copyWith(
+                          // fontWeight: FontWeight.bold,
+                          letterSpacing: 0.3.sp,
+                        ),
+                      ),
                       floatingLabelStyle: TextStyle(
                         color: widget.primaryColor ?? AppColors.primary,
                       ),
@@ -519,7 +533,7 @@ class _AppTextFormFieldState extends State<AppTextFormField>
                     // * ============= OUTLINED =============
                     // * ====================================
                     AppTextFormFieldType.outlined => InputDecoration(
-                      labelText: !(widget.isFieldTitleSeperated)
+                      labelText: !(widget.isFieldTitleSeparated)
                           ? widget.fieldTitle
                           : null,
                       labelStyle: TextStyle(
@@ -578,7 +592,7 @@ class _AppTextFormFieldState extends State<AppTextFormField>
                     // * ============== FILLED ==============
                     // * ====================================
                     AppTextFormFieldType.filled => InputDecoration(
-                      labelText: !(widget.isFieldTitleSeperated)
+                      labelText: !(widget.isFieldTitleSeparated)
                           ? widget.fieldTitle
                           : null,
                       labelStyle: TextStyle(
@@ -613,6 +627,14 @@ class _AppTextFormFieldState extends State<AppTextFormField>
                         borderRadius:
                             widget.radius ??
                             BorderRadius.circular(defaultBorderRadius),
+                      ),
+                      errorStyle: AppTextStyles.getStyle(
+                        AppTextStyle.overline,
+                        modifier: (base) => base.copyWith(
+                          // fontWeight: FontWeight.bold,
+                          letterSpacing: 0.3.sp,
+                          color: AppColors.red,
+                        ),
                       ),
                       errorBorder: OutlineInputBorder(
                         borderSide: BorderSide(

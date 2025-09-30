@@ -26,6 +26,7 @@ _StepperModel<T> _$StepperModelFromJson<T>(
   activeStep: (json['activeStep'] as num).toInt(),
   previousStep: (json['previousStep'] as num).toInt(),
   maxReachedStep: (json['maxReachedStep'] as num).toInt(),
+  maxStep: (json['maxStep'] as num).toInt(),
   data: fromJsonT(json['data']),
 );
 
@@ -36,5 +37,6 @@ Map<String, dynamic> _$StepperModelToJson<T>(
   'activeStep': instance.activeStep,
   'previousStep': instance.previousStep,
   'maxReachedStep': instance.maxReachedStep,
+  'maxStep': instance.maxStep,
   'data': toJsonT(instance.data),
 };
