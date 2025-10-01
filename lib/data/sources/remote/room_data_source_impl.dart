@@ -51,11 +51,9 @@ class RoomDataSourceImpl implements RoomDataSource {
 
       return docRef;
     } on FirebaseException catch (e, stackTrace) {
-      debugPrint('E: $e');
       // debugPrintStack(stackTrace: stackTrace);
       rethrow; // rethrow so caller can handle it if needed
     } catch (e, stackTrace) {
-      debugPrint('E: $e');
       // debugPrintStack(stackTrace: stackTrace);
       rethrow;
     }
@@ -65,22 +63,40 @@ class RoomDataSourceImpl implements RoomDataSource {
   Future<void> updateRoomStatus({
     required RoomModel room,
     bool reOpen = false,
+    bool openLesson = false,
   }) async {
-    debugPrint('ROOM: $room');
     final roomId = room.id ?? '';
 
     try {
       await _db.collection(FirebaseConstants.room.name).doc(roomId).update({
-        'isOpen': reOpen ? true : false,
-        'isAssessmentOpen': reOpen ? false : true,
+        'isOpen': openLesson
+            ? false
+            : reOpen
+            ? true
+            : false,
+        'isAssessmentOpen': openLesson
+            ? false
+            : reOpen
+            ? false
+            : true,
+        'isLessonOpen': openLesson ? true : false,
       });
+
+      /*  await _db.collection(FirebaseConstants.room.name).doc(roomId).update({
+        'isOpen':
+            !openLesson &&
+            reOpen, // true only when re-opening and not in lesson
+        'isAssessmentOpen':
+            !openLesson && !reOpen, // true only when neither lesson nor reopen
+        'isLessonOpen': openLesson, // mirrors openLesson
+      }); */
     } on FirebaseException catch (e, st) {
       debugPrint('E: $e');
-      debugPrintStack(stackTrace: st);
+      // debugPrintStack(stackTrace: st);
       rethrow;
     } catch (e, st) {
       debugPrint('E: $e');
-      debugPrintStack(stackTrace: st);
+      // debugPrintStack(stackTrace: st);
       rethrow;
     }
   }
@@ -117,7 +133,13 @@ class RoomDataSourceImpl implements RoomDataSource {
           // .where('isOpen', isEqualTo: true) // <- optional filter
           // .orderBy('title') // optional ordering
           .get();
-      debugPrint('SNAP: ${snap.docs}');
+
+      //! TEST: PLEASE REMOVE ON PROD
+      // if (snap.docs.firstOrNull != null) {
+      //   it<JsonDownloadService>().saveJson(
+      //     input: snap.docs.firstOrNull!.data(),
+      //   );
+      // }
 
       // Map each doc to RoomModel using your fromDoc factory.
       final rooms = snap.docs
@@ -126,11 +148,9 @@ class RoomDataSourceImpl implements RoomDataSource {
 
       return rooms;
     } on FirebaseException catch (e, st) {
-      debugPrint('E: $e');
       // debugPrintStack(stackTrace: st);
       rethrow;
     } catch (e, st) {
-      debugPrint('E: $e');
       // debugPrintStack(stackTrace: st);
       rethrow;
     }
@@ -225,7 +245,6 @@ class RoomDataSourceImpl implements RoomDataSource {
           }).toList(),
         );
       }).toList();
-      debugPrint('POLL: $poll');
       return poll;
     } on FirebaseException catch (e, st) {
       debugPrintStack(stackTrace: st);
@@ -324,12 +343,109 @@ class RoomDataSourceImpl implements RoomDataSource {
           return students;
         } catch (e, stackTrace) {
           debugPrintStack(stackTrace: stackTrace);
-          debugPrint('E: $e');
           return [];
         }
       });
     } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> applyDifficultyChanges({
+    required String roomId,
+    required List<StudentEnrollment> enrollments,
+  }) async {
+    try {
+      // Build { uid: newDifficulty } from the list, skipping null/empty
+      debugPrint('ASDADASDASDS');
+
+      final updates = <String, String>{};
+      for (final s in enrollments) {
+        final cd = s.changedDifficulty?.trim();
+        if (s.uid.isNotEmpty && cd != null && cd.isNotEmpty) {
+          updates[s.uid] = cd;
+        }
+      }
+      debugPrint('UPDATES: $updates');
+      if (updates.isEmpty) {
+        return;
+      }
+
+      final docRef = _db.collection(FirebaseConstants.room.name).doc(roomId);
+
+      return _db.runTransaction<void>((tx) async {
+        final snap = await tx.get(docRef);
+        if (!snap.exists) {
+          throw StateError('Room "$roomId" does not exist.');
+        }
+
+        final data = snap.data() ?? const {};
+        final rawList = data[FirebaseConstants.room.studentsEnrolled];
+
+        debugPrint('RAWLIST: $rawList');
+        if (rawList is! List) {
+          throw StateError('Field "studentsEnrolled" is not a List.');
+        }
+        debugPrint('XZCZXCZXCZX');
+
+        // Deep copy to mutable structures
+        final studentsEnrolled = List<Map<String, dynamic>>.from(
+          rawList.map((e) => Map<String, dynamic>.from(e as Map)),
+        );
+
+        // Build index: uid -> list index
+        final indexByUid = <String, int>{};
+        for (var i = 0; i < studentsEnrolled.length; i++) {
+          final entry = studentsEnrolled[i];
+          for (final key in entry.keys) {
+            indexByUid[key] = i;
+          }
+        }
+
+        final missing = <String>[];
+        final unchanged = <String>[];
+        var updatedCount = 0;
+
+        updates.forEach((uid, newDifficulty) {
+          final idx = indexByUid[uid];
+          if (idx == null) {
+            missing.add(uid);
+            return;
+          }
+
+          final wrapper = Map<String, dynamic>.from(studentsEnrolled[idx]);
+          final studentData = Map<String, dynamic>.from(
+            (wrapper[uid] as Map?) ?? const {},
+          );
+
+          final current =
+              (studentData[FirebaseConstants.room.difficulty] as String?)
+                  ?.trim();
+          if (current == newDifficulty) {
+            unchanged.add(uid);
+            return;
+          }
+
+          studentData[FirebaseConstants.room.difficulty] = newDifficulty;
+          wrapper[uid] = studentData;
+          studentsEnrolled[idx] = wrapper;
+          updatedCount++;
+        });
+
+        if (updatedCount > 0) {
+          tx.update(docRef, {
+            FirebaseConstants.room.studentsEnrolled: studentsEnrolled,
+          });
+        }
+      });
+    } on FirebaseException catch (e, stackTrace) {
       debugPrint('E: $e');
+      // debugPrintStack(stackTrace: stackTrace);
+      rethrow; // rethrow so caller can handle it if needed
+    } catch (e, stackTrace) {
+      debugPrint('E: $e');
+      // debugPrintStack(stackTrace: stackTrace);
       rethrow;
     }
   }

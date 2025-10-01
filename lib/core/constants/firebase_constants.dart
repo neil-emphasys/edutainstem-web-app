@@ -31,6 +31,7 @@ class Room {
   String get isAssessmentOpen => 'isAssessmentOpen';
   String get isOpen => 'isOpen';
   String get studentsEnrolled => 'studentsEnrolled';
+  String get difficulty => 'difficulty';
 
   // * [SPECIFIC ERROR CODES]
   String get roomNotExist => 'ROOM_NOT_EXIST';

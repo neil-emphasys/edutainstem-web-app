@@ -61,7 +61,7 @@ extension RoomCreateEventPatterns on RoomCreateEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _SetInitialData value)?  setInitialData,TResult Function( _PreviousStep value)?  previousStep,TResult Function( _NextStep value)?  nextStep,TResult Function( _CreateRoom value)?  createRoom,TResult Function( _SetRoom value)?  setRoom,TResult Function( _Close value)?  close,TResult Function( _ReOpen value)?  reOpen,TResult Function( _SwitchCloseView value)?  switchCloseView,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _SetInitialData value)?  setInitialData,TResult Function( _PreviousStep value)?  previousStep,TResult Function( _NextStep value)?  nextStep,TResult Function( _CreateRoom value)?  createRoom,TResult Function( _SetRoom value)?  setRoom,TResult Function( _Close value)?  close,TResult Function( _ReOpen value)?  reOpen,TResult Function( _StartLesson value)?  startLesson,TResult Function( _UpdateEnrollmentsDifficulty value)?  updateEnrollmentsDifficulty,TResult Function( _SwitchCloseView value)?  switchCloseView,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _SetInitialData() when setInitialData != null:
@@ -71,7 +71,9 @@ return nextStep(_that);case _CreateRoom() when createRoom != null:
 return createRoom(_that);case _SetRoom() when setRoom != null:
 return setRoom(_that);case _Close() when close != null:
 return close(_that);case _ReOpen() when reOpen != null:
-return reOpen(_that);case _SwitchCloseView() when switchCloseView != null:
+return reOpen(_that);case _StartLesson() when startLesson != null:
+return startLesson(_that);case _UpdateEnrollmentsDifficulty() when updateEnrollmentsDifficulty != null:
+return updateEnrollmentsDifficulty(_that);case _SwitchCloseView() when switchCloseView != null:
 return switchCloseView(_that);case _:
   return orElse();
 
@@ -90,7 +92,7 @@ return switchCloseView(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _SetInitialData value)  setInitialData,required TResult Function( _PreviousStep value)  previousStep,required TResult Function( _NextStep value)  nextStep,required TResult Function( _CreateRoom value)  createRoom,required TResult Function( _SetRoom value)  setRoom,required TResult Function( _Close value)  close,required TResult Function( _ReOpen value)  reOpen,required TResult Function( _SwitchCloseView value)  switchCloseView,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _SetInitialData value)  setInitialData,required TResult Function( _PreviousStep value)  previousStep,required TResult Function( _NextStep value)  nextStep,required TResult Function( _CreateRoom value)  createRoom,required TResult Function( _SetRoom value)  setRoom,required TResult Function( _Close value)  close,required TResult Function( _ReOpen value)  reOpen,required TResult Function( _StartLesson value)  startLesson,required TResult Function( _UpdateEnrollmentsDifficulty value)  updateEnrollmentsDifficulty,required TResult Function( _SwitchCloseView value)  switchCloseView,}){
 final _that = this;
 switch (_that) {
 case _SetInitialData():
@@ -100,7 +102,9 @@ return nextStep(_that);case _CreateRoom():
 return createRoom(_that);case _SetRoom():
 return setRoom(_that);case _Close():
 return close(_that);case _ReOpen():
-return reOpen(_that);case _SwitchCloseView():
+return reOpen(_that);case _StartLesson():
+return startLesson(_that);case _UpdateEnrollmentsDifficulty():
+return updateEnrollmentsDifficulty(_that);case _SwitchCloseView():
 return switchCloseView(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -118,7 +122,7 @@ return switchCloseView(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _SetInitialData value)?  setInitialData,TResult? Function( _PreviousStep value)?  previousStep,TResult? Function( _NextStep value)?  nextStep,TResult? Function( _CreateRoom value)?  createRoom,TResult? Function( _SetRoom value)?  setRoom,TResult? Function( _Close value)?  close,TResult? Function( _ReOpen value)?  reOpen,TResult? Function( _SwitchCloseView value)?  switchCloseView,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _SetInitialData value)?  setInitialData,TResult? Function( _PreviousStep value)?  previousStep,TResult? Function( _NextStep value)?  nextStep,TResult? Function( _CreateRoom value)?  createRoom,TResult? Function( _SetRoom value)?  setRoom,TResult? Function( _Close value)?  close,TResult? Function( _ReOpen value)?  reOpen,TResult? Function( _StartLesson value)?  startLesson,TResult? Function( _UpdateEnrollmentsDifficulty value)?  updateEnrollmentsDifficulty,TResult? Function( _SwitchCloseView value)?  switchCloseView,}){
 final _that = this;
 switch (_that) {
 case _SetInitialData() when setInitialData != null:
@@ -128,7 +132,9 @@ return nextStep(_that);case _CreateRoom() when createRoom != null:
 return createRoom(_that);case _SetRoom() when setRoom != null:
 return setRoom(_that);case _Close() when close != null:
 return close(_that);case _ReOpen() when reOpen != null:
-return reOpen(_that);case _SwitchCloseView() when switchCloseView != null:
+return reOpen(_that);case _StartLesson() when startLesson != null:
+return startLesson(_that);case _UpdateEnrollmentsDifficulty() when updateEnrollmentsDifficulty != null:
+return updateEnrollmentsDifficulty(_that);case _SwitchCloseView() when switchCloseView != null:
 return switchCloseView(_that);case _:
   return null;
 
@@ -146,7 +152,7 @@ return switchCloseView(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int maxStep)?  setInitialData,TResult Function()?  previousStep,TResult Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)?  nextStep,TResult Function()?  createRoom,TResult Function( RoomModel room)?  setRoom,TResult Function( RoomModel room)?  close,TResult Function()?  reOpen,TResult Function( bool isDifficultyView)?  switchCloseView,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int maxStep)?  setInitialData,TResult Function()?  previousStep,TResult Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)?  nextStep,TResult Function()?  createRoom,TResult Function( RoomModel room)?  setRoom,TResult Function( RoomModel room)?  close,TResult Function()?  reOpen,TResult Function()?  startLesson,TResult Function( RoomModel room,  List<StudentEnrollment> enrollments)?  updateEnrollmentsDifficulty,TResult Function( bool isDifficultyView)?  switchCloseView,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SetInitialData() when setInitialData != null:
 return setInitialData(_that.maxStep);case _PreviousStep() when previousStep != null:
@@ -155,7 +161,9 @@ return nextStep(_that.title,_that.description,_that.duration,_that.preferredLess
 return createRoom();case _SetRoom() when setRoom != null:
 return setRoom(_that.room);case _Close() when close != null:
 return close(_that.room);case _ReOpen() when reOpen != null:
-return reOpen();case _SwitchCloseView() when switchCloseView != null:
+return reOpen();case _StartLesson() when startLesson != null:
+return startLesson();case _UpdateEnrollmentsDifficulty() when updateEnrollmentsDifficulty != null:
+return updateEnrollmentsDifficulty(_that.room,_that.enrollments);case _SwitchCloseView() when switchCloseView != null:
 return switchCloseView(_that.isDifficultyView);case _:
   return orElse();
 
@@ -174,7 +182,7 @@ return switchCloseView(_that.isDifficultyView);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int maxStep)  setInitialData,required TResult Function()  previousStep,required TResult Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)  nextStep,required TResult Function()  createRoom,required TResult Function( RoomModel room)  setRoom,required TResult Function( RoomModel room)  close,required TResult Function()  reOpen,required TResult Function( bool isDifficultyView)  switchCloseView,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int maxStep)  setInitialData,required TResult Function()  previousStep,required TResult Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)  nextStep,required TResult Function()  createRoom,required TResult Function( RoomModel room)  setRoom,required TResult Function( RoomModel room)  close,required TResult Function()  reOpen,required TResult Function()  startLesson,required TResult Function( RoomModel room,  List<StudentEnrollment> enrollments)  updateEnrollmentsDifficulty,required TResult Function( bool isDifficultyView)  switchCloseView,}) {final _that = this;
 switch (_that) {
 case _SetInitialData():
 return setInitialData(_that.maxStep);case _PreviousStep():
@@ -183,7 +191,9 @@ return nextStep(_that.title,_that.description,_that.duration,_that.preferredLess
 return createRoom();case _SetRoom():
 return setRoom(_that.room);case _Close():
 return close(_that.room);case _ReOpen():
-return reOpen();case _SwitchCloseView():
+return reOpen();case _StartLesson():
+return startLesson();case _UpdateEnrollmentsDifficulty():
+return updateEnrollmentsDifficulty(_that.room,_that.enrollments);case _SwitchCloseView():
 return switchCloseView(_that.isDifficultyView);case _:
   throw StateError('Unexpected subclass');
 
@@ -201,7 +211,7 @@ return switchCloseView(_that.isDifficultyView);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int maxStep)?  setInitialData,TResult? Function()?  previousStep,TResult? Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)?  nextStep,TResult? Function()?  createRoom,TResult? Function( RoomModel room)?  setRoom,TResult? Function( RoomModel room)?  close,TResult? Function()?  reOpen,TResult? Function( bool isDifficultyView)?  switchCloseView,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int maxStep)?  setInitialData,TResult? Function()?  previousStep,TResult? Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)?  nextStep,TResult? Function()?  createRoom,TResult? Function( RoomModel room)?  setRoom,TResult? Function( RoomModel room)?  close,TResult? Function()?  reOpen,TResult? Function()?  startLesson,TResult? Function( RoomModel room,  List<StudentEnrollment> enrollments)?  updateEnrollmentsDifficulty,TResult? Function( bool isDifficultyView)?  switchCloseView,}) {final _that = this;
 switch (_that) {
 case _SetInitialData() when setInitialData != null:
 return setInitialData(_that.maxStep);case _PreviousStep() when previousStep != null:
@@ -210,7 +220,9 @@ return nextStep(_that.title,_that.description,_that.duration,_that.preferredLess
 return createRoom();case _SetRoom() when setRoom != null:
 return setRoom(_that.room);case _Close() when close != null:
 return close(_that.room);case _ReOpen() when reOpen != null:
-return reOpen();case _SwitchCloseView() when switchCloseView != null:
+return reOpen();case _StartLesson() when startLesson != null:
+return startLesson();case _UpdateEnrollmentsDifficulty() when updateEnrollmentsDifficulty != null:
+return updateEnrollmentsDifficulty(_that.room,_that.enrollments);case _SwitchCloseView() when switchCloseView != null:
 return switchCloseView(_that.isDifficultyView);case _:
   return null;
 
@@ -656,6 +668,133 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 /// @nodoc
 
 
+class _StartLesson with DiagnosticableTreeMixin implements RoomCreateEvent {
+  const _StartLesson();
+  
+
+
+
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'RoomCreateEvent.startLesson'))
+    ;
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StartLesson);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'RoomCreateEvent.startLesson()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _UpdateEnrollmentsDifficulty with DiagnosticableTreeMixin implements RoomCreateEvent {
+  const _UpdateEnrollmentsDifficulty({required this.room, required final  List<StudentEnrollment> enrollments}): _enrollments = enrollments;
+  
+
+ final  RoomModel room;
+ final  List<StudentEnrollment> _enrollments;
+ List<StudentEnrollment> get enrollments {
+  if (_enrollments is EqualUnmodifiableListView) return _enrollments;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_enrollments);
+}
+
+
+/// Create a copy of RoomCreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$UpdateEnrollmentsDifficultyCopyWith<_UpdateEnrollmentsDifficulty> get copyWith => __$UpdateEnrollmentsDifficultyCopyWithImpl<_UpdateEnrollmentsDifficulty>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'RoomCreateEvent.updateEnrollmentsDifficulty'))
+    ..add(DiagnosticsProperty('room', room))..add(DiagnosticsProperty('enrollments', enrollments));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UpdateEnrollmentsDifficulty&&(identical(other.room, room) || other.room == room)&&const DeepCollectionEquality().equals(other._enrollments, _enrollments));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,room,const DeepCollectionEquality().hash(_enrollments));
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'RoomCreateEvent.updateEnrollmentsDifficulty(room: $room, enrollments: $enrollments)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$UpdateEnrollmentsDifficultyCopyWith<$Res> implements $RoomCreateEventCopyWith<$Res> {
+  factory _$UpdateEnrollmentsDifficultyCopyWith(_UpdateEnrollmentsDifficulty value, $Res Function(_UpdateEnrollmentsDifficulty) _then) = __$UpdateEnrollmentsDifficultyCopyWithImpl;
+@useResult
+$Res call({
+ RoomModel room, List<StudentEnrollment> enrollments
+});
+
+
+$RoomModelCopyWith<$Res> get room;
+
+}
+/// @nodoc
+class __$UpdateEnrollmentsDifficultyCopyWithImpl<$Res>
+    implements _$UpdateEnrollmentsDifficultyCopyWith<$Res> {
+  __$UpdateEnrollmentsDifficultyCopyWithImpl(this._self, this._then);
+
+  final _UpdateEnrollmentsDifficulty _self;
+  final $Res Function(_UpdateEnrollmentsDifficulty) _then;
+
+/// Create a copy of RoomCreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? room = null,Object? enrollments = null,}) {
+  return _then(_UpdateEnrollmentsDifficulty(
+room: null == room ? _self.room : room // ignore: cast_nullable_to_non_nullable
+as RoomModel,enrollments: null == enrollments ? _self._enrollments : enrollments // ignore: cast_nullable_to_non_nullable
+as List<StudentEnrollment>,
+  ));
+}
+
+/// Create a copy of RoomCreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$RoomModelCopyWith<$Res> get room {
+  
+  return $RoomModelCopyWith<$Res>(_self.room, (value) {
+    return _then(_self.copyWith(room: value));
+  });
+}
+}
+
+/// @nodoc
+
+
 class _SwitchCloseView with DiagnosticableTreeMixin implements RoomCreateEvent {
   const _SwitchCloseView({this.isDifficultyView = false});
   
@@ -854,11 +993,11 @@ return closed(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( StepperModel<RoomModel> data)?  initial,TResult Function()?  loading,TResult Function()?  doneLoading,TResult Function( StepperModel<RoomModel> data,  List<LessonModel> lessons)?  done,TResult Function( RoomModel data,  bool refetch)?  created,TResult Function( RoomModel data,  bool refetch,  bool isDifficultyView)?  closed,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( StepperModel<RoomModel> data)?  initial,TResult Function( String? loaderString)?  loading,TResult Function()?  doneLoading,TResult Function( StepperModel<RoomModel> data,  List<LessonModel> lessons)?  done,TResult Function( RoomModel data,  bool refetch)?  created,TResult Function( RoomModel data,  bool refetch,  bool isDifficultyView)?  closed,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that.data);case _Loading() when loading != null:
-return loading();case _DoneLoading() when doneLoading != null:
+return loading(_that.loaderString);case _DoneLoading() when doneLoading != null:
 return doneLoading();case _Done() when done != null:
 return done(_that.data,_that.lessons);case _Created() when created != null:
 return created(_that.data,_that.refetch);case _Closed() when closed != null:
@@ -880,11 +1019,11 @@ return closed(_that.data,_that.refetch,_that.isDifficultyView);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( StepperModel<RoomModel> data)  initial,required TResult Function()  loading,required TResult Function()  doneLoading,required TResult Function( StepperModel<RoomModel> data,  List<LessonModel> lessons)  done,required TResult Function( RoomModel data,  bool refetch)  created,required TResult Function( RoomModel data,  bool refetch,  bool isDifficultyView)  closed,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( StepperModel<RoomModel> data)  initial,required TResult Function( String? loaderString)  loading,required TResult Function()  doneLoading,required TResult Function( StepperModel<RoomModel> data,  List<LessonModel> lessons)  done,required TResult Function( RoomModel data,  bool refetch)  created,required TResult Function( RoomModel data,  bool refetch,  bool isDifficultyView)  closed,}) {final _that = this;
 switch (_that) {
 case _Initial():
 return initial(_that.data);case _Loading():
-return loading();case _DoneLoading():
+return loading(_that.loaderString);case _DoneLoading():
 return doneLoading();case _Done():
 return done(_that.data,_that.lessons);case _Created():
 return created(_that.data,_that.refetch);case _Closed():
@@ -905,11 +1044,11 @@ return closed(_that.data,_that.refetch,_that.isDifficultyView);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( StepperModel<RoomModel> data)?  initial,TResult? Function()?  loading,TResult? Function()?  doneLoading,TResult? Function( StepperModel<RoomModel> data,  List<LessonModel> lessons)?  done,TResult? Function( RoomModel data,  bool refetch)?  created,TResult? Function( RoomModel data,  bool refetch,  bool isDifficultyView)?  closed,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( StepperModel<RoomModel> data)?  initial,TResult? Function( String? loaderString)?  loading,TResult? Function()?  doneLoading,TResult? Function( StepperModel<RoomModel> data,  List<LessonModel> lessons)?  done,TResult? Function( RoomModel data,  bool refetch)?  created,TResult? Function( RoomModel data,  bool refetch,  bool isDifficultyView)?  closed,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
 return initial(_that.data);case _Loading() when loading != null:
-return loading();case _DoneLoading() when doneLoading != null:
+return loading(_that.loaderString);case _DoneLoading() when doneLoading != null:
 return doneLoading();case _Done() when done != null:
 return done(_that.data,_that.lessons);case _Created() when created != null:
 return created(_that.data,_that.refetch);case _Closed() when closed != null:
@@ -1006,39 +1145,73 @@ $StepperModelCopyWith<RoomModel, $Res> get data {
 
 
 class _Loading with DiagnosticableTreeMixin implements RoomCreateState {
-  const _Loading();
+  const _Loading({this.loaderString});
   
 
+ final  String? loaderString;
 
-
+/// Create a copy of RoomCreateState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$LoadingCopyWith<_Loading> get copyWith => __$LoadingCopyWithImpl<_Loading>(this, _$identity);
 
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'RoomCreateState.loading'))
-    ;
+    ..add(DiagnosticsProperty('loaderString', loaderString));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading&&(identical(other.loaderString, loaderString) || other.loaderString == loaderString));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,loaderString);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'RoomCreateState.loading()';
+  return 'RoomCreateState.loading(loaderString: $loaderString)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class _$LoadingCopyWith<$Res> implements $RoomCreateStateCopyWith<$Res> {
+  factory _$LoadingCopyWith(_Loading value, $Res Function(_Loading) _then) = __$LoadingCopyWithImpl;
+@useResult
+$Res call({
+ String? loaderString
+});
 
 
+
+
+}
+/// @nodoc
+class __$LoadingCopyWithImpl<$Res>
+    implements _$LoadingCopyWith<$Res> {
+  __$LoadingCopyWithImpl(this._self, this._then);
+
+  final _Loading _self;
+  final $Res Function(_Loading) _then;
+
+/// Create a copy of RoomCreateState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? loaderString = freezed,}) {
+  return _then(_Loading(
+loaderString: freezed == loaderString ? _self.loaderString : loaderString // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
 
 /// @nodoc
 

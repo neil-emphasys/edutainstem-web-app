@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:edutainstem/application/rooms/room_bloc/room_bloc.dart';
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
+import 'package:edutainstem/core/services/json_download_service.dart';
+import 'package:edutainstem/core/services/loader_services.dart';
 import 'package:edutainstem/core/services/validator_service.dart';
 import 'package:edutainstem/data/repositories/room_repository_impl.dart';
 import 'package:edutainstem/data/sources/remote/room_data_source.dart';
@@ -20,6 +22,8 @@ Future<void> init() async {
 
   // * [SERVICES
   it.registerLazySingleton<ValidatorService>(() => const ValidatorService());
+  it.registerLazySingleton<JsonDownloadService>(() => JsonDownloadService());
+  it.registerLazySingleton<LoaderServices>(() => LoaderServices());
 
   // * [DIO / API]
   final Dio dio = Dio();

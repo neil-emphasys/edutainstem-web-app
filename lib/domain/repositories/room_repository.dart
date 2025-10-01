@@ -11,6 +11,7 @@ abstract class RoomRepository {
   Future<Either<FailedState, SuccessState<void>>> updateRoomStatus({
     required RoomModel room,
     bool reOpen = false,
+    bool openLesson = false,
   });
   Future<Either<FailedState, SuccessState<List<LessonModel>>>> getLessons();
   Future<Either<FailedState, SuccessState<List<RoomModel>>>> getRooms();
@@ -24,4 +25,8 @@ abstract class RoomRepository {
   });
   Stream<Either<FailedState, SuccessState<List<StudentEnrollment>>>>
   watchAssessmentStudents({required String roomId});
+  Future<Either<FailedState, SuccessState<void>>> applyDifficultyChanges({
+    required String roomId,
+    required List<StudentEnrollment> enrollments,
+  });
 }

@@ -598,7 +598,7 @@ as String,
 /// @nodoc
 mixin _$StudentEnrollment implements DiagnosticableTreeMixin {
 
- String get uid; String get name;@JsonKey(includeIfNull: true) String? get difficulty; List<AssessmentAnswer> get assessment;
+ String get uid; String get name;@JsonKey(includeIfNull: true) String? get difficulty;@JsonKey(includeFromJson: false, includeToJson: false) String? get changedDifficulty; List<AssessmentAnswer> get assessment;
 /// Create a copy of StudentEnrollment
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -612,21 +612,21 @@ $StudentEnrollmentCopyWith<StudentEnrollment> get copyWith => _$StudentEnrollmen
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'StudentEnrollment'))
-    ..add(DiagnosticsProperty('uid', uid))..add(DiagnosticsProperty('name', name))..add(DiagnosticsProperty('difficulty', difficulty))..add(DiagnosticsProperty('assessment', assessment));
+    ..add(DiagnosticsProperty('uid', uid))..add(DiagnosticsProperty('name', name))..add(DiagnosticsProperty('difficulty', difficulty))..add(DiagnosticsProperty('changedDifficulty', changedDifficulty))..add(DiagnosticsProperty('assessment', assessment));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StudentEnrollment&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.name, name) || other.name == name)&&(identical(other.difficulty, difficulty) || other.difficulty == difficulty)&&const DeepCollectionEquality().equals(other.assessment, assessment));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StudentEnrollment&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.name, name) || other.name == name)&&(identical(other.difficulty, difficulty) || other.difficulty == difficulty)&&(identical(other.changedDifficulty, changedDifficulty) || other.changedDifficulty == changedDifficulty)&&const DeepCollectionEquality().equals(other.assessment, assessment));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,uid,name,difficulty,const DeepCollectionEquality().hash(assessment));
+int get hashCode => Object.hash(runtimeType,uid,name,difficulty,changedDifficulty,const DeepCollectionEquality().hash(assessment));
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'StudentEnrollment(uid: $uid, name: $name, difficulty: $difficulty, assessment: $assessment)';
+  return 'StudentEnrollment(uid: $uid, name: $name, difficulty: $difficulty, changedDifficulty: $changedDifficulty, assessment: $assessment)';
 }
 
 
@@ -637,7 +637,7 @@ abstract mixin class $StudentEnrollmentCopyWith<$Res>  {
   factory $StudentEnrollmentCopyWith(StudentEnrollment value, $Res Function(StudentEnrollment) _then) = _$StudentEnrollmentCopyWithImpl;
 @useResult
 $Res call({
- String uid, String name,@JsonKey(includeIfNull: true) String? difficulty, List<AssessmentAnswer> assessment
+ String uid, String name,@JsonKey(includeIfNull: true) String? difficulty,@JsonKey(includeFromJson: false, includeToJson: false) String? changedDifficulty, List<AssessmentAnswer> assessment
 });
 
 
@@ -654,11 +654,12 @@ class _$StudentEnrollmentCopyWithImpl<$Res>
 
 /// Create a copy of StudentEnrollment
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? uid = null,Object? name = null,Object? difficulty = freezed,Object? assessment = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? uid = null,Object? name = null,Object? difficulty = freezed,Object? changedDifficulty = freezed,Object? assessment = null,}) {
   return _then(_self.copyWith(
 uid: null == uid ? _self.uid : uid // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,difficulty: freezed == difficulty ? _self.difficulty : difficulty // ignore: cast_nullable_to_non_nullable
+as String?,changedDifficulty: freezed == changedDifficulty ? _self.changedDifficulty : changedDifficulty // ignore: cast_nullable_to_non_nullable
 as String?,assessment: null == assessment ? _self.assessment : assessment // ignore: cast_nullable_to_non_nullable
 as List<AssessmentAnswer>,
   ));
@@ -745,10 +746,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uid,  String name, @JsonKey(includeIfNull: true)  String? difficulty,  List<AssessmentAnswer> assessment)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String uid,  String name, @JsonKey(includeIfNull: true)  String? difficulty, @JsonKey(includeFromJson: false, includeToJson: false)  String? changedDifficulty,  List<AssessmentAnswer> assessment)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StudentEnrollment() when $default != null:
-return $default(_that.uid,_that.name,_that.difficulty,_that.assessment);case _:
+return $default(_that.uid,_that.name,_that.difficulty,_that.changedDifficulty,_that.assessment);case _:
   return orElse();
 
 }
@@ -766,10 +767,10 @@ return $default(_that.uid,_that.name,_that.difficulty,_that.assessment);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uid,  String name, @JsonKey(includeIfNull: true)  String? difficulty,  List<AssessmentAnswer> assessment)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String uid,  String name, @JsonKey(includeIfNull: true)  String? difficulty, @JsonKey(includeFromJson: false, includeToJson: false)  String? changedDifficulty,  List<AssessmentAnswer> assessment)  $default,) {final _that = this;
 switch (_that) {
 case _StudentEnrollment():
-return $default(_that.uid,_that.name,_that.difficulty,_that.assessment);case _:
+return $default(_that.uid,_that.name,_that.difficulty,_that.changedDifficulty,_that.assessment);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -786,10 +787,10 @@ return $default(_that.uid,_that.name,_that.difficulty,_that.assessment);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uid,  String name, @JsonKey(includeIfNull: true)  String? difficulty,  List<AssessmentAnswer> assessment)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String uid,  String name, @JsonKey(includeIfNull: true)  String? difficulty, @JsonKey(includeFromJson: false, includeToJson: false)  String? changedDifficulty,  List<AssessmentAnswer> assessment)?  $default,) {final _that = this;
 switch (_that) {
 case _StudentEnrollment() when $default != null:
-return $default(_that.uid,_that.name,_that.difficulty,_that.assessment);case _:
+return $default(_that.uid,_that.name,_that.difficulty,_that.changedDifficulty,_that.assessment);case _:
   return null;
 
 }
@@ -801,12 +802,13 @@ return $default(_that.uid,_that.name,_that.difficulty,_that.assessment);case _:
 @JsonSerializable()
 
 class _StudentEnrollment with DiagnosticableTreeMixin implements StudentEnrollment {
-  const _StudentEnrollment({required this.uid, this.name = '', @JsonKey(includeIfNull: true) this.difficulty, final  List<AssessmentAnswer> assessment = const <AssessmentAnswer>[]}): _assessment = assessment;
+  const _StudentEnrollment({required this.uid, this.name = '', @JsonKey(includeIfNull: true) this.difficulty, @JsonKey(includeFromJson: false, includeToJson: false) this.changedDifficulty, final  List<AssessmentAnswer> assessment = const <AssessmentAnswer>[]}): _assessment = assessment;
   factory _StudentEnrollment.fromJson(Map<String, dynamic> json) => _$StudentEnrollmentFromJson(json);
 
 @override final  String uid;
 @override@JsonKey() final  String name;
 @override@JsonKey(includeIfNull: true) final  String? difficulty;
+@override@JsonKey(includeFromJson: false, includeToJson: false) final  String? changedDifficulty;
  final  List<AssessmentAnswer> _assessment;
 @override@JsonKey() List<AssessmentAnswer> get assessment {
   if (_assessment is EqualUnmodifiableListView) return _assessment;
@@ -829,21 +831,21 @@ Map<String, dynamic> toJson() {
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'StudentEnrollment'))
-    ..add(DiagnosticsProperty('uid', uid))..add(DiagnosticsProperty('name', name))..add(DiagnosticsProperty('difficulty', difficulty))..add(DiagnosticsProperty('assessment', assessment));
+    ..add(DiagnosticsProperty('uid', uid))..add(DiagnosticsProperty('name', name))..add(DiagnosticsProperty('difficulty', difficulty))..add(DiagnosticsProperty('changedDifficulty', changedDifficulty))..add(DiagnosticsProperty('assessment', assessment));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StudentEnrollment&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.name, name) || other.name == name)&&(identical(other.difficulty, difficulty) || other.difficulty == difficulty)&&const DeepCollectionEquality().equals(other._assessment, _assessment));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StudentEnrollment&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.name, name) || other.name == name)&&(identical(other.difficulty, difficulty) || other.difficulty == difficulty)&&(identical(other.changedDifficulty, changedDifficulty) || other.changedDifficulty == changedDifficulty)&&const DeepCollectionEquality().equals(other._assessment, _assessment));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,uid,name,difficulty,const DeepCollectionEquality().hash(_assessment));
+int get hashCode => Object.hash(runtimeType,uid,name,difficulty,changedDifficulty,const DeepCollectionEquality().hash(_assessment));
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'StudentEnrollment(uid: $uid, name: $name, difficulty: $difficulty, assessment: $assessment)';
+  return 'StudentEnrollment(uid: $uid, name: $name, difficulty: $difficulty, changedDifficulty: $changedDifficulty, assessment: $assessment)';
 }
 
 
@@ -854,7 +856,7 @@ abstract mixin class _$StudentEnrollmentCopyWith<$Res> implements $StudentEnroll
   factory _$StudentEnrollmentCopyWith(_StudentEnrollment value, $Res Function(_StudentEnrollment) _then) = __$StudentEnrollmentCopyWithImpl;
 @override @useResult
 $Res call({
- String uid, String name,@JsonKey(includeIfNull: true) String? difficulty, List<AssessmentAnswer> assessment
+ String uid, String name,@JsonKey(includeIfNull: true) String? difficulty,@JsonKey(includeFromJson: false, includeToJson: false) String? changedDifficulty, List<AssessmentAnswer> assessment
 });
 
 
@@ -871,11 +873,12 @@ class __$StudentEnrollmentCopyWithImpl<$Res>
 
 /// Create a copy of StudentEnrollment
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? uid = null,Object? name = null,Object? difficulty = freezed,Object? assessment = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? uid = null,Object? name = null,Object? difficulty = freezed,Object? changedDifficulty = freezed,Object? assessment = null,}) {
   return _then(_StudentEnrollment(
 uid: null == uid ? _self.uid : uid // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,difficulty: freezed == difficulty ? _self.difficulty : difficulty // ignore: cast_nullable_to_non_nullable
+as String?,changedDifficulty: freezed == changedDifficulty ? _self.changedDifficulty : changedDifficulty // ignore: cast_nullable_to_non_nullable
 as String?,assessment: null == assessment ? _self._assessment : assessment // ignore: cast_nullable_to_non_nullable
 as List<AssessmentAnswer>,
   ));

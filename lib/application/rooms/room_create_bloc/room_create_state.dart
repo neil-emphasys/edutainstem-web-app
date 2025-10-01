@@ -4,7 +4,7 @@ part of 'room_create_bloc.dart';
 abstract class RoomCreateState with _$RoomCreateState {
   const factory RoomCreateState.initial(StepperModel<RoomModel> data) =
       _Initial;
-  const factory RoomCreateState.loading() = _Loading;
+  const factory RoomCreateState.loading({String? loaderString}) = _Loading;
   const factory RoomCreateState.doneLoading() = _DoneLoading;
   const factory RoomCreateState.done(
     StepperModel<RoomModel> data, {

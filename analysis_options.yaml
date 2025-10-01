@@ -22,6 +22,7 @@ linter:
     use_super_parameters: true
     unawaited_futures: true
     cancel_subscriptions: true
+    unused_imports: true
 
     # Style & consistency
     prefer_const_constructors: true

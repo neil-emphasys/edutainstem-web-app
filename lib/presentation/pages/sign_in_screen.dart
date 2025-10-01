@@ -97,7 +97,8 @@ class SignInScreen extends StatelessWidget {
                   SizedBox(height: 10.w),
                   AppButton(
                     title: 'Login',
-                    useAnimatedGradient: true,
+                    // fitContent: true,
+                    // useAnimatedGradient: true,
                     onPressed: () => context.goNamed(HomeScreen.routeName),
                   ),
                   SizedBox(height: 4.w),

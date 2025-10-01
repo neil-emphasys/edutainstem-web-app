@@ -327,6 +327,7 @@ class _AppDropdownFieldState extends State<AppDropdownField> {
                   child: Text(
                     item,
                     style:
+                        widget.style ??
                         AppTextStyles.getStyle(
                           AppTextStyle.bodyNormal,
                           modifier: (base) => base.copyWith(
@@ -353,9 +354,6 @@ class _AppDropdownFieldState extends State<AppDropdownField> {
 
                   if (widget.controller != null) {
                     widget.controller?.text = value ?? '';
-                    debugPrint(
-                      'WIDGET.CONTROLLER?.TEXT: ${widget.controller?.text}',
-                    );
                   }
                 }
               : null,

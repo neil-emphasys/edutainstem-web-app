@@ -17,7 +17,7 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
     : super(_Initial(StepperModel<RoomModel>.initial(RoomModel.initial()))) {
     on<_SetInitialData>((event, emit) async {
       final currentState = state as _Initial;
-      emit(const _Loading());
+      emit(const _Loading(loaderString: 'Setting Up Room. Please Wait...'));
 
       final lessons = await roomRepository.getLessons();
       lessons.fold((l) {}, (r) {});
@@ -82,8 +82,9 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
     });
 
     on<_SetRoom>((event, emit) async {
+      debugPrint('EVENT: ${event.room}');
       // final currentState = state as _Initial;
-      if (event.room.isAssessmentOpen) {
+      if (event.room.isAssessmentOpen || event.room.isLessonOpen) {
         emit(_Closed(event.room));
       } else {
         emit(_Created(event.room));
@@ -93,7 +94,7 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
     on<_CreateRoom>((event, emit) async {
       final currentState = state as _Done;
 
-      emit(const _Loading());
+      emit(const _Loading(loaderString: 'Creating Room...'));
 
       final result = await roomRepository.createRoom(
         room: currentState.data.data,
@@ -109,7 +110,7 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
 
     on<_Close>((event, emit) async {
       final currentState = state as _Created;
-      emit(const _Loading());
+      emit(const _Loading(loaderString: 'Closing Room...'));
 
       final lessons = await roomRepository.updateRoomStatus(room: event.room);
       lessons.fold((l) {}, (r) {
@@ -119,7 +120,7 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
 
     on<_ReOpen>((event, emit) async {
       final currentState = state as _Closed;
-      emit(const _Loading());
+      emit(const _Loading(loaderString: 'Reopening Room...'));
 
       final lessons = await roomRepository.updateRoomStatus(
         room: currentState.data,
@@ -130,10 +131,39 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
       });
     });
 
+    on<_StartLesson>((event, emit) async {
+      debugPrint('STATE: $state');
+      final currentState = state as _Closed;
+      emit(
+        const _Loading(
+          loaderString: 'Finalizing Difficulty Modifiers. Starting Lesson...',
+        ),
+      );
+
+      final lessons = await roomRepository.updateRoomStatus(
+        room: currentState.data,
+        openLesson: true,
+      );
+      lessons.fold((l) {}, (r) {
+        emit(_Closed(currentState.data, refetch: true));
+      });
+    });
+
     on<_SwitchCloseView>((event, emit) async {
       final currentState = state as _Closed;
       emit(
-        currentState.copyWith(isDifficultyView: !currentState.isDifficultyView),
+        currentState.copyWith(
+          isDifficultyView: !currentState.isDifficultyView,
+          refetch: false,
+        ),
+      );
+    });
+
+    on<_UpdateEnrollmentsDifficulty>((event, emit) async {
+      final result = await roomRepository.applyDifficultyChanges(
+        // roomId: currentState.data.id ?? '',
+        roomId: event.room.id ?? '',
+        enrollments: event._enrollments,
       );
     });
   }

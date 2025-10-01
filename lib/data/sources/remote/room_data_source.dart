@@ -4,7 +4,11 @@ import 'package:edutainstem/domain/models/rooms/room_model.dart';
 
 abstract class RoomDataSource {
   Future<RoomModel?> createRoom({required RoomModel room});
-  Future<void> updateRoomStatus({required RoomModel room, bool reOpen = false});
+  Future<void> updateRoomStatus({
+    required RoomModel room,
+    bool reOpen = false,
+    bool openLesson = false,
+  });
   Future<List<LessonModel>> getLessons();
   Future<List<RoomModel>> getRooms();
   Future<List<StudentEnrollment>> getEnrolledStudents({required String roomId});
@@ -15,5 +19,9 @@ abstract class RoomDataSource {
   });
   Stream<List<StudentEnrollment>> watchAssessmentStudents({
     required String roomId,
+  });
+  Future<void> applyDifficultyChanges({
+    required String roomId,
+    required List<StudentEnrollment> enrollments,
   });
 }

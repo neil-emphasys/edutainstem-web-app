@@ -15,6 +15,11 @@ abstract class RoomCreateEvent with _$RoomCreateEvent {
   const factory RoomCreateEvent.setRoom(RoomModel room) = _SetRoom;
   const factory RoomCreateEvent.close(RoomModel room) = _Close;
   const factory RoomCreateEvent.reOpen() = _ReOpen;
+  const factory RoomCreateEvent.startLesson() = _StartLesson;
+  const factory RoomCreateEvent.updateEnrollmentsDifficulty({
+    required RoomModel room,
+    required List<StudentEnrollment> enrollments,
+  }) = _UpdateEnrollmentsDifficulty;
   const factory RoomCreateEvent.switchCloseView({
     @Default(false) bool isDifficultyView,
   }) = _SwitchCloseView;

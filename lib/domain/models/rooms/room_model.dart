@@ -100,6 +100,8 @@ abstract class StudentEnrollment with _$StudentEnrollment {
     required String uid,
     @Default('') String name,
     @JsonKey(includeIfNull: true) String? difficulty,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    String? changedDifficulty,
     @Default(<AssessmentAnswer>[]) List<AssessmentAnswer> assessment,
   }) = _StudentEnrollment;
 

@@ -7,6 +7,8 @@ import 'package:edutainstem/presentation/routes/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,7 +56,13 @@ class MainApp extends StatelessWidget {
               textTheme: GoogleFonts.robotoTextTheme(),
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            builder: (context, child) => child ?? const SizedBox.shrink(),
+            builder: EasyLoading.init(
+              builder: (context, child) => KeyboardVisibilityProvider(
+                child: KeyboardDismissOnTap(
+                  child: child ?? const SizedBox.shrink(),
+                ),
+              ),
+            ),
           );
         },
       ),

@@ -39,11 +39,13 @@ class RoomRepositoryImpl implements RoomRepository {
   Future<Either<FailedState, SuccessState<void>>> updateRoomStatus({
     required RoomModel room,
     bool reOpen = false,
+    bool openLesson = false,
   }) async {
     try {
       final result = await _dataSource.updateRoomStatus(
         room: room,
         reOpen: reOpen,
+        openLesson: openLesson,
       );
       return Right(SuccessState(result));
     } catch (e) {
@@ -130,6 +132,22 @@ class RoomRepositoryImpl implements RoomRepository {
       );
     } catch (e) {
       yield left(FailedState(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<FailedState, SuccessState<void>>> applyDifficultyChanges({
+    required String roomId,
+    required List<StudentEnrollment> enrollments,
+  }) async {
+    try {
+      final result = await _dataSource.applyDifficultyChanges(
+        roomId: roomId,
+        enrollments: enrollments,
+      );
+      return Right(SuccessState(result));
+    } catch (e) {
+      return Left(FailedState(message: e.toString()));
     }
   }
 }
