@@ -180,7 +180,6 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                     ],
                   );
 
-                  // Build rows
                   final List<TableRow> rows = [];
 
                   rows.add(rowCellsColumnTitle);
