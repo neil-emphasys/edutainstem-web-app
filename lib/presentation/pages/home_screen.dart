@@ -3,10 +3,25 @@ import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const String routeName = '/main-dashboard/home';
 
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    //! TEMP: FOR DEV ONLY
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   DevFirebaseFunctions().addEleTopic({});
+    // });
+  }
 
   @override
   Widget build(BuildContext context) {
