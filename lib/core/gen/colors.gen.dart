@@ -248,40 +248,40 @@ class AppColors {
       });
 
   /// MaterialColor:
-  ///   50: #FFE7EEFE
-  ///   100: #FFC3D4FC
-  ///   200: #FF9BB8FA
-  ///   300: #FF739CF7
-  ///   400: #FF5586F6
-  ///   500: #FF3771F4
-  ///   600: #FF3169F3
-  ///   700: #FF2A5EF1
-  ///   800: #FF2354EF
-  ///   900: #FF1642EC
-  static const MaterialColor primary = MaterialColor(0xFF3771F4, <int, Color>{
-    50: Color(0xFFE7EEFE),
-    100: Color(0xFFC3D4FC),
-    200: Color(0xFF9BB8FA),
-    300: Color(0xFF739CF7),
-    400: Color(0xFF5586F6),
-    500: Color(0xFF3771F4),
-    600: Color(0xFF3169F3),
-    700: Color(0xFF2A5EF1),
-    800: Color(0xFF2354EF),
-    900: Color(0xFF1642EC),
+  ///   50: #FFEEE0FC
+  ///   100: #FFD5B3F8
+  ///   200: #FFBA80F4
+  ///   300: #FF9E4DEF
+  ///   400: #FF8926EB
+  ///   500: #FF7400E8
+  ///   600: #FF6C00E5
+  ///   700: #FF6100E2
+  ///   800: #FF5700DE
+  ///   900: #FF4400D8
+  static const MaterialColor primary = MaterialColor(0xFF7400E8, <int, Color>{
+    50: Color(0xFFEEE0FC),
+    100: Color(0xFFD5B3F8),
+    200: Color(0xFFBA80F4),
+    300: Color(0xFF9E4DEF),
+    400: Color(0xFF8926EB),
+    500: Color(0xFF7400E8),
+    600: Color(0xFF6C00E5),
+    700: Color(0xFF6100E2),
+    800: Color(0xFF5700DE),
+    900: Color(0xFF4400D8),
   });
 
   /// MaterialAccentColor:
-  ///   100: #FFDCE7FF
-  ///   200: #FF9FBDFF
-  ///   400: #FF85ABFF
-  ///   700: #FF76A1FF
+  ///   100: #FFF0EFFF
+  ///   200: #FFB5B2FF
+  ///   400: #FF9D98FF
+  ///   700: #FF8F89FF
   static const MaterialAccentColor primaryAccent =
-      MaterialAccentColor(0xFF9FBDFF, <int, Color>{
-        100: Color(0xFFDCE7FF),
-        200: Color(0xFF9FBDFF),
-        400: Color(0xFF85ABFF),
-        700: Color(0xFF76A1FF),
+      MaterialAccentColor(0xFFB5B2FF, <int, Color>{
+        100: Color(0xFFF0EFFF),
+        200: Color(0xFFB5B2FF),
+        400: Color(0xFF9D98FF),
+        700: Color(0xFF8F89FF),
       });
 
   /// MaterialColor:

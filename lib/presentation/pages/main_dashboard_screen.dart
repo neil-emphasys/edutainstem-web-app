@@ -1,3 +1,4 @@
+import 'package:edutainstem/application/auth/bloc/firebase_auth_bloc.dart';
 import 'package:edutainstem/core/gen/assets.gen.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/presentation/pages/home_screen.dart';
@@ -5,6 +6,7 @@ import 'package:edutainstem/presentation/pages/lessons_screen.dart';
 import 'package:edutainstem/presentation/pages/rooms_screen.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:glass_kit/glass_kit.dart';
 import 'package:go_router/go_router.dart';
@@ -207,40 +209,61 @@ class MainScreenShell extends StatelessWidget {
                         elevation: 100,
                         child: Row(
                           children: [
-                            Text(
-                              'Hello Sarah'.toUpperCase(),
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.getStyle(
-                                AppTextStyle.headline3,
-                                modifier: (base) => base.copyWith(
-                                  fontSize: 8.sp,
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 1.sp,
-                                ),
-                              ),
+                            BlocBuilder<FirebaseAuthBloc, FirebaseAuthState>(
+                              builder: (context, state) {
+                                final name = state.maybeWhen(
+                                  orElse: () => 'User',
+                                  authenticated: (user, signInType) =>
+                                      user.displayName ?? 'User',
+                                );
+
+                                return Text(
+                                  'Hello $name!'.toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyles.getStyle(
+                                    AppTextStyle.headline5,
+                                    modifier: (base) => base.copyWith(
+                                      // fontSize: 8.sp,
+                                      fontWeight: FontWeight.w900,
+                                      letterSpacing: 1.sp,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
                             const Spacer(),
-                            Image.asset(
-                              Assets.icons.png.sideMenuSettings.path,
-                              color: AppColors.primary,
-                              width: 6.w,
+                            BlocBuilder<FirebaseAuthBloc, FirebaseAuthState>(
+                              builder: (context, state) {
+                                final user = state.maybeWhen(
+                                  orElse: () => null,
+                                  authenticated: (user, signInType) => user,
+                                );
+
+                                return CircleAvatar(
+                                  radius: 11.r,
+                                  backgroundColor: AppColors.primary,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(2.h),
+                                    child: CircleAvatar(
+                                      backgroundColor: AppColors.white,
+                                      backgroundImage: user?.photoURL != null
+                                          ? NetworkImage(user!.photoURL!)
+                                          : null,
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                            SizedBox(width: 8.w),
-                            CircleAvatar(
-                              radius: 11.r,
-                              backgroundColor: AppColors.primary,
-                              child: Padding(
-                                padding: EdgeInsets.all(2.h),
-                                child: const CircleAvatar(
-                                  backgroundColor: AppColors.white,
-                                ),
+                            SizedBox(width: 6.w),
+                            IconButton(
+                              onPressed: () => context
+                                  .read<FirebaseAuthBloc>()
+                                  .add(const FirebaseAuthEvent.signOut()),
+                              icon: Image.asset(
+                                Assets.icons.png.logout.path,
+                                color: AppColors.primary,
+                                width: 8.w,
                               ),
-                            ),
-                            SizedBox(width: 8.w),
-                            Image.asset(
-                              Assets.icons.png.sideMenuProfile.path,
-                              color: AppColors.primary,
-                              width: 6.w,
                             ),
                           ],
                         ),

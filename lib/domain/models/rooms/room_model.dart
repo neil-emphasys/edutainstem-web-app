@@ -16,6 +16,8 @@ abstract class RoomModel with _$RoomModel {
     required String roomCode,
     required String title,
     required String description,
+    required String createdById,
+    required String createdByName,
     required int duration,
     required List<String> preferredLessons,
     // Add tag properties here
@@ -43,6 +45,8 @@ abstract class RoomModel with _$RoomModel {
       roomCode: '',
       duration: 0,
       preferredLessons: [],
+      createdById: '',
+      createdByName: '',
     );
   }
 }

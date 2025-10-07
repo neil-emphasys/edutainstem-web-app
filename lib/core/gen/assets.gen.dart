@@ -75,6 +75,10 @@ class $AssetsIconsPngGen {
   AssetGenImage get google =>
       const AssetGenImage('assets/icons/png/google.png');
 
+  /// File path: assets/icons/png/logout.png
+  AssetGenImage get logout =>
+      const AssetGenImage('assets/icons/png/logout.png');
+
   /// File path: assets/icons/png/side-menu-dashboard.png
   AssetGenImage get sideMenuDashboard =>
       const AssetGenImage('assets/icons/png/side-menu-dashboard.png');
@@ -112,6 +116,7 @@ class $AssetsIconsPngGen {
     checkMark,
     goBack,
     google,
+    logout,
     sideMenuDashboard,
     sideMenuLesson,
     sideMenuProfile,

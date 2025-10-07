@@ -1,3 +1,4 @@
+import 'package:edutainstem/application/auth/bloc/firebase_auth_bloc.dart';
 import 'package:edutainstem/core/components/app_button.dart';
 import 'package:edutainstem/core/components/app_text_form_field.dart';
 import 'package:edutainstem/core/gen/assets.gen.dart';
@@ -6,6 +7,7 @@ import 'package:edutainstem/presentation/pages/home_screen.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mesh_gradient/mesh_gradient.dart';
@@ -108,7 +110,9 @@ class SignInScreen extends StatelessWidget {
                     textStyle: AppButton.getDefaultTextStyle.copyWith(
                       color: AppColors.primary,
                     ),
-                    onPressed: () {},
+                    onPressed: () => context.read<FirebaseAuthBloc>().add(
+                      const FirebaseAuthEvent.googleSignIn(),
+                    ),
                     hasIcon: true,
                     buttonIconSpacing: 4.w,
                     icon: Image.asset(

@@ -1,6 +1,10 @@
+import 'dart:async';
+
+import 'package:edutainstem/application/auth/bloc/firebase_auth_bloc.dart';
 import 'package:edutainstem/presentation/pages/home_screen.dart';
 import 'package:edutainstem/presentation/pages/lessons_screen.dart';
 import 'package:edutainstem/presentation/pages/main_dashboard_screen.dart';
+import 'package:edutainstem/presentation/pages/redirection_screens.dart';
 import 'package:edutainstem/presentation/pages/rooms_screen.dart';
 import 'package:edutainstem/presentation/pages/sign_in_screen.dart';
 import 'package:edutainstem/presentation/pages/sign_up_screen.dart';
@@ -8,6 +12,19 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sidebarx/sidebarx.dart';
 
+class GoRouterBlocRefresh extends ChangeNotifier {
+  late final StreamSubscription _sub;
+  GoRouterBlocRefresh(Stream stream) {
+    _sub = stream.asBroadcastStream().listen((_) => notifyListeners());
+  }
+  @override
+  void dispose() {
+    _sub.cancel();
+    super.dispose();
+  }
+}
+
+final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 class Routes {
@@ -29,7 +46,10 @@ class Routes {
   }
 
   /// This function initializes GoRouter with the correct initial route.
-  static Future<GoRouter> getRouter() async {
+  static Future<GoRouter> getRouter({
+    required FirebaseAuthBloc authBloc,
+    SidebarXController? sidebarController,
+  }) async {
     // bool isLoggedIn = await AuthStorageService.isSignedIn();
     final bool isLoggedIn = await _isTokenValid();
 
@@ -37,13 +57,35 @@ class Routes {
       selectedIndex: 0,
     );
 
+    // Any path here requires the user to be authenticated.
+    final protected = <String>{
+      HomeScreen.routeName,
+      RoomsScreen.routeName,
+      LessonsScreen.routeName,
+    };
+
     return GoRouter(
       // initialLocation: SignUpFormFields.routeName,
+      navigatorKey: _rootNavigatorKey,
       initialLocation: /* isLoggedIn
           ? HomeScreen.routeName
           :  */
-          SignInScreen.routeName,
+          SplashScreen.routeName,
+      refreshListenable: GoRouterBlocRefresh(authBloc.stream),
+
+      // Fallback for unknown/unnamed paths
+      errorBuilder: (context, state) =>
+          NotFoundScreen(path: state.uri.toString()),
+
       routes: [
+        // Splash while auth status is resolving
+        GoRoute(
+          path: SplashScreen.routeName,
+          name: SplashScreen.routeName,
+          builder: (context, state) => const SplashScreen(),
+        ),
+
+        // Public routes
         GoRoute(
           path: SignInScreen.routeName,
           name: SignInScreen.routeName,
@@ -54,7 +96,10 @@ class Routes {
           name: SignUpScreen.routeName,
           builder: (context, state) => const SignUpScreen(),
         ),
+
+        // Protected shell (sidebar + child pages)
         ShellRoute(
+          navigatorKey: _shellNavigatorKey,
           builder: (context, state, child) =>
               MainScreenShell(controller: sidebarController, child: child),
           routes: [
@@ -84,19 +129,6 @@ class Routes {
               // builder: (context, state) => const RoomsScreen(),
               pageBuilder: (context, state) =>
                   const NoTransitionPage(child: RoomsScreen()),
-              /* pageBuilder: (context, state) => CustomTransitionPage(
-                key: state.pageKey,
-                child: const RoomsScreen(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                      return FadeTransition(
-                        opacity: CurveTween(
-                          curve: Curves.easeInOut,
-                        ).animate(animation),
-                        child: child,
-                      );
-                    },
-              ), */
             ),
             GoRoute(
               path: LessonsScreen.routeName,
@@ -104,23 +136,45 @@ class Routes {
               // builder: (context, state) => const RoomsScreen(),
               pageBuilder: (context, state) =>
                   const NoTransitionPage(child: LessonsScreen()),
-              /* pageBuilder: (context, state) => CustomTransitionPage(
-                key: state.pageKey,
-                child: const RoomsScreen(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                      return FadeTransition(
-                        opacity: CurveTween(
-                          curve: Curves.easeInOut,
-                        ).animate(animation),
-                        child: child,
-                      );
-                    },
-              ), */
             ),
           ],
         ),
       ],
+
+      // Centralized redirect that runs on every nav & when the bloc emits
+      redirect: (context, state) {
+        final status = authBloc.status; // from your bloc.getter
+        final path = state.matchedLocation; // normalized path
+        final full = state.uri.toString(); // keep query/fragment
+        final isLogin = path == SignInScreen.routeName;
+        final requiresAuth = protected.contains(path);
+
+        // 1) While loading/unknown, stay on splash
+        if (status == AuthStatus.unknown || status == AuthStatus.loading) {
+          return path == '/splash' ? null : '/splash';
+        }
+
+        final isAuthed = status == AuthStatus.authenticated;
+
+        // 2) Not authed → block protected pages, send to /sign-in?from=...
+        if (!isAuthed && requiresAuth) {
+          final from = Uri.encodeComponent(full);
+          return '${SignInScreen.routeName}?from=$from';
+        }
+
+        // 3) Authed users shouldn’t see the sign-in screen
+        if (isAuthed && isLogin) {
+          return HomeScreen.routeName;
+        }
+
+        // 4) Ready to go; if we’re lingering on splash, send somewhere sensible
+        if (path == '/splash') {
+          return isAuthed ? HomeScreen.routeName : SignInScreen.routeName;
+        }
+
+        // 5) Otherwise allow navigation
+        return null;
+      },
     );
   }
 }

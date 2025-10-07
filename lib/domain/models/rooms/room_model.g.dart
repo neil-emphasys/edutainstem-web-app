@@ -14,6 +14,8 @@ _RoomModel _$RoomModelFromJson(Map<String, dynamic> json) => _RoomModel(
   roomCode: json['roomCode'] as String,
   title: json['title'] as String,
   description: json['description'] as String,
+  createdById: json['createdById'] as String,
+  createdByName: json['createdByName'] as String,
   duration: (json['duration'] as num).toInt(),
   preferredLessons: (json['preferredLessons'] as List<dynamic>)
       .map((e) => e as String)
@@ -28,6 +30,8 @@ Map<String, dynamic> _$RoomModelToJson(_RoomModel instance) =>
       'roomCode': instance.roomCode,
       'title': instance.title,
       'description': instance.description,
+      'createdById': instance.createdById,
+      'createdByName': instance.createdByName,
       'duration': instance.duration,
       'preferredLessons': instance.preferredLessons,
     };

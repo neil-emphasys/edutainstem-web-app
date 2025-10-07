@@ -1,3 +1,4 @@
+import 'package:edutainstem/application/auth/bloc/firebase_auth_bloc.dart';
 import 'package:edutainstem/application/rooms/room_bloc/room_bloc.dart';
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
@@ -24,15 +25,23 @@ void main() async {
 
   await di.init();
 
-  final GoRouter router =
-      await Routes.getRouter(); // Get the router dynamically
-  runApp(MainApp(router: router));
+  final firebaseAuthBloc = FirebaseAuthBloc(di.it())
+    ..add(const FirebaseAuthEvent.started());
+  final GoRouter router = await Routes.getRouter(
+    authBloc: firebaseAuthBloc,
+  ); // Get the router dynamically
+  runApp(MainApp(router: router, firebaseAuthBloc: firebaseAuthBloc));
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({required this.router, super.key});
+  const MainApp({
+    required this.firebaseAuthBloc,
+    required this.router,
+    super.key,
+  });
 
   final GoRouter router;
+  final FirebaseAuthBloc firebaseAuthBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +49,7 @@ class MainApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => di.it<RoomBloc>()),
         BlocProvider(create: (_) => di.it<RoomCreateBloc>()),
+        BlocProvider(create: (_) => di.it<FirebaseAuthBloc>()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(360, 690),

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$RoomModel implements DiagnosticableTreeMixin {
 
-@JsonKey(includeFromJson: true, includeToJson: false) String? get id; bool get isAssessmentOpen; bool get isOpen;@JsonKey(includeIfNull: false) bool get isLessonOpen; String get roomCode; String get title; String get description; int get duration; List<String> get preferredLessons;
+@JsonKey(includeFromJson: true, includeToJson: false) String? get id; bool get isAssessmentOpen; bool get isOpen;@JsonKey(includeIfNull: false) bool get isLessonOpen; String get roomCode; String get title; String get description; String get createdById; String get createdByName; int get duration; List<String> get preferredLessons;
 /// Create a copy of RoomModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,21 +29,21 @@ $RoomModelCopyWith<RoomModel> get copyWith => _$RoomModelCopyWithImpl<RoomModel>
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'RoomModel'))
-    ..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('isAssessmentOpen', isAssessmentOpen))..add(DiagnosticsProperty('isOpen', isOpen))..add(DiagnosticsProperty('isLessonOpen', isLessonOpen))..add(DiagnosticsProperty('roomCode', roomCode))..add(DiagnosticsProperty('title', title))..add(DiagnosticsProperty('description', description))..add(DiagnosticsProperty('duration', duration))..add(DiagnosticsProperty('preferredLessons', preferredLessons));
+    ..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('isAssessmentOpen', isAssessmentOpen))..add(DiagnosticsProperty('isOpen', isOpen))..add(DiagnosticsProperty('isLessonOpen', isLessonOpen))..add(DiagnosticsProperty('roomCode', roomCode))..add(DiagnosticsProperty('title', title))..add(DiagnosticsProperty('description', description))..add(DiagnosticsProperty('createdById', createdById))..add(DiagnosticsProperty('createdByName', createdByName))..add(DiagnosticsProperty('duration', duration))..add(DiagnosticsProperty('preferredLessons', preferredLessons));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RoomModel&&(identical(other.id, id) || other.id == id)&&(identical(other.isAssessmentOpen, isAssessmentOpen) || other.isAssessmentOpen == isAssessmentOpen)&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen)&&(identical(other.isLessonOpen, isLessonOpen) || other.isLessonOpen == isLessonOpen)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.duration, duration) || other.duration == duration)&&const DeepCollectionEquality().equals(other.preferredLessons, preferredLessons));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RoomModel&&(identical(other.id, id) || other.id == id)&&(identical(other.isAssessmentOpen, isAssessmentOpen) || other.isAssessmentOpen == isAssessmentOpen)&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen)&&(identical(other.isLessonOpen, isLessonOpen) || other.isLessonOpen == isLessonOpen)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdById, createdById) || other.createdById == createdById)&&(identical(other.createdByName, createdByName) || other.createdByName == createdByName)&&(identical(other.duration, duration) || other.duration == duration)&&const DeepCollectionEquality().equals(other.preferredLessons, preferredLessons));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,isAssessmentOpen,isOpen,isLessonOpen,roomCode,title,description,duration,const DeepCollectionEquality().hash(preferredLessons));
+int get hashCode => Object.hash(runtimeType,id,isAssessmentOpen,isOpen,isLessonOpen,roomCode,title,description,createdById,createdByName,duration,const DeepCollectionEquality().hash(preferredLessons));
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'RoomModel(id: $id, isAssessmentOpen: $isAssessmentOpen, isOpen: $isOpen, isLessonOpen: $isLessonOpen, roomCode: $roomCode, title: $title, description: $description, duration: $duration, preferredLessons: $preferredLessons)';
+  return 'RoomModel(id: $id, isAssessmentOpen: $isAssessmentOpen, isOpen: $isOpen, isLessonOpen: $isLessonOpen, roomCode: $roomCode, title: $title, description: $description, createdById: $createdById, createdByName: $createdByName, duration: $duration, preferredLessons: $preferredLessons)';
 }
 
 
@@ -54,7 +54,7 @@ abstract mixin class $RoomModelCopyWith<$Res>  {
   factory $RoomModelCopyWith(RoomModel value, $Res Function(RoomModel) _then) = _$RoomModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(includeFromJson: true, includeToJson: false) String? id, bool isAssessmentOpen, bool isOpen,@JsonKey(includeIfNull: false) bool isLessonOpen, String roomCode, String title, String description, int duration, List<String> preferredLessons
+@JsonKey(includeFromJson: true, includeToJson: false) String? id, bool isAssessmentOpen, bool isOpen,@JsonKey(includeIfNull: false) bool isLessonOpen, String roomCode, String title, String description, String createdById, String createdByName, int duration, List<String> preferredLessons
 });
 
 
@@ -71,7 +71,7 @@ class _$RoomModelCopyWithImpl<$Res>
 
 /// Create a copy of RoomModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? isAssessmentOpen = null,Object? isOpen = null,Object? isLessonOpen = null,Object? roomCode = null,Object? title = null,Object? description = null,Object? duration = null,Object? preferredLessons = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? isAssessmentOpen = null,Object? isOpen = null,Object? isLessonOpen = null,Object? roomCode = null,Object? title = null,Object? description = null,Object? createdById = null,Object? createdByName = null,Object? duration = null,Object? preferredLessons = null,}) {
   return _then(_self.copyWith(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,isAssessmentOpen: null == isAssessmentOpen ? _self.isAssessmentOpen : isAssessmentOpen // ignore: cast_nullable_to_non_nullable
@@ -80,6 +80,8 @@ as bool,isLessonOpen: null == isLessonOpen ? _self.isLessonOpen : isLessonOpen /
 as bool,roomCode: null == roomCode ? _self.roomCode : roomCode // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,createdById: null == createdById ? _self.createdById : createdById // ignore: cast_nullable_to_non_nullable
+as String,createdByName: null == createdByName ? _self.createdByName : createdByName // ignore: cast_nullable_to_non_nullable
 as String,duration: null == duration ? _self.duration : duration // ignore: cast_nullable_to_non_nullable
 as int,preferredLessons: null == preferredLessons ? _self.preferredLessons : preferredLessons // ignore: cast_nullable_to_non_nullable
 as List<String>,
@@ -167,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: true, includeToJson: false)  String? id,  bool isAssessmentOpen,  bool isOpen, @JsonKey(includeIfNull: false)  bool isLessonOpen,  String roomCode,  String title,  String description,  int duration,  List<String> preferredLessons)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: true, includeToJson: false)  String? id,  bool isAssessmentOpen,  bool isOpen, @JsonKey(includeIfNull: false)  bool isLessonOpen,  String roomCode,  String title,  String description,  String createdById,  String createdByName,  int duration,  List<String> preferredLessons)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RoomModel() when $default != null:
-return $default(_that.id,_that.isAssessmentOpen,_that.isOpen,_that.isLessonOpen,_that.roomCode,_that.title,_that.description,_that.duration,_that.preferredLessons);case _:
+return $default(_that.id,_that.isAssessmentOpen,_that.isOpen,_that.isLessonOpen,_that.roomCode,_that.title,_that.description,_that.createdById,_that.createdByName,_that.duration,_that.preferredLessons);case _:
   return orElse();
 
 }
@@ -188,10 +190,10 @@ return $default(_that.id,_that.isAssessmentOpen,_that.isOpen,_that.isLessonOpen,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: true, includeToJson: false)  String? id,  bool isAssessmentOpen,  bool isOpen, @JsonKey(includeIfNull: false)  bool isLessonOpen,  String roomCode,  String title,  String description,  int duration,  List<String> preferredLessons)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: true, includeToJson: false)  String? id,  bool isAssessmentOpen,  bool isOpen, @JsonKey(includeIfNull: false)  bool isLessonOpen,  String roomCode,  String title,  String description,  String createdById,  String createdByName,  int duration,  List<String> preferredLessons)  $default,) {final _that = this;
 switch (_that) {
 case _RoomModel():
-return $default(_that.id,_that.isAssessmentOpen,_that.isOpen,_that.isLessonOpen,_that.roomCode,_that.title,_that.description,_that.duration,_that.preferredLessons);case _:
+return $default(_that.id,_that.isAssessmentOpen,_that.isOpen,_that.isLessonOpen,_that.roomCode,_that.title,_that.description,_that.createdById,_that.createdByName,_that.duration,_that.preferredLessons);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +210,10 @@ return $default(_that.id,_that.isAssessmentOpen,_that.isOpen,_that.isLessonOpen,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeFromJson: true, includeToJson: false)  String? id,  bool isAssessmentOpen,  bool isOpen, @JsonKey(includeIfNull: false)  bool isLessonOpen,  String roomCode,  String title,  String description,  int duration,  List<String> preferredLessons)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeFromJson: true, includeToJson: false)  String? id,  bool isAssessmentOpen,  bool isOpen, @JsonKey(includeIfNull: false)  bool isLessonOpen,  String roomCode,  String title,  String description,  String createdById,  String createdByName,  int duration,  List<String> preferredLessons)?  $default,) {final _that = this;
 switch (_that) {
 case _RoomModel() when $default != null:
-return $default(_that.id,_that.isAssessmentOpen,_that.isOpen,_that.isLessonOpen,_that.roomCode,_that.title,_that.description,_that.duration,_that.preferredLessons);case _:
+return $default(_that.id,_that.isAssessmentOpen,_that.isOpen,_that.isLessonOpen,_that.roomCode,_that.title,_that.description,_that.createdById,_that.createdByName,_that.duration,_that.preferredLessons);case _:
   return null;
 
 }
@@ -223,7 +225,7 @@ return $default(_that.id,_that.isAssessmentOpen,_that.isOpen,_that.isLessonOpen,
 @JsonSerializable()
 
 class _RoomModel with DiagnosticableTreeMixin implements RoomModel {
-  const _RoomModel({@JsonKey(includeFromJson: true, includeToJson: false) this.id, required this.isAssessmentOpen, required this.isOpen, @JsonKey(includeIfNull: false) required this.isLessonOpen, required this.roomCode, required this.title, required this.description, required this.duration, required final  List<String> preferredLessons}): _preferredLessons = preferredLessons;
+  const _RoomModel({@JsonKey(includeFromJson: true, includeToJson: false) this.id, required this.isAssessmentOpen, required this.isOpen, @JsonKey(includeIfNull: false) required this.isLessonOpen, required this.roomCode, required this.title, required this.description, required this.createdById, required this.createdByName, required this.duration, required final  List<String> preferredLessons}): _preferredLessons = preferredLessons;
   factory _RoomModel.fromJson(Map<String, dynamic> json) => _$RoomModelFromJson(json);
 
 @override@JsonKey(includeFromJson: true, includeToJson: false) final  String? id;
@@ -233,6 +235,8 @@ class _RoomModel with DiagnosticableTreeMixin implements RoomModel {
 @override final  String roomCode;
 @override final  String title;
 @override final  String description;
+@override final  String createdById;
+@override final  String createdByName;
 @override final  int duration;
  final  List<String> _preferredLessons;
 @override List<String> get preferredLessons {
@@ -256,21 +260,21 @@ Map<String, dynamic> toJson() {
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'RoomModel'))
-    ..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('isAssessmentOpen', isAssessmentOpen))..add(DiagnosticsProperty('isOpen', isOpen))..add(DiagnosticsProperty('isLessonOpen', isLessonOpen))..add(DiagnosticsProperty('roomCode', roomCode))..add(DiagnosticsProperty('title', title))..add(DiagnosticsProperty('description', description))..add(DiagnosticsProperty('duration', duration))..add(DiagnosticsProperty('preferredLessons', preferredLessons));
+    ..add(DiagnosticsProperty('id', id))..add(DiagnosticsProperty('isAssessmentOpen', isAssessmentOpen))..add(DiagnosticsProperty('isOpen', isOpen))..add(DiagnosticsProperty('isLessonOpen', isLessonOpen))..add(DiagnosticsProperty('roomCode', roomCode))..add(DiagnosticsProperty('title', title))..add(DiagnosticsProperty('description', description))..add(DiagnosticsProperty('createdById', createdById))..add(DiagnosticsProperty('createdByName', createdByName))..add(DiagnosticsProperty('duration', duration))..add(DiagnosticsProperty('preferredLessons', preferredLessons));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RoomModel&&(identical(other.id, id) || other.id == id)&&(identical(other.isAssessmentOpen, isAssessmentOpen) || other.isAssessmentOpen == isAssessmentOpen)&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen)&&(identical(other.isLessonOpen, isLessonOpen) || other.isLessonOpen == isLessonOpen)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.duration, duration) || other.duration == duration)&&const DeepCollectionEquality().equals(other._preferredLessons, _preferredLessons));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RoomModel&&(identical(other.id, id) || other.id == id)&&(identical(other.isAssessmentOpen, isAssessmentOpen) || other.isAssessmentOpen == isAssessmentOpen)&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen)&&(identical(other.isLessonOpen, isLessonOpen) || other.isLessonOpen == isLessonOpen)&&(identical(other.roomCode, roomCode) || other.roomCode == roomCode)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.createdById, createdById) || other.createdById == createdById)&&(identical(other.createdByName, createdByName) || other.createdByName == createdByName)&&(identical(other.duration, duration) || other.duration == duration)&&const DeepCollectionEquality().equals(other._preferredLessons, _preferredLessons));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,isAssessmentOpen,isOpen,isLessonOpen,roomCode,title,description,duration,const DeepCollectionEquality().hash(_preferredLessons));
+int get hashCode => Object.hash(runtimeType,id,isAssessmentOpen,isOpen,isLessonOpen,roomCode,title,description,createdById,createdByName,duration,const DeepCollectionEquality().hash(_preferredLessons));
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'RoomModel(id: $id, isAssessmentOpen: $isAssessmentOpen, isOpen: $isOpen, isLessonOpen: $isLessonOpen, roomCode: $roomCode, title: $title, description: $description, duration: $duration, preferredLessons: $preferredLessons)';
+  return 'RoomModel(id: $id, isAssessmentOpen: $isAssessmentOpen, isOpen: $isOpen, isLessonOpen: $isLessonOpen, roomCode: $roomCode, title: $title, description: $description, createdById: $createdById, createdByName: $createdByName, duration: $duration, preferredLessons: $preferredLessons)';
 }
 
 
@@ -281,7 +285,7 @@ abstract mixin class _$RoomModelCopyWith<$Res> implements $RoomModelCopyWith<$Re
   factory _$RoomModelCopyWith(_RoomModel value, $Res Function(_RoomModel) _then) = __$RoomModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(includeFromJson: true, includeToJson: false) String? id, bool isAssessmentOpen, bool isOpen,@JsonKey(includeIfNull: false) bool isLessonOpen, String roomCode, String title, String description, int duration, List<String> preferredLessons
+@JsonKey(includeFromJson: true, includeToJson: false) String? id, bool isAssessmentOpen, bool isOpen,@JsonKey(includeIfNull: false) bool isLessonOpen, String roomCode, String title, String description, String createdById, String createdByName, int duration, List<String> preferredLessons
 });
 
 
@@ -298,7 +302,7 @@ class __$RoomModelCopyWithImpl<$Res>
 
 /// Create a copy of RoomModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? isAssessmentOpen = null,Object? isOpen = null,Object? isLessonOpen = null,Object? roomCode = null,Object? title = null,Object? description = null,Object? duration = null,Object? preferredLessons = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? isAssessmentOpen = null,Object? isOpen = null,Object? isLessonOpen = null,Object? roomCode = null,Object? title = null,Object? description = null,Object? createdById = null,Object? createdByName = null,Object? duration = null,Object? preferredLessons = null,}) {
   return _then(_RoomModel(
 id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,isAssessmentOpen: null == isAssessmentOpen ? _self.isAssessmentOpen : isAssessmentOpen // ignore: cast_nullable_to_non_nullable
@@ -307,6 +311,8 @@ as bool,isLessonOpen: null == isLessonOpen ? _self.isLessonOpen : isLessonOpen /
 as bool,roomCode: null == roomCode ? _self.roomCode : roomCode // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,createdById: null == createdById ? _self.createdById : createdById // ignore: cast_nullable_to_non_nullable
+as String,createdByName: null == createdByName ? _self.createdByName : createdByName // ignore: cast_nullable_to_non_nullable
 as String,duration: null == duration ? _self.duration : duration // ignore: cast_nullable_to_non_nullable
 as int,preferredLessons: null == preferredLessons ? _self._preferredLessons : preferredLessons // ignore: cast_nullable_to_non_nullable
 as List<String>,

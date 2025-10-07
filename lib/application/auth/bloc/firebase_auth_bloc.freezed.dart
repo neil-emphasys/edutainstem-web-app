@@ -55,7 +55,7 @@ extension FirebaseAuthEventPatterns on FirebaseAuthEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _EventStarted value)?  started,TResult Function( _EventGoogleSignIn value)?  googleSignIn,TResult Function( _EventReSignIn value)?  reSignIn,TResult Function( _EventSignIn value)?  signIn,TResult Function( _EventSignUp value)?  signUp,TResult Function( _EventSignOut value)?  signOut,TResult Function( _EventResetPassword value)?  resetPassword,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _EventStarted value)?  started,TResult Function( _EventGoogleSignIn value)?  googleSignIn,TResult Function( _EventReSignIn value)?  reSignIn,TResult Function( _EventSignIn value)?  signIn,TResult Function( _EventSignUp value)?  signUp,TResult Function( _EventSignOut value)?  signOut,TResult Function( _EventResetPassword value)?  resetPassword,TResult Function( _AuthChanged value)?  authChanged,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _EventStarted() when started != null:
@@ -65,7 +65,8 @@ return reSignIn(_that);case _EventSignIn() when signIn != null:
 return signIn(_that);case _EventSignUp() when signUp != null:
 return signUp(_that);case _EventSignOut() when signOut != null:
 return signOut(_that);case _EventResetPassword() when resetPassword != null:
-return resetPassword(_that);case _:
+return resetPassword(_that);case _AuthChanged() when authChanged != null:
+return authChanged(_that);case _:
   return orElse();
 
 }
@@ -83,7 +84,7 @@ return resetPassword(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _EventStarted value)  started,required TResult Function( _EventGoogleSignIn value)  googleSignIn,required TResult Function( _EventReSignIn value)  reSignIn,required TResult Function( _EventSignIn value)  signIn,required TResult Function( _EventSignUp value)  signUp,required TResult Function( _EventSignOut value)  signOut,required TResult Function( _EventResetPassword value)  resetPassword,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _EventStarted value)  started,required TResult Function( _EventGoogleSignIn value)  googleSignIn,required TResult Function( _EventReSignIn value)  reSignIn,required TResult Function( _EventSignIn value)  signIn,required TResult Function( _EventSignUp value)  signUp,required TResult Function( _EventSignOut value)  signOut,required TResult Function( _EventResetPassword value)  resetPassword,required TResult Function( _AuthChanged value)  authChanged,}){
 final _that = this;
 switch (_that) {
 case _EventStarted():
@@ -93,7 +94,8 @@ return reSignIn(_that);case _EventSignIn():
 return signIn(_that);case _EventSignUp():
 return signUp(_that);case _EventSignOut():
 return signOut(_that);case _EventResetPassword():
-return resetPassword(_that);case _:
+return resetPassword(_that);case _AuthChanged():
+return authChanged(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -110,7 +112,7 @@ return resetPassword(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _EventStarted value)?  started,TResult? Function( _EventGoogleSignIn value)?  googleSignIn,TResult? Function( _EventReSignIn value)?  reSignIn,TResult? Function( _EventSignIn value)?  signIn,TResult? Function( _EventSignUp value)?  signUp,TResult? Function( _EventSignOut value)?  signOut,TResult? Function( _EventResetPassword value)?  resetPassword,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _EventStarted value)?  started,TResult? Function( _EventGoogleSignIn value)?  googleSignIn,TResult? Function( _EventReSignIn value)?  reSignIn,TResult? Function( _EventSignIn value)?  signIn,TResult? Function( _EventSignUp value)?  signUp,TResult? Function( _EventSignOut value)?  signOut,TResult? Function( _EventResetPassword value)?  resetPassword,TResult? Function( _AuthChanged value)?  authChanged,}){
 final _that = this;
 switch (_that) {
 case _EventStarted() when started != null:
@@ -120,7 +122,8 @@ return reSignIn(_that);case _EventSignIn() when signIn != null:
 return signIn(_that);case _EventSignUp() when signUp != null:
 return signUp(_that);case _EventSignOut() when signOut != null:
 return signOut(_that);case _EventResetPassword() when resetPassword != null:
-return resetPassword(_that);case _:
+return resetPassword(_that);case _AuthChanged() when authChanged != null:
+return authChanged(_that);case _:
   return null;
 
 }
@@ -137,7 +140,7 @@ return resetPassword(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  googleSignIn,TResult Function()?  reSignIn,TResult Function( String email,  String password)?  signIn,TResult Function( AuthModel data)?  signUp,TResult Function()?  signOut,TResult Function( String email)?  resetPassword,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  googleSignIn,TResult Function()?  reSignIn,TResult Function( String email,  String password)?  signIn,TResult Function( AuthModel data)?  signUp,TResult Function()?  signOut,TResult Function( String email)?  resetPassword,TResult Function( User? user)?  authChanged,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EventStarted() when started != null:
 return started();case _EventGoogleSignIn() when googleSignIn != null:
@@ -146,7 +149,8 @@ return reSignIn();case _EventSignIn() when signIn != null:
 return signIn(_that.email,_that.password);case _EventSignUp() when signUp != null:
 return signUp(_that.data);case _EventSignOut() when signOut != null:
 return signOut();case _EventResetPassword() when resetPassword != null:
-return resetPassword(_that.email);case _:
+return resetPassword(_that.email);case _AuthChanged() when authChanged != null:
+return authChanged(_that.user);case _:
   return orElse();
 
 }
@@ -164,7 +168,7 @@ return resetPassword(_that.email);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  googleSignIn,required TResult Function()  reSignIn,required TResult Function( String email,  String password)  signIn,required TResult Function( AuthModel data)  signUp,required TResult Function()  signOut,required TResult Function( String email)  resetPassword,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  googleSignIn,required TResult Function()  reSignIn,required TResult Function( String email,  String password)  signIn,required TResult Function( AuthModel data)  signUp,required TResult Function()  signOut,required TResult Function( String email)  resetPassword,required TResult Function( User? user)  authChanged,}) {final _that = this;
 switch (_that) {
 case _EventStarted():
 return started();case _EventGoogleSignIn():
@@ -173,7 +177,8 @@ return reSignIn();case _EventSignIn():
 return signIn(_that.email,_that.password);case _EventSignUp():
 return signUp(_that.data);case _EventSignOut():
 return signOut();case _EventResetPassword():
-return resetPassword(_that.email);case _:
+return resetPassword(_that.email);case _AuthChanged():
+return authChanged(_that.user);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -190,7 +195,7 @@ return resetPassword(_that.email);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  googleSignIn,TResult? Function()?  reSignIn,TResult? Function( String email,  String password)?  signIn,TResult? Function( AuthModel data)?  signUp,TResult? Function()?  signOut,TResult? Function( String email)?  resetPassword,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  googleSignIn,TResult? Function()?  reSignIn,TResult? Function( String email,  String password)?  signIn,TResult? Function( AuthModel data)?  signUp,TResult? Function()?  signOut,TResult? Function( String email)?  resetPassword,TResult? Function( User? user)?  authChanged,}) {final _that = this;
 switch (_that) {
 case _EventStarted() when started != null:
 return started();case _EventGoogleSignIn() when googleSignIn != null:
@@ -199,7 +204,8 @@ return reSignIn();case _EventSignIn() when signIn != null:
 return signIn(_that.email,_that.password);case _EventSignUp() when signUp != null:
 return signUp(_that.data);case _EventSignOut() when signOut != null:
 return signOut();case _EventResetPassword() when resetPassword != null:
-return resetPassword(_that.email);case _:
+return resetPassword(_that.email);case _AuthChanged() when authChanged != null:
+return authChanged(_that.user);case _:
   return null;
 
 }
@@ -538,6 +544,72 @@ class __$EventResetPasswordCopyWithImpl<$Res>
   return _then(_EventResetPassword(
 email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _AuthChanged implements FirebaseAuthEvent {
+  const _AuthChanged(this.user);
+  
+
+ final  User? user;
+
+/// Create a copy of FirebaseAuthEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AuthChangedCopyWith<_AuthChanged> get copyWith => __$AuthChangedCopyWithImpl<_AuthChanged>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthChanged&&(identical(other.user, user) || other.user == user));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,user);
+
+@override
+String toString() {
+  return 'FirebaseAuthEvent.authChanged(user: $user)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AuthChangedCopyWith<$Res> implements $FirebaseAuthEventCopyWith<$Res> {
+  factory _$AuthChangedCopyWith(_AuthChanged value, $Res Function(_AuthChanged) _then) = __$AuthChangedCopyWithImpl;
+@useResult
+$Res call({
+ User? user
+});
+
+
+
+
+}
+/// @nodoc
+class __$AuthChangedCopyWithImpl<$Res>
+    implements _$AuthChangedCopyWith<$Res> {
+  __$AuthChangedCopyWithImpl(this._self, this._then);
+
+  final _AuthChanged _self;
+  final $Res Function(_AuthChanged) _then;
+
+/// Create a copy of FirebaseAuthEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? user = freezed,}) {
+  return _then(_AuthChanged(
+freezed == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as User?,
   ));
 }
 

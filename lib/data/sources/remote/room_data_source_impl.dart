@@ -6,6 +6,7 @@ import 'package:edutainstem/data/sources/remote/room_data_source.dart';
 import 'package:edutainstem/domain/models/assessments/assessments_model.dart';
 import 'package:edutainstem/domain/models/lessons/lesson_model.dart';
 import 'package:edutainstem/domain/models/rooms/room_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RoomDataSourceImpl implements RoomDataSource {
@@ -14,6 +15,10 @@ class RoomDataSourceImpl implements RoomDataSource {
   @override
   Future<RoomModel?> createRoom({required RoomModel room}) async {
     try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) return null;
+
       final docRef = await _db.runTransaction((tx) async {
         // 1) Fetch all open room codes
         final openRoomsSnap = await _db
@@ -37,6 +42,8 @@ class RoomDataSourceImpl implements RoomDataSource {
         // 3) Create new RoomModel with code injected
         final newRoom = room.copyWith(
           roomCode: newCode,
+          createdById: user.uid,
+          createdByName: user.displayName ?? '',
           isOpen: true, // ensure open on creation
         );
 

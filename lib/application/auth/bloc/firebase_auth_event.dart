@@ -25,4 +25,7 @@ class FirebaseAuthEvent with _$FirebaseAuthEvent {
   // Reset password event with email parameter
   const factory FirebaseAuthEvent.resetPassword({required String email}) =
       _EventResetPassword;
+
+  // Internal: driven by authStateChanges()
+  const factory FirebaseAuthEvent.authChanged(User? user) = _AuthChanged;
 }
