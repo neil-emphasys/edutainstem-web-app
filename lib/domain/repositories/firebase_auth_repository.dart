@@ -8,12 +8,12 @@ abstract class FirebaseAuthRepository {
     required String accessToken,
     required String idToken,
   });
-  Future<Either<String, UserCredential>> googleSignIn();
-  Future<Either<FailedState, SuccessState<User>>> signIn(
+  Future<Either<FailedState, SuccessState<UserModel>>> googleSignIn();
+  Future<Either<FailedState, SuccessState<UserModel>>> signIn(
     String email,
     String password,
   );
-  Future<Either<FailedState, SuccessState<User>>> signUp(AuthModel data);
+  Future<Either<FailedState, SuccessState<UserModel>>> signUp(UserModel data);
   Future<Either<String, void>> signOut();
-  Future<Either<String, AuthUserModel>> getUserByUid(String uid);
+  Future<Either<String, UserModel>> getUserByUid(String uid);
 }

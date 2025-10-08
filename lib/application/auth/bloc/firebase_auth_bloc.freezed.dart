@@ -140,7 +140,7 @@ return authChanged(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  googleSignIn,TResult Function()?  reSignIn,TResult Function( String email,  String password)?  signIn,TResult Function( AuthModel data)?  signUp,TResult Function()?  signOut,TResult Function( String email)?  resetPassword,TResult Function( User? user)?  authChanged,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  googleSignIn,TResult Function()?  reSignIn,TResult Function( String email,  String password)?  signIn,TResult Function( UserModel data)?  signUp,TResult Function()?  signOut,TResult Function( String email)?  resetPassword,TResult Function( User? user)?  authChanged,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EventStarted() when started != null:
 return started();case _EventGoogleSignIn() when googleSignIn != null:
@@ -168,7 +168,7 @@ return authChanged(_that.user);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  googleSignIn,required TResult Function()  reSignIn,required TResult Function( String email,  String password)  signIn,required TResult Function( AuthModel data)  signUp,required TResult Function()  signOut,required TResult Function( String email)  resetPassword,required TResult Function( User? user)  authChanged,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  googleSignIn,required TResult Function()  reSignIn,required TResult Function( String email,  String password)  signIn,required TResult Function( UserModel data)  signUp,required TResult Function()  signOut,required TResult Function( String email)  resetPassword,required TResult Function( User? user)  authChanged,}) {final _that = this;
 switch (_that) {
 case _EventStarted():
 return started();case _EventGoogleSignIn():
@@ -195,7 +195,7 @@ return authChanged(_that.user);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  googleSignIn,TResult? Function()?  reSignIn,TResult? Function( String email,  String password)?  signIn,TResult? Function( AuthModel data)?  signUp,TResult? Function()?  signOut,TResult? Function( String email)?  resetPassword,TResult? Function( User? user)?  authChanged,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  googleSignIn,TResult? Function()?  reSignIn,TResult? Function( String email,  String password)?  signIn,TResult? Function( UserModel data)?  signUp,TResult? Function()?  signOut,TResult? Function( String email)?  resetPassword,TResult? Function( User? user)?  authChanged,}) {final _that = this;
 switch (_that) {
 case _EventStarted() when started != null:
 return started();case _EventGoogleSignIn() when googleSignIn != null:
@@ -384,7 +384,7 @@ class _EventSignUp implements FirebaseAuthEvent {
   const _EventSignUp(this.data);
   
 
- final  AuthModel data;
+ final  UserModel data;
 
 /// Create a copy of FirebaseAuthEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -416,11 +416,11 @@ abstract mixin class _$EventSignUpCopyWith<$Res> implements $FirebaseAuthEventCo
   factory _$EventSignUpCopyWith(_EventSignUp value, $Res Function(_EventSignUp) _then) = __$EventSignUpCopyWithImpl;
 @useResult
 $Res call({
- AuthModel data
+ UserModel data
 });
 
 
-$AuthModelCopyWith<$Res> get data;
+$UserModelCopyWith<$Res> get data;
 
 }
 /// @nodoc
@@ -436,7 +436,7 @@ class __$EventSignUpCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? data = null,}) {
   return _then(_EventSignUp(
 null == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
-as AuthModel,
+as UserModel,
   ));
 }
 
@@ -444,9 +444,9 @@ as AuthModel,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$AuthModelCopyWith<$Res> get data {
+$UserModelCopyWith<$Res> get data {
   
-  return $AuthModelCopyWith<$Res>(_self.data, (value) {
+  return $UserModelCopyWith<$Res>(_self.data, (value) {
     return _then(_self.copyWith(data: value));
   });
 }
@@ -736,12 +736,12 @@ return error(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( User user,  SignInTypeEnum signInType)?  authenticated,TResult Function()?  unauthenticated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  initial,TResult Function()?  loading,TResult Function( User user,  UserModel? userModel,  SignInTypeEnum signInType)?  authenticated,TResult Function()?  unauthenticated,TResult Function( String message)?  error,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StateInitial() when initial != null:
 return initial();case _StateLoading() when loading != null:
 return loading();case _StateAuthenticated() when authenticated != null:
-return authenticated(_that.user,_that.signInType);case _StateUnauthenticated() when unauthenticated != null:
+return authenticated(_that.user,_that.userModel,_that.signInType);case _StateUnauthenticated() when unauthenticated != null:
 return unauthenticated();case _StateError() when error != null:
 return error(_that.message);case _:
   return orElse();
@@ -761,12 +761,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( User user,  SignInTypeEnum signInType)  authenticated,required TResult Function()  unauthenticated,required TResult Function( String message)  error,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  initial,required TResult Function()  loading,required TResult Function( User user,  UserModel? userModel,  SignInTypeEnum signInType)  authenticated,required TResult Function()  unauthenticated,required TResult Function( String message)  error,}) {final _that = this;
 switch (_that) {
 case _StateInitial():
 return initial();case _StateLoading():
 return loading();case _StateAuthenticated():
-return authenticated(_that.user,_that.signInType);case _StateUnauthenticated():
+return authenticated(_that.user,_that.userModel,_that.signInType);case _StateUnauthenticated():
 return unauthenticated();case _StateError():
 return error(_that.message);case _:
   throw StateError('Unexpected subclass');
@@ -785,12 +785,12 @@ return error(_that.message);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( User user,  SignInTypeEnum signInType)?  authenticated,TResult? Function()?  unauthenticated,TResult? Function( String message)?  error,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  initial,TResult? Function()?  loading,TResult? Function( User user,  UserModel? userModel,  SignInTypeEnum signInType)?  authenticated,TResult? Function()?  unauthenticated,TResult? Function( String message)?  error,}) {final _that = this;
 switch (_that) {
 case _StateInitial() when initial != null:
 return initial();case _StateLoading() when loading != null:
 return loading();case _StateAuthenticated() when authenticated != null:
-return authenticated(_that.user,_that.signInType);case _StateUnauthenticated() when unauthenticated != null:
+return authenticated(_that.user,_that.userModel,_that.signInType);case _StateUnauthenticated() when unauthenticated != null:
 return unauthenticated();case _StateError() when error != null:
 return error(_that.message);case _:
   return null;
@@ -868,10 +868,11 @@ String toString() {
 
 
 class _StateAuthenticated implements FirebaseAuthState {
-  const _StateAuthenticated({required this.user, required this.signInType});
+  const _StateAuthenticated({required this.user, this.userModel, required this.signInType});
   
 
  final  User user;
+ final  UserModel? userModel;
  final  SignInTypeEnum signInType;
 
 /// Create a copy of FirebaseAuthState
@@ -884,16 +885,16 @@ _$StateAuthenticatedCopyWith<_StateAuthenticated> get copyWith => __$StateAuthen
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StateAuthenticated&&(identical(other.user, user) || other.user == user)&&(identical(other.signInType, signInType) || other.signInType == signInType));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StateAuthenticated&&(identical(other.user, user) || other.user == user)&&(identical(other.userModel, userModel) || other.userModel == userModel)&&(identical(other.signInType, signInType) || other.signInType == signInType));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,signInType);
+int get hashCode => Object.hash(runtimeType,user,userModel,signInType);
 
 @override
 String toString() {
-  return 'FirebaseAuthState.authenticated(user: $user, signInType: $signInType)';
+  return 'FirebaseAuthState.authenticated(user: $user, userModel: $userModel, signInType: $signInType)';
 }
 
 
@@ -904,11 +905,11 @@ abstract mixin class _$StateAuthenticatedCopyWith<$Res> implements $FirebaseAuth
   factory _$StateAuthenticatedCopyWith(_StateAuthenticated value, $Res Function(_StateAuthenticated) _then) = __$StateAuthenticatedCopyWithImpl;
 @useResult
 $Res call({
- User user, SignInTypeEnum signInType
+ User user, UserModel? userModel, SignInTypeEnum signInType
 });
 
 
-
+$UserModelCopyWith<$Res>? get userModel;
 
 }
 /// @nodoc
@@ -921,15 +922,28 @@ class __$StateAuthenticatedCopyWithImpl<$Res>
 
 /// Create a copy of FirebaseAuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? user = null,Object? signInType = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? user = null,Object? userModel = freezed,Object? signInType = null,}) {
   return _then(_StateAuthenticated(
 user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as User,signInType: null == signInType ? _self.signInType : signInType // ignore: cast_nullable_to_non_nullable
+as User,userModel: freezed == userModel ? _self.userModel : userModel // ignore: cast_nullable_to_non_nullable
+as UserModel?,signInType: null == signInType ? _self.signInType : signInType // ignore: cast_nullable_to_non_nullable
 as SignInTypeEnum,
   ));
 }
 
+/// Create a copy of FirebaseAuthState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserModelCopyWith<$Res>? get userModel {
+    if (_self.userModel == null) {
+    return null;
+  }
 
+  return $UserModelCopyWith<$Res>(_self.userModel!, (value) {
+    return _then(_self.copyWith(userModel: value));
+  });
+}
 }
 
 /// @nodoc

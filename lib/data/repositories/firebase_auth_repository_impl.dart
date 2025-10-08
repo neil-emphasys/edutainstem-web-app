@@ -12,18 +12,18 @@ class FirebaseAuthRepositoryImpl implements FirebaseAuthRepository {
   FirebaseAuthRepositoryImpl(this._authRemoteDataSource);
 
   @override
-  Future<Either<String, UserCredential>> googleSignIn() async {
+  Future<Either<FailedState, SuccessState<UserModel>>> googleSignIn() async {
     try {
       final userCredential = await _authRemoteDataSource
           .signInWithCredentials();
-      return Right(userCredential!);
+      return Right(SuccessState(userCredential));
     } catch (e) {
-      return Left(e.toString());
+      return Left(FailedState(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<FailedState, SuccessState<User>>> signIn(
+  Future<Either<FailedState, SuccessState<UserModel>>> signIn(
     String email,
     String password,
   ) async {
@@ -32,17 +32,19 @@ class FirebaseAuthRepositoryImpl implements FirebaseAuthRepository {
         email,
         password,
       );
-      return Right(SuccessState(user!));
+      return Right(SuccessState(user));
     } catch (e) {
       return Left(FailedState(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<FailedState, SuccessState<User>>> signUp(AuthModel data) async {
+  Future<Either<FailedState, SuccessState<UserModel>>> signUp(
+    UserModel data,
+  ) async {
     try {
       final user = await _authRemoteDataSource.signUpWithEmailAndPassword(data);
-      return Right(SuccessState(user!));
+      return Right(SuccessState(user));
     } catch (e) {
       if (e is FirebaseAuthException) {
         return Left(FailedState(message: getFirebaseAuthErrorMessage(e)));
@@ -77,7 +79,7 @@ class FirebaseAuthRepositoryImpl implements FirebaseAuthRepository {
   }
 
   @override
-  Future<Either<String, AuthUserModel>> getUserByUid(String uid) async {
+  Future<Either<String, UserModel>> getUserByUid(String uid) async {
     try {
       final userCredential = await _authRemoteDataSource.getUserByUid(uid);
       return Right(userCredential);

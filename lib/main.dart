@@ -1,6 +1,8 @@
+import 'package:edutainstem/application/accounts/accounts_bloc/accounts_bloc.dart';
 import 'package:edutainstem/application/auth/bloc/firebase_auth_bloc.dart';
 import 'package:edutainstem/application/rooms/room_bloc/room_bloc.dart';
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
+import 'package:edutainstem/application/sign_up/bloc/sign_up_bloc.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/firebase_options.dart';
 import 'package:edutainstem/injection.dart' as di;
@@ -50,6 +52,8 @@ class MainApp extends StatelessWidget {
         BlocProvider(create: (_) => di.it<RoomBloc>()),
         BlocProvider(create: (_) => di.it<RoomCreateBloc>()),
         BlocProvider(create: (_) => di.it<FirebaseAuthBloc>()),
+        BlocProvider(create: (_) => di.it<SignUpBloc>()),
+        BlocProvider(create: (_) => di.it<AccountsBloc>()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(360, 690),

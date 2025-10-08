@@ -3,7 +3,9 @@ import 'package:edutainstem/core/components/app_button.dart';
 import 'package:edutainstem/core/components/app_text_form_field.dart';
 import 'package:edutainstem/core/gen/assets.gen.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
-import 'package:edutainstem/presentation/pages/home_screen.dart';
+import 'package:edutainstem/core/services/validator_service.dart';
+import 'package:edutainstem/injection.dart';
+import 'package:edutainstem/presentation/pages/sign_up_screen.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,13 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final alpha = 10;
+
+    final validator = it<ValidatorService>();
+
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
 
     return Scaffold(
       body: Stack(
@@ -59,97 +68,120 @@ class SignInScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    'Welcome Back!'.toUpperCase(),
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.getStyle(
-                      AppTextStyle.headline3,
-                      modifier: (base) => base.copyWith(
-                        fontSize: 8.sp,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.sp,
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Welcome Back!'.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.getStyle(
+                        AppTextStyle.headline3,
+                        modifier: (base) => base.copyWith(
+                          fontSize: 8.sp,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1.sp,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 2.w),
-                  Text(
-                    'Enter your credentials to login',
-                    textAlign: TextAlign.center,
-                    style: AppTextStyles.getStyle(
-                      AppTextStyle.bodySmall,
-                      modifier: (base) => base.copyWith(),
+                    SizedBox(height: 2.w),
+                    Text(
+                      'Enter your credentials to login',
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.getStyle(
+                        AppTextStyle.bodySmall,
+                        modifier: (base) => base.copyWith(),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10.w),
-                  AppTextFormField(
-                    fieldTitle: 'Email'.toUpperCase(),
-                    fieldType: AppTextFormFieldType.filled,
-                    isFieldTitleSeparated: true,
-                  ),
-                  SizedBox(height: 6.w),
-                  AppTextFormField(
-                    fieldTitle: 'Password'.toUpperCase(),
-                    fieldType: AppTextFormFieldType.filled,
-                    isFieldTitleSeparated: true,
-                    obscureText: true,
-                  ),
-                  SizedBox(height: 10.w),
-                  AppButton(
-                    title: 'Login',
-                    // fitContent: true,
-                    // useAnimatedGradient: true,
-                    onPressed: () => context.goNamed(HomeScreen.routeName),
-                  ),
-                  SizedBox(height: 4.w),
-                  AppButton(
-                    backgroundColor: AppColors.primary.shade50,
-                    title: 'Login With Google',
-                    textStyle: AppButton.getDefaultTextStyle.copyWith(
-                      color: AppColors.primary,
+                    SizedBox(height: 10.w),
+                    AppTextFormField(
+                      fieldTitle: 'Email',
+                      fieldType: AppTextFormFieldType.filled,
+                      isFieldTitleSeparated: true,
+                      controller: emailController,
+                      validator: validator.compose([
+                        validator.required(fieldName: 'Email'),
+                        validator.email(),
+                      ]),
                     ),
-                    onPressed: () => context.read<FirebaseAuthBloc>().add(
-                      const FirebaseAuthEvent.googleSignIn(),
+                    SizedBox(height: 6.w),
+                    AppTextFormField(
+                      fieldTitle: 'Password',
+                      controller: passwordController,
+                      obscureText: true,
+                      fieldType: AppTextFormFieldType.filled,
+                      isFieldTitleSeparated: true,
+                      validator: validator.compose([
+                        validator.required(fieldName: 'Password'),
+                      ]),
                     ),
-                    hasIcon: true,
-                    buttonIconSpacing: 4.w,
-                    icon: Image.asset(
-                      Assets.icons.png.google.path,
-                      width: 6.sp,
-                      // semanticsLabel: 'Dart Logo',
-                    ),
-                  ),
-
-                  SizedBox(height: 10.w),
-                  Center(
-                    child: Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(
-                            text: "Don't have an account? ",
-                            style: AppTextStyles.getStyle(
-                              AppTextStyle.bodySmall,
-                              modifier: (base) => base.copyWith(),
+                    SizedBox(height: 10.w),
+                    AppButton(
+                      title: 'Login',
+                      // fitContent: true,
+                      // useAnimatedGradient: true,
+                      onPressed: () {
+                        if (formKey.currentState?.validate() ?? false) {
+                          context.read<FirebaseAuthBloc>().add(
+                            FirebaseAuthEvent.signIn(
+                              email: emailController.text,
+                              password: passwordController.text,
                             ),
-                          ),
-                          TextSpan(
-                            text: 'Sign Up',
-                            style:
-                                AppTextStyles.getStyle(
-                                  AppTextStyle.bodySmall,
-                                ).copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                            recognizer: TapGestureRecognizer()..onTap = () {},
-                          ),
-                        ],
+                          );
+                        }
+                      },
+                    ),
+                    SizedBox(height: 4.w),
+                    AppButton(
+                      backgroundColor: AppColors.primary.shade50,
+                      title: 'Login With Google',
+                      textStyle: AppButton.getDefaultTextStyle.copyWith(
+                        color: AppColors.primary,
+                      ),
+                      onPressed: () => context.read<FirebaseAuthBloc>().add(
+                        const FirebaseAuthEvent.googleSignIn(),
+                      ),
+                      hasIcon: true,
+                      buttonIconSpacing: 4.w,
+                      icon: Image.asset(
+                        Assets.icons.png.google.path,
+                        width: 6.sp,
+                        // semanticsLabel: 'Dart Logo',
                       ),
                     ),
-                  ),
-                ],
+
+                    SizedBox(height: 10.w),
+                    Center(
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(
+                              text: "Don't have an account? ",
+                              style: AppTextStyles.getStyle(
+                                AppTextStyle.bodySmall,
+                                modifier: (base) => base.copyWith(),
+                              ),
+                            ),
+                            TextSpan(
+                              text: 'Sign Up',
+                              style:
+                                  AppTextStyles.getStyle(
+                                    AppTextStyle.bodySmall,
+                                  ).copyWith(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () =>
+                                    context.goNamed(SignUpScreen.routeName),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

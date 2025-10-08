@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edutainstem/core/enums/language_enum.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'auth_model.freezed.dart';
@@ -14,41 +15,57 @@ DateTime? _fromTimestamp(dynamic value) {
 Timestamp _toTimestamp(DateTime date) => Timestamp.fromDate(date);
 
 @freezed
-abstract class AuthModel with _$AuthModel {
-  @JsonSerializable(explicitToJson: true)
-  const factory AuthModel({
-    required String fullName,
+abstract class UserModel with _$UserModel {
+  const factory UserModel({
+    @JsonKey(includeFromJson: false, includeToJson: false) String? docId,
+    required String id,
+    required String firstName,
+    required String lastName,
     required String email,
-    required String password,
-    required String confirmPassword,
-    required String language,
-  }) = _AuthModel;
+    required bool isAdmin,
+    required String role,
+    @TimestampConverter() required DateTime createdAt,
+    @JsonKey(includeFromJson: false, includeToJson: false) String? password,
+    required LanguageEnum preferredLanguage,
+    required bool enabled,
+  }) = _UserModel;
 
-  factory AuthModel.fromJson(Map<String, dynamic> json) =>
-      _$AuthModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 
-  factory AuthModel.empty() {
-    return const AuthModel(
-      fullName: '',
+  factory UserModel.initial() {
+    return UserModel(
+      id: '',
+      firstName: '',
+      lastName: '',
       email: '',
-      password: '',
-      confirmPassword: '',
-      language: '',
+      isAdmin: false,
+      createdAt: DateTime.now(),
+      role: 'teacher',
+      preferredLanguage: LanguageEnum.english,
+      enabled: false,
     );
   }
 }
 
-@freezed
-abstract class AuthUserModel with _$AuthUserModel {
-  @JsonSerializable(explicitToJson: true)
-  const factory AuthUserModel({
-    required String email,
-    required String name,
-    required String createdAt,
-    required String role,
-    required String preferredLanguage,
-  }) = _AuthUserModel;
+class TimestampConverter implements JsonConverter<DateTime, Object?> {
+  const TimestampConverter();
 
-  factory AuthUserModel.fromJson(Map<String, dynamic> json) =>
-      _$AuthUserModelFromJson(json);
+  @override
+  DateTime fromJson(Object? json) {
+    if (json == null) return DateTime.now();
+    if (json is Timestamp) return json.toDate();
+    if (json is DateTime) return json;
+    if (json is String) return DateTime.parse(json);
+    throw ArgumentError('Invalid type for createdAt: $json');
+  }
+
+  @override
+  Object toJson(DateTime object) => Timestamp.fromDate(object);
+}
+
+extension UserModelHelper on UserModel {
+  String get getFullName {
+    return '$firstName $lastName';
+  }
 }

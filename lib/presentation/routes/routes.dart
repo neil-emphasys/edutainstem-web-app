@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:edutainstem/application/auth/bloc/firebase_auth_bloc.dart';
+import 'package:edutainstem/presentation/pages/accounts_screen.dart';
 import 'package:edutainstem/presentation/pages/home_screen.dart';
 import 'package:edutainstem/presentation/pages/lessons_screen.dart';
 import 'package:edutainstem/presentation/pages/main_dashboard_screen.dart';
@@ -62,6 +63,7 @@ class Routes {
       HomeScreen.routeName,
       RoomsScreen.routeName,
       LessonsScreen.routeName,
+      AccountsScreen.routeName,
     };
 
     return GoRouter(
@@ -87,11 +89,13 @@ class Routes {
 
         // Public routes
         GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
           path: SignInScreen.routeName,
           name: SignInScreen.routeName,
           builder: (context, state) => const SignInScreen(),
         ),
         GoRoute(
+          parentNavigatorKey: _rootNavigatorKey,
           path: SignUpScreen.routeName,
           name: SignUpScreen.routeName,
           builder: (context, state) => const SignUpScreen(),
@@ -137,6 +141,13 @@ class Routes {
               pageBuilder: (context, state) =>
                   const NoTransitionPage(child: LessonsScreen()),
             ),
+            GoRoute(
+              path: AccountsScreen.routeName,
+              name: AccountsScreen.routeName,
+              // builder: (context, state) => const RoomsScreen(),
+              pageBuilder: (context, state) =>
+                  const NoTransitionPage(child: AccountsScreen()),
+            ),
           ],
         ),
       ],
@@ -159,7 +170,8 @@ class Routes {
         // 2) Not authed → block protected pages, send to /sign-in?from=...
         if (!isAuthed && requiresAuth) {
           final from = Uri.encodeComponent(full);
-          return '${SignInScreen.routeName}?from=$from';
+          // return '${SignInScreen.routeName}?from=$from';
+          return SignInScreen.routeName;
         }
 
         // 3) Authed users shouldn’t see the sign-in screen

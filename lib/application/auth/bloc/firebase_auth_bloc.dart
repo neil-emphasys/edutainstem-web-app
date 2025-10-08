@@ -22,6 +22,8 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
     : super(const FirebaseAuthState.initial()) {
     // 1) Keep router in sync with real Firebase state
     _sub = FirebaseAuth.instance.authStateChanges().listen((user) {
+      debugPrint('USER CHANGES: $user');
+      // TODO: ADD USERMODEL TO EVENT
       if (user == null) {
         add(const FirebaseAuthEvent.authChanged(null));
       } else {
@@ -32,7 +34,6 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
     on<_EventStarted>((event, emit) async {
       // Optional: eagerly check current user while the stream wakes up
       final user = FirebaseAuth.instance.currentUser;
-      debugPrint('USER: $user');
       if (user == null) {
         emit(const FirebaseAuthState.unauthenticated());
       } else {
@@ -64,13 +65,20 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
       emit(const FirebaseAuthState.loading());
       final result = await firebaseAuthRepository.googleSignIn();
       result.fold(
-        (failure) => emit(FirebaseAuthState.error(message: failure)),
-        (userCred) => emit(
-          FirebaseAuthState.authenticated(
-            user: userCred.user!,
-            signInType: SignInTypeEnum.google,
-          ),
-        ),
+        (failure) => emit(FirebaseAuthState.error(message: failure.message)),
+        (resp) {
+          final user = FirebaseAuth.instance.currentUser;
+
+          if (user == null) return;
+
+          emit(
+            FirebaseAuthState.authenticated(
+              user: user,
+              userModel: resp.data,
+              signInType: SignInTypeEnum.google,
+            ),
+          );
+        },
       );
     });
 
@@ -82,12 +90,19 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
       );
       result.fold(
         (failure) => emit(FirebaseAuthState.error(message: failure.message)),
-        (resp) => emit(
-          FirebaseAuthState.authenticated(
-            user: resp.data,
-            signInType: SignInTypeEnum.emailAndPassword,
-          ),
-        ),
+        (resp) {
+          final user = FirebaseAuth.instance.currentUser;
+
+          if (user == null) return;
+
+          emit(
+            FirebaseAuthState.authenticated(
+              user: user,
+              userModel: resp.data,
+              signInType: SignInTypeEnum.emailAndPassword,
+            ),
+          );
+        },
       );
     });
 
@@ -96,12 +111,19 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
       final result = await firebaseAuthRepository.signUp(event.data);
       result.fold(
         (failure) => emit(FirebaseAuthState.error(message: failure.message)),
-        (resp) => emit(
-          FirebaseAuthState.authenticated(
-            user: resp.data,
-            signInType: SignInTypeEnum.emailAndPassword,
-          ),
-        ),
+        (resp) {
+          final user = FirebaseAuth.instance.currentUser;
+
+          if (user == null) return;
+
+          emit(
+            FirebaseAuthState.authenticated(
+              user: user,
+              userModel: resp.data,
+              signInType: SignInTypeEnum.emailAndPassword,
+            ),
+          );
+        },
       );
     });
 

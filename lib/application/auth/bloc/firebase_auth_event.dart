@@ -17,7 +17,7 @@ class FirebaseAuthEvent with _$FirebaseAuthEvent {
   }) = _EventSignIn;
 
   // Sign-up event with email, password, and optional displayName
-  const factory FirebaseAuthEvent.signUp(AuthModel data) = _EventSignUp;
+  const factory FirebaseAuthEvent.signUp(UserModel data) = _EventSignUp;
 
   // Sign-out event (no parameters)
   const factory FirebaseAuthEvent.signOut() = _EventSignOut;

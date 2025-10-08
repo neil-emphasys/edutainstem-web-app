@@ -6,9 +6,9 @@ abstract class FirebaseAuthDataSource {
     required String accessToken,
     required String idToken,
   });
-  Future<UserCredential?> signInWithCredentials();
-  Future<User?> signInWithEmailAndPassword(String email, String password);
-  Future<User?> signUpWithEmailAndPassword(AuthModel data);
+  Future<UserModel> signInWithCredentials();
+  Future<UserModel> signInWithEmailAndPassword(String email, String password);
+  Future<UserModel> signUpWithEmailAndPassword(UserModel data);
   Future<void> signOut();
-  Future<AuthUserModel> getUserByUid(String uid);
+  Future<UserModel> getUserByUid(String uid);
 }

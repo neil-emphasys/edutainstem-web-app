@@ -7,7 +7,8 @@ class SuccessState<T> extends BaseState {
 
 class FailedState extends BaseState {
   final String message;
+  final String? title;
   final int? code;
 
-  FailedState({required this.message, this.code});
+  FailedState({required this.message, this.title, this.code});
 }

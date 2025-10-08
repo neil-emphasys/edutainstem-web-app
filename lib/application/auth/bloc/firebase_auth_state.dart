@@ -11,6 +11,7 @@ class FirebaseAuthState with _$FirebaseAuthState {
   // Authenticated state with a User parameter
   const factory FirebaseAuthState.authenticated({
     required User user,
+    UserModel? userModel,
     required SignInTypeEnum signInType,
   }) = _StateAuthenticated;
 
@@ -18,7 +19,6 @@ class FirebaseAuthState with _$FirebaseAuthState {
   const factory FirebaseAuthState.unauthenticated() = _StateUnauthenticated;
 
   // Error state with a message parameter
-  const factory FirebaseAuthState.error({
-    required String message,
-  }) = _StateError;
+  const factory FirebaseAuthState.error({required String message}) =
+      _StateError;
 }

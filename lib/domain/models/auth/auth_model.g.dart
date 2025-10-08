@@ -6,37 +6,39 @@ part of 'auth_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_AuthModel _$AuthModelFromJson(Map<String, dynamic> json) => _AuthModel(
-  fullName: json['fullName'] as String,
+_UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
+  id: json['id'] as String,
+  firstName: json['firstName'] as String,
+  lastName: json['lastName'] as String,
   email: json['email'] as String,
-  password: json['password'] as String,
-  confirmPassword: json['confirmPassword'] as String,
-  language: json['language'] as String,
+  isAdmin: json['isAdmin'] as bool,
+  role: json['role'] as String,
+  createdAt: const TimestampConverter().fromJson(json['createdAt']),
+  preferredLanguage: $enumDecode(
+    _$LanguageEnumEnumMap,
+    json['preferredLanguage'],
+  ),
+  enabled: json['enabled'] as bool,
 );
 
-Map<String, dynamic> _$AuthModelToJson(_AuthModel instance) =>
+Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
     <String, dynamic>{
-      'fullName': instance.fullName,
+      'id': instance.id,
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
       'email': instance.email,
-      'password': instance.password,
-      'confirmPassword': instance.confirmPassword,
-      'language': instance.language,
-    };
-
-_AuthUserModel _$AuthUserModelFromJson(Map<String, dynamic> json) =>
-    _AuthUserModel(
-      email: json['email'] as String,
-      name: json['name'] as String,
-      createdAt: json['createdAt'] as String,
-      role: json['role'] as String,
-      preferredLanguage: json['preferredLanguage'] as String,
-    );
-
-Map<String, dynamic> _$AuthUserModelToJson(_AuthUserModel instance) =>
-    <String, dynamic>{
-      'email': instance.email,
-      'name': instance.name,
-      'createdAt': instance.createdAt,
+      'isAdmin': instance.isAdmin,
       'role': instance.role,
-      'preferredLanguage': instance.preferredLanguage,
+      'createdAt': const TimestampConverter().toJson(instance.createdAt),
+      'preferredLanguage': _$LanguageEnumEnumMap[instance.preferredLanguage]!,
+      'enabled': instance.enabled,
     };
+
+const _$LanguageEnumEnumMap = {
+  LanguageEnum.english: 'english',
+  LanguageEnum.dutch: 'dutch',
+  LanguageEnum.italian: 'italian',
+  LanguageEnum.portuguese: 'portuguese',
+  LanguageEnum.hungarian: 'hungarian',
+  LanguageEnum.greek: 'greek',
+};
