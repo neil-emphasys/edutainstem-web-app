@@ -4,6 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppConstants {
+  AppConstants._();
+
+  static String userModelStoreIDKey = 'userModelInstance';
+
   static const List<String> googleSignInScopes = [
     'email',
     // 'https://www.googleapis.com/auth/contacts.readonly',

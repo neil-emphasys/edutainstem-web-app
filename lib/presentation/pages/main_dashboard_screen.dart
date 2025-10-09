@@ -4,7 +4,6 @@ import 'package:edutainstem/core/gen/assets.gen.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/presentation/pages/accounts_screen.dart';
 import 'package:edutainstem/presentation/pages/home_screen.dart';
-import 'package:edutainstem/presentation/pages/lessons_screen.dart';
 import 'package:edutainstem/presentation/pages/rooms_screen.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,6 @@ class MainScreenShell extends StatelessWidget {
         final visibleAccountsTab = state.maybeWhen(
           orElse: () => false,
           authenticated: (user, userModel, signInType) {
-            debugPrint('USERMODEL: $userModel');
             return userModel?.isAdmin ?? false;
           },
         );
@@ -176,14 +174,14 @@ class MainScreenShell extends StatelessWidget {
                         ),
                         onTap: () => context.goNamed(RoomsScreen.routeName),
                       ),
-                      SidebarXItem(
+                      /* SidebarXItem(
                         iconBuilder: (selected, hovered) => buildMenuIcon(
                           selected: selected,
                           hovered: hovered,
                           assetPath: Assets.icons.png.sideMenuLesson.path,
                         ),
                         onTap: () => context.goNamed(LessonsScreen.routeName),
-                      ),
+                      ), */
                       if (visibleAccountsTab) ...[
                         SidebarXItem(
                           selectable: false,

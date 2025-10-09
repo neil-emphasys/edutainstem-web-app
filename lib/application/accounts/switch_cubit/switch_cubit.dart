@@ -1,19 +1,39 @@
 import 'package:bloc/bloc.dart';
+import 'package:edutainstem/domain/repositories/accounts_repository.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'switch_cubit.freezed.dart';
 part 'switch_state.dart';
 
 class SwitchCubit extends Cubit<SwitchState> {
-  SwitchCubit() : super(const SwitchState.initial(current: false));
+  final AccountsRepository accountsRepository;
+
+  SwitchCubit(this.accountsRepository)
+    : super(const SwitchState.initial(current: false));
 
   void setInitialState(bool newBool) {
     emit(SwitchState.initial(current: newBool));
   }
 
-  void changeStatus(bool newBool) async {
+  void changeStatus({required String docId, required bool newBool}) async {
+    final currentState = state;
+
     emit(const SwitchState.loading());
-    await Future.delayed(const Duration(seconds: 5));
-    emit(SwitchState.initial(current: newBool));
+
+    final result = await accountsRepository.setUserEnabled(
+      uid: docId,
+      enabled: newBool,
+    );
+    debugPrint('RESULT: $result');
+
+    result.fold(
+      (l) {
+        emit(currentState);
+      },
+      (r) {
+        emit(SwitchState.initial(current: newBool, update: true));
+      },
+    );
   }
 }

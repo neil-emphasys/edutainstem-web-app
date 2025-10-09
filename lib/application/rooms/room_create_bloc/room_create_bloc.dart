@@ -82,7 +82,6 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
     });
 
     on<_SetRoom>((event, emit) async {
-      debugPrint('EVENT: ${event.room}');
       // final currentState = state as _Initial;
       if (event.room.isAssessmentOpen || event.room.isLessonOpen) {
         emit(_Closed(event.room));
@@ -102,7 +101,6 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
 
       result.fold((l) {}, (r) {
         if (r.data != null) {
-          debugPrint('R.DATA: ${r.data}');
           emit(_Created(r.data!, refetch: true));
         }
       });
@@ -132,7 +130,6 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
     });
 
     on<_StartLesson>((event, emit) async {
-      debugPrint('STATE: $state');
       final currentState = state as _Closed;
       emit(
         const _Loading(

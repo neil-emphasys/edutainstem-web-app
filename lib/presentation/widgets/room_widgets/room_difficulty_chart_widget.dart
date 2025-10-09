@@ -127,7 +127,6 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                       })
                       .toList()
                       .length;
-                  debugPrint('LISTSTUDENTSANSWERS: $listStudentsAnswers');
 
                   final columnTitleTextStyle = AppTextStyles.getStyle(
                     AppTextStyle.bodySmall,

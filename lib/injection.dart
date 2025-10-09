@@ -30,7 +30,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 final GetIt it = GetIt.instance;
 
 Future<void> init() async {
-  // * [SERVICES
+  // * [SERVICES]
+  // it.registerLazySingleton<AuthStorageService>(() => AuthStorageService());
   it.registerLazySingleton<ValidatorService>(() => const ValidatorService());
   it.registerLazySingleton<JsonDownloadService>(() => JsonDownloadService());
   it.registerLazySingleton<LoaderServices>(() => LoaderServices());
@@ -77,7 +78,7 @@ Future<void> init() async {
   );
 
   // * [BLOC]
-  it.registerFactory<SwitchCubit>(() => SwitchCubit());
+  it.registerFactory<SwitchCubit>(() => SwitchCubit(it()));
 
   // * [BLOC]
   it.registerFactory<RoomBloc>(() => RoomBloc(it()));

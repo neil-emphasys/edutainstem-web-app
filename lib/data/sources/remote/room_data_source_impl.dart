@@ -98,11 +98,9 @@ class RoomDataSourceImpl implements RoomDataSource {
         'isLessonOpen': openLesson, // mirrors openLesson
       }); */
     } on FirebaseException catch (e, st) {
-      debugPrint('E: $e');
       // debugPrintStack(stackTrace: st);
       rethrow;
     } catch (e, st) {
-      debugPrint('E: $e');
       // debugPrintStack(stackTrace: st);
       rethrow;
     }
@@ -365,7 +363,6 @@ class RoomDataSourceImpl implements RoomDataSource {
   }) async {
     try {
       // Build { uid: newDifficulty } from the list, skipping null/empty
-      debugPrint('ASDADASDASDS');
 
       final updates = <String, String>{};
       for (final s in enrollments) {
@@ -374,7 +371,6 @@ class RoomDataSourceImpl implements RoomDataSource {
           updates[s.uid] = cd;
         }
       }
-      debugPrint('UPDATES: $updates');
       if (updates.isEmpty) {
         return;
       }
@@ -390,11 +386,9 @@ class RoomDataSourceImpl implements RoomDataSource {
         final data = snap.data() ?? const {};
         final rawList = data[FirebaseConstants.room.studentsEnrolled];
 
-        debugPrint('RAWLIST: $rawList');
         if (rawList is! List) {
           throw StateError('Field "studentsEnrolled" is not a List.');
         }
-        debugPrint('XZCZXCZXCZX');
 
         // Deep copy to mutable structures
         final studentsEnrolled = List<Map<String, dynamic>>.from(
@@ -447,11 +441,9 @@ class RoomDataSourceImpl implements RoomDataSource {
         }
       });
     } on FirebaseException catch (e, stackTrace) {
-      debugPrint('E: $e');
       // debugPrintStack(stackTrace: stackTrace);
       rethrow; // rethrow so caller can handle it if needed
     } catch (e, stackTrace) {
-      debugPrint('E: $e');
       // debugPrintStack(stackTrace: stackTrace);
       rethrow;
     }

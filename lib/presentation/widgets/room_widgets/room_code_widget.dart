@@ -77,8 +77,6 @@ class RoomCodeWidget extends StatelessWidget {
                         final either = snapshot.data!;
                         return either.fold(
                           (f) {
-                            debugPrint('F: ${f.message}');
-
                             return Text('Error: $f');
                           },
                           (answers) {

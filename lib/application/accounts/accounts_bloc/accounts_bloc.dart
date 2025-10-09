@@ -16,10 +16,28 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       emit(const _Loading());
 
       final result = await accountsRepository.fetchAccounts();
-      debugPrint('RESULT: $result');
 
       result.fold((l) {}, (r) {
         emit(_Done(accounts: r.data));
+      });
+    });
+
+    on<_SetEnabled>((event, emit) async {
+      final currentState = state as _Done;
+
+      // emit(const _Loading());
+
+      final result = await accountsRepository.setUserEnabled(
+        uid: event.uid,
+        enabled: event.newStatus,
+      );
+
+      result.fold((l) {}, (r) {
+        final newAccounts = currentState.accounts
+            .map((u) => u.id == event.uid ? u.copyWith(enabled: r.data) : u)
+            .toList();
+
+        emit(_Done(accounts: newAccounts));
       });
     });
   }

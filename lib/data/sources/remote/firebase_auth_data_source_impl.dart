@@ -72,8 +72,6 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
     String email,
     String password,
   ) async {
-    debugPrint('EMAIL: $email');
-    debugPrint('PASSWORD: $password');
     try {
       await FirebaseAuth.instance.signOut();
 
@@ -82,7 +80,6 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
         password: password,
       );
 
-      debugPrint('RESULT: ${result.user?.uid}');
       final qs = await _db
           .collection(FirebaseConstants.users.name)
           .where(FirebaseConstants.users.id, isEqualTo: result.user?.uid)
@@ -110,7 +107,6 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
 
       return user;
     } catch (e) {
-      debugPrint('ERROR SIGN IN: $e');
       rethrow;
     }
   }
@@ -118,7 +114,6 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
   @override
   Future<UserModel> signUpWithEmailAndPassword(UserModel data) async {
     try {
-      debugPrint('DATA: $data');
       if (data.password != null) {
         // final qs = await _db
         //     .collection(FirebaseConstants.users.name)
@@ -150,7 +145,6 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
       debugPrintStack(stackTrace: stackTrace);
       rethrow; // rethrow so caller can handle it if needed
     } */ catch (e) {
-      debugPrint('ERROR SIGN IN: $e');
       rethrow;
     }
   }

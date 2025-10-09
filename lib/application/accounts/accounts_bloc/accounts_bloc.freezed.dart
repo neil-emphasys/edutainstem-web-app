@@ -61,12 +61,13 @@ extension AccountsEventPatterns on AccountsEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _GetAccounts value)?  getAccounts,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _Started value)?  started,TResult Function( _GetAccounts value)?  getAccounts,TResult Function( _SetEnabled value)?  setEnabled,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _GetAccounts() when getAccounts != null:
-return getAccounts(_that);case _:
+return getAccounts(_that);case _SetEnabled() when setEnabled != null:
+return setEnabled(_that);case _:
   return orElse();
 
 }
@@ -84,12 +85,13 @@ return getAccounts(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _GetAccounts value)  getAccounts,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _Started value)  started,required TResult Function( _GetAccounts value)  getAccounts,required TResult Function( _SetEnabled value)  setEnabled,}){
 final _that = this;
 switch (_that) {
 case _Started():
 return started(_that);case _GetAccounts():
-return getAccounts(_that);case _:
+return getAccounts(_that);case _SetEnabled():
+return setEnabled(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -106,12 +108,13 @@ return getAccounts(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _GetAccounts value)?  getAccounts,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _Started value)?  started,TResult? Function( _GetAccounts value)?  getAccounts,TResult? Function( _SetEnabled value)?  setEnabled,}){
 final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started(_that);case _GetAccounts() when getAccounts != null:
-return getAccounts(_that);case _:
+return getAccounts(_that);case _SetEnabled() when setEnabled != null:
+return setEnabled(_that);case _:
   return null;
 
 }
@@ -128,11 +131,12 @@ return getAccounts(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  getAccounts,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  started,TResult Function()?  getAccounts,TResult Function( String uid,  bool newStatus)?  setEnabled,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _GetAccounts() when getAccounts != null:
-return getAccounts();case _:
+return getAccounts();case _SetEnabled() when setEnabled != null:
+return setEnabled(_that.uid,_that.newStatus);case _:
   return orElse();
 
 }
@@ -150,11 +154,12 @@ return getAccounts();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  getAccounts,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  started,required TResult Function()  getAccounts,required TResult Function( String uid,  bool newStatus)  setEnabled,}) {final _that = this;
 switch (_that) {
 case _Started():
 return started();case _GetAccounts():
-return getAccounts();case _:
+return getAccounts();case _SetEnabled():
+return setEnabled(_that.uid,_that.newStatus);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -171,11 +176,12 @@ return getAccounts();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  getAccounts,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  started,TResult? Function()?  getAccounts,TResult? Function( String uid,  bool newStatus)?  setEnabled,}) {final _that = this;
 switch (_that) {
 case _Started() when started != null:
 return started();case _GetAccounts() when getAccounts != null:
-return getAccounts();case _:
+return getAccounts();case _SetEnabled() when setEnabled != null:
+return setEnabled(_that.uid,_that.newStatus);case _:
   return null;
 
 }
@@ -258,6 +264,80 @@ String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
 
 
 
+
+/// @nodoc
+
+
+class _SetEnabled with DiagnosticableTreeMixin implements AccountsEvent {
+  const _SetEnabled({required this.uid, required this.newStatus});
+  
+
+ final  String uid;
+ final  bool newStatus;
+
+/// Create a copy of AccountsEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SetEnabledCopyWith<_SetEnabled> get copyWith => __$SetEnabledCopyWithImpl<_SetEnabled>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AccountsEvent.setEnabled'))
+    ..add(DiagnosticsProperty('uid', uid))..add(DiagnosticsProperty('newStatus', newStatus));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetEnabled&&(identical(other.uid, uid) || other.uid == uid)&&(identical(other.newStatus, newStatus) || other.newStatus == newStatus));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,uid,newStatus);
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'AccountsEvent.setEnabled(uid: $uid, newStatus: $newStatus)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$SetEnabledCopyWith<$Res> implements $AccountsEventCopyWith<$Res> {
+  factory _$SetEnabledCopyWith(_SetEnabled value, $Res Function(_SetEnabled) _then) = __$SetEnabledCopyWithImpl;
+@useResult
+$Res call({
+ String uid, bool newStatus
+});
+
+
+
+
+}
+/// @nodoc
+class __$SetEnabledCopyWithImpl<$Res>
+    implements _$SetEnabledCopyWith<$Res> {
+  __$SetEnabledCopyWithImpl(this._self, this._then);
+
+  final _SetEnabled _self;
+  final $Res Function(_SetEnabled) _then;
+
+/// Create a copy of AccountsEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? uid = null,Object? newStatus = null,}) {
+  return _then(_SetEnabled(
+uid: null == uid ? _self.uid : uid // ignore: cast_nullable_to_non_nullable
+as String,newStatus: null == newStatus ? _self.newStatus : newStatus // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+
+}
 
 /// @nodoc
 mixin _$AccountsState implements DiagnosticableTreeMixin {

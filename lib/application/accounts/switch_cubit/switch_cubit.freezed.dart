@@ -119,10 +119,10 @@ return loading(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( bool current)?  initial,TResult Function()?  loading,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( bool current,  bool update)?  initial,TResult Function()?  loading,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
-return initial(_that.current);case _Loading() when loading != null:
+return initial(_that.current,_that.update);case _Loading() when loading != null:
 return loading();case _:
   return orElse();
 
@@ -141,10 +141,10 @@ return loading();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( bool current)  initial,required TResult Function()  loading,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( bool current,  bool update)  initial,required TResult Function()  loading,}) {final _that = this;
 switch (_that) {
 case _Initial():
-return initial(_that.current);case _Loading():
+return initial(_that.current,_that.update);case _Loading():
 return loading();}
 }
 /// A variant of `when` that fallback to returning `null`
@@ -159,10 +159,10 @@ return loading();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( bool current)?  initial,TResult? Function()?  loading,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( bool current,  bool update)?  initial,TResult? Function()?  loading,}) {final _that = this;
 switch (_that) {
 case _Initial() when initial != null:
-return initial(_that.current);case _Loading() when loading != null:
+return initial(_that.current,_that.update);case _Loading() when loading != null:
 return loading();case _:
   return null;
 
@@ -175,10 +175,11 @@ return loading();case _:
 
 
 class _Initial implements SwitchState {
-  const _Initial({required this.current});
+  const _Initial({required this.current, this.update = false});
   
 
  final  bool current;
+@JsonKey() final  bool update;
 
 /// Create a copy of SwitchState
 /// with the given fields replaced by the non-null parameter values.
@@ -190,16 +191,16 @@ _$InitialCopyWith<_Initial> get copyWith => __$InitialCopyWithImpl<_Initial>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial&&(identical(other.current, current) || other.current == current));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial&&(identical(other.current, current) || other.current == current)&&(identical(other.update, update) || other.update == update));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,current);
+int get hashCode => Object.hash(runtimeType,current,update);
 
 @override
 String toString() {
-  return 'SwitchState.initial(current: $current)';
+  return 'SwitchState.initial(current: $current, update: $update)';
 }
 
 
@@ -210,7 +211,7 @@ abstract mixin class _$InitialCopyWith<$Res> implements $SwitchStateCopyWith<$Re
   factory _$InitialCopyWith(_Initial value, $Res Function(_Initial) _then) = __$InitialCopyWithImpl;
 @useResult
 $Res call({
- bool current
+ bool current, bool update
 });
 
 
@@ -227,9 +228,10 @@ class __$InitialCopyWithImpl<$Res>
 
 /// Create a copy of SwitchState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? current = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? current = null,Object? update = null,}) {
   return _then(_Initial(
 current: null == current ? _self.current : current // ignore: cast_nullable_to_non_nullable
+as bool,update: null == update ? _self.update : update // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

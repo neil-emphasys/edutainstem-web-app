@@ -213,9 +213,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           title: 'Sign Up',
                           onPressed: () {
                             if (formKey.currentState?.validate() ?? false) {
-                              debugPrint(
-                                'PREF LANG: ${preferredLanguageController.text}',
-                              );
                               context.read<SignUpBloc>().add(
                                 SignUpEvent.signUp(
                                   user: UserModel.initial().copyWith(

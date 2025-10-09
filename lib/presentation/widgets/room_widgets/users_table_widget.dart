@@ -1,9 +1,9 @@
-import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:edutainstem/application/accounts/accounts_bloc/accounts_bloc.dart';
 import 'package:edutainstem/application/accounts/switch_cubit/switch_cubit.dart';
 import 'package:edutainstem/core/components/app_switch.dart';
 import 'package:edutainstem/core/helpers/string_helpers.dart';
 import 'package:edutainstem/domain/models/auth/auth_model.dart';
+import 'package:edutainstem/injection.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,13 +45,6 @@ class UsersTableWidget extends StatelessWidget {
         textAlign: PlutoColumnTextAlign.center,
       ),
       PlutoColumn(
-        title: 'is Enabled?',
-        field: 'isEnabled',
-        type: PlutoColumnType.text(),
-        width: 250,
-        textAlign: PlutoColumnTextAlign.center,
-      ),
-      PlutoColumn(
         title: 'Preferred Language',
         field: 'preferredLanguage',
         type: PlutoColumnType.text(),
@@ -71,14 +64,16 @@ class UsersTableWidget extends StatelessWidget {
         frozen: PlutoColumnFrozen.end, // pin to the right (optional)
         enableFilterMenuItem: false,
         renderer: (ctx) {
-          return AnimatedToggleSwitch<bool>.rolling(
-            current: false,
-            values: const [false, true],
-            // onChanged: (i) => setState(() => value = i),
-            // iconBuilder: iconBuilder,
-            // iconList: [...], you can use iconBuilder, customIconBuilder or iconList
-            // style: ToggleStyle(...), // optional style settings
-            // ... // many more parameters available
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              AppSwitch(
+                currentValue: false,
+                isLoading: false,
+                onChanged: (_) {}, // update the cubit
+              ),
+            ],
           );
         },
       ),
@@ -218,37 +213,24 @@ class _DoneWidget extends StatelessWidget {
         width: 300,
         textAlign: PlutoColumnTextAlign.center,
       ),
-      PlutoColumn(
+      /* PlutoColumn(
         title: 'is Enabled?',
         field: 'isEnabled',
         type: PlutoColumnType.text(),
         width: 250,
         textAlign: PlutoColumnTextAlign.center,
+        hide: true,
         renderer: (ctx) {
-          final cubit = ctx.row.cells['actions']!.value as SwitchCubit;
-
-          return BlocBuilder<SwitchCubit, SwitchState>(
-            bloc: cubit, // <-- important: use the row's cubit
-            buildWhen: (prev, curr) =>
-                curr.maybeWhen(orElse: () => false, initial: (current) => true),
-            builder: (context, state) {
-              final current = state.maybeWhen(
-                initial: (c) => c,
-                orElse: () => false,
-              );
-
-              return Text(
-                current.toString().capitalize(),
-                textAlign: TextAlign.center,
-                style: AppTextStyles.getStyle(
-                  AppTextStyle.bodySmall,
-                  modifier: (base) => base.copyWith(),
-                ),
-              );
-            },
+          return Text(
+            current.toString().capitalize(),
+            textAlign: TextAlign.center,
+            style: AppTextStyles.getStyle(
+              AppTextStyle.bodySmall,
+              modifier: (base) => base.copyWith(),
+            ),
           );
         },
-      ),
+      ), */
       PlutoColumn(
         title: 'Preferred Language',
         field: 'preferredLanguage',
@@ -257,7 +239,7 @@ class _DoneWidget extends StatelessWidget {
         textAlign: PlutoColumnTextAlign.center,
       ),
       PlutoColumn(
-        title: 'Enable?',
+        title: 'Enabled',
         field: 'actions',
         type: PlutoColumnType.text(),
         width: 150,
@@ -269,14 +251,26 @@ class _DoneWidget extends StatelessWidget {
         frozen: PlutoColumnFrozen.end, // pin to the right (optional)
         enableFilterMenuItem: false,
         renderer: (ctx) {
-          final cubit = ctx.row.cells['actions']!.value as SwitchCubit;
+          final userModel = ctx.row.cells['actions']!.value as UserModel;
+          final cubit = SwitchCubit(it())..setInitialState(userModel.enabled);
+          debugPrint('USERMODEL: $userModel');
 
-          return BlocBuilder<SwitchCubit, SwitchState>(
+          return BlocConsumer<SwitchCubit, SwitchState>(
+            listener: (context, state) => state.whenOrNull(
+              /* initial: (current, update) => update
+                  ? context.read<AccountsBloc>().add(
+                      AccountsEvent.setEnabled(
+                        uid: userModel.id,
+                        newStatus: current,
+                      ),
+                    )
+                  : null, */
+            ),
             bloc: cubit, // <-- important: use the row's cubit
             buildWhen: (prev, curr) => prev != curr,
             builder: (context, state) {
               final current = state.maybeWhen(
-                initial: (c) => c,
+                initial: (c, d) => c,
                 orElse: () => false,
               );
               final loading = state.maybeWhen(
@@ -293,7 +287,10 @@ class _DoneWidget extends StatelessWidget {
                     isLoading: loading,
                     onChanged: loading
                         ? null
-                        : (v) => cubit.changeStatus(v), // update the cubit
+                        : (v) => cubit.changeStatus(
+                            docId: userModel.id,
+                            newBool: v,
+                          ), // update the cubit
                   ),
                 ],
               );
@@ -305,8 +302,6 @@ class _DoneWidget extends StatelessWidget {
 
     // Define rows
     final rows = users.map((user) {
-      final cubit = SwitchCubit();
-
       return PlutoRow(
         cells: {
           'email': PlutoCell(value: user.email),
@@ -317,7 +312,7 @@ class _DoneWidget extends StatelessWidget {
           'preferredLanguage': PlutoCell(
             value: user.preferredLanguage.name.toString().capitalize(),
           ),
-          'actions': PlutoCell(value: cubit),
+          'actions': PlutoCell(value: user),
         },
       );
     }).toList();

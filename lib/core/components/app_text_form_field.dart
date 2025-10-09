@@ -361,6 +361,7 @@ class _AppTextFormFieldState extends State<AppTextFormField>
                         modifier: (base) => base.copyWith(
                           // fontWeight: FontWeight.bold,
                           letterSpacing: 0.3.sp,
+                          color: AppColors.red,
                         ),
                       ),
                       enabledBorder: OutlineInputBorder(
@@ -431,6 +432,7 @@ class _AppTextFormFieldState extends State<AppTextFormField>
                         modifier: (base) => base.copyWith(
                           // fontWeight: FontWeight.bold,
                           letterSpacing: 0.3.sp,
+                          color: AppColors.red,
                         ),
                       ),
                       floatingLabelStyle: TextStyle(

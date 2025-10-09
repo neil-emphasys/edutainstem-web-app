@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 enum LanguageEnum {
   english,
   dutch,
@@ -16,7 +14,6 @@ enum LanguageEnum {
   bool get isGreek => this == greek;
 
   static LanguageEnum fromString(String value) {
-    debugPrint('VALUE: $value');
     switch (value.toLowerCase()) {
       case 'english':
         return LanguageEnum.english;

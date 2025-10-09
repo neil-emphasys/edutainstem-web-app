@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:edutainstem/core/constants/constants.dart';
 import 'package:edutainstem/core/enums/sign_in_type_enum.dart';
+import 'package:edutainstem/core/services/auth_storage_services.dart';
 import 'package:edutainstem/domain/models/auth/auth_model.dart';
 import 'package:edutainstem/domain/repositories/firebase_auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -21,13 +23,23 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
   FirebaseAuthBloc(this.firebaseAuthRepository)
     : super(const FirebaseAuthState.initial()) {
     // 1) Keep router in sync with real Firebase state
-    _sub = FirebaseAuth.instance.authStateChanges().listen((user) {
-      debugPrint('USER CHANGES: $user');
-      // TODO: ADD USERMODEL TO EVENT
-      if (user == null) {
+    _sub = FirebaseAuth.instance.authStateChanges().listen((user) async {
+      final map = await AuthStorageService.getMap(
+        AppConstants.userModelStoreIDKey,
+      );
+
+      UserModel? userModel;
+
+      // if (map == null) return;
+      if (map != null) {
+        userModel = UserModel.fromJsonWithDocId(map, forCache: true);
+      }
+
+      if (user == null && userModel == null) {
         add(const FirebaseAuthEvent.authChanged(null));
       } else {
-        add(FirebaseAuthEvent.authChanged(user));
+        debugPrint('HEEEEERE');
+        add(FirebaseAuthEvent.authChanged(user, userModel: userModel));
       }
     });
 
@@ -49,12 +61,15 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
     // Internal event driven by authStateChanges()
     on<_AuthChanged>((event, emit) {
       final user = event.user;
+      final userModel = event.userModel;
+
       if (user == null) {
         emit(const FirebaseAuthState.unauthenticated());
       } else {
         emit(
           FirebaseAuthState.authenticated(
             user: user,
+            userModel: userModel,
             signInType: SignInTypeEnum.google, // or map from your repo
           ),
         );
@@ -70,6 +85,11 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
           final user = FirebaseAuth.instance.currentUser;
 
           if (user == null) return;
+
+          AuthStorageService.saveMap(
+            AppConstants.userModelStoreIDKey,
+            resp.data.toJsonIncludingDocId(forCache: true),
+          );
 
           emit(
             FirebaseAuthState.authenticated(
@@ -95,6 +115,11 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
 
           if (user == null) return;
 
+          AuthStorageService.saveMap(
+            AppConstants.userModelStoreIDKey,
+            resp.data.toJsonIncludingDocId(forCache: true),
+          );
+
           emit(
             FirebaseAuthState.authenticated(
               user: user,
@@ -116,6 +141,11 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
 
           if (user == null) return;
 
+          AuthStorageService.saveMap(
+            AppConstants.userModelStoreIDKey,
+            resp.data.toJsonIncludingDocId(forCache: true),
+          );
+
           emit(
             FirebaseAuthState.authenticated(
               user: user,
@@ -132,7 +162,10 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
       final result = await firebaseAuthRepository.signOut();
       result.fold(
         (failure) => emit(FirebaseAuthState.error(message: failure)),
-        (_) => emit(const FirebaseAuthState.unauthenticated()),
+        (_) {
+          AuthStorageService.removeMap(AppConstants.userModelStoreIDKey);
+          emit(const FirebaseAuthState.unauthenticated());
+        },
       );
     });
   }

@@ -16,7 +16,6 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       emit(const _Loading());
 
       final result = await roomRepository.getRooms();
-      debugPrint('RESULT: $result');
 
       result.fold((l) {}, (r) {
         emit(_Done(rooms: r.data));

@@ -26,11 +26,39 @@ class AccountsDataSourceImpl implements AccountsDataSource {
       final accounts = snap.docs
           .map<UserModel>((doc) => UserModel.fromJson(doc.data()))
           .toList();
-      debugPrint('ACCOUNTS: $accounts');
 
       return accounts;
-    } catch (e, st) {
-      debugPrint('E: $e');
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<bool> setUserEnabled({
+    required String uid,
+    required bool enabled,
+  }) async {
+    try {
+      final qs = await FirebaseFirestore.instance
+          .collection(FirebaseConstants.users.name)
+          .where(FirebaseConstants.users.id, isEqualTo: uid)
+          .limit(1)
+          .get();
+
+      if (qs.docs.isEmpty) {
+        throw Exception('User not found for uid: $uid');
+      }
+
+      final docRef = qs.docs.first.reference;
+
+      await docRef.set({
+        FirebaseConstants.users.enabled: enabled,
+        'enabledUpdatedAt': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
+
+      return enabled;
+    } catch (e) {
+      debugPrint('setUserEnabled Error: $e');
       rethrow;
     }
   }

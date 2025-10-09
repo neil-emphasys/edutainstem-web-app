@@ -27,5 +27,8 @@ class FirebaseAuthEvent with _$FirebaseAuthEvent {
       _EventResetPassword;
 
   // Internal: driven by authStateChanges()
-  const factory FirebaseAuthEvent.authChanged(User? user) = _AuthChanged;
+  const factory FirebaseAuthEvent.authChanged(
+    User? user, {
+    UserModel? userModel,
+  }) = _AuthChanged;
 }

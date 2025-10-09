@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthStorageService {
   AuthStorageService._();
+  // static final AuthStorageService _instance = AuthStorageService._();
+  // factory AuthStorageService() => _instance;
 
   static const String _keyUserId = 'user_id';
   static const String _keyUserEmail = 'user_email';
@@ -96,4 +100,101 @@ class AuthStorageService {
     await prefs.setString(_keyAuthToken, token ?? '');
     return token;
   }
+
+  // ---- Generic Map helpers (JSON-encoded) -------------------------------
+
+  /// Saves ANY JSON-encodable map under a namespaced key.
+  /// Keys must be strings (JSON requirement). Values can be nested maps/lists.
+  static Future<void> saveMap(
+    String key,
+    Map<String, dynamic> map, {
+    bool pretty = false,
+  }) async {
+    assert(key.isNotEmpty, 'Key must not be empty.');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      // final encoder = pretty ? const JsonEncoder.withIndent('  ') : jsonEncode;
+      final jsonString = pretty
+          ? const JsonEncoder.withIndent('  ').convert(map)
+          : jsonEncode(map);
+      await prefs.setString(_ns(key), jsonString);
+    } catch (e, st) {
+      debugPrintStack(stackTrace: st);
+      rethrow;
+    }
+  }
+
+  /// Reads a previously saved map. Returns null if nothing is stored.
+  static Future<Map<String, dynamic>?> getMap(String key) async {
+    assert(key.isNotEmpty, 'Key must not be empty.');
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final jsonString = prefs.getString(_ns(key));
+      if (jsonString == null || jsonString.isEmpty) return null;
+
+      final decoded = jsonDecode(jsonString);
+      if (decoded is Map<String, dynamic>) {
+        return decoded;
+      }
+
+      // If the decoded type isn't a Map (e.g., list), try to coerce common cases.
+      if (decoded is Map) {
+        return Map<String, dynamic>.from(decoded);
+      }
+
+      // Not a map — return null or throw depending on your preference.
+      return null;
+    } catch (e, st) {
+      return null;
+    }
+  }
+
+  /// Removes a stored map by key.
+  static Future<void> removeMap(String key) async {
+    try {
+      assert(key.isNotEmpty, 'Key must not be empty.');
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove(_ns(key));
+    } catch (e) {}
+  }
+
+  /// Convenience for saving a list of maps (e.g., table rows, cached query).
+  static Future<void> saveMapList(
+    String key,
+    List<Map<String, dynamic>> list,
+  ) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final jsonString = jsonEncode(list);
+      await prefs.setString(_ns(key), jsonString);
+    } catch (e, st) {
+      debugPrintStack(stackTrace: st);
+      rethrow;
+    }
+  }
+
+  /// Reads a list of maps saved by [saveMapList].
+  static Future<List<Map<String, dynamic>>?> getMapList(String key) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final jsonString = prefs.getString(_ns(key));
+      if (jsonString == null || jsonString.isEmpty) return null;
+
+      final decoded = jsonDecode(jsonString);
+      if (decoded is List) {
+        return decoded
+            .whereType<Map>() // ensure each entry is a Map
+            .map<Map<String, dynamic>>((m) => Map<String, dynamic>.from(m))
+            .toList();
+      }
+      return null;
+    } catch (e, st) {
+      debugPrintStack(stackTrace: st);
+      rethrow;
+    }
+  }
+
+  // ---- Internal ----------------------------------------------------------
+
+  static String _ns(String key) => 'auth_storage:$key';
 }

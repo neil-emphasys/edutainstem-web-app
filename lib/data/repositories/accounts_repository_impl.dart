@@ -19,4 +19,20 @@ class AccountsRepositoryImpl implements AccountsRepository {
       return Left(FailedState(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<FailedState, SuccessState<bool>>> setUserEnabled({
+    required String uid,
+    required bool enabled,
+  }) async {
+    try {
+      final result = await _dataSource.setUserEnabled(
+        uid: uid,
+        enabled: enabled,
+      );
+      return Right(SuccessState(result));
+    } catch (e) {
+      return Left(FailedState(message: e.toString()));
+    }
+  }
 }
