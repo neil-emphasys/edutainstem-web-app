@@ -20,6 +20,9 @@ _RoomModel _$RoomModelFromJson(Map<String, dynamic> json) => _RoomModel(
   preferredLessons: (json['preferredLessons'] as List<dynamic>)
       .map((e) => e as String)
       .toList(),
+  studentsEnrolled: json['studentsEnrolled'] == null
+      ? const <String, StudentEnrollmentModel>{}
+      : const StudentsEnrolledConverter().fromJson(json['studentsEnrolled']),
 );
 
 Map<String, dynamic> _$RoomModelToJson(_RoomModel instance) =>
@@ -34,7 +37,89 @@ Map<String, dynamic> _$RoomModelToJson(_RoomModel instance) =>
       'createdByName': instance.createdByName,
       'duration': instance.duration,
       'preferredLessons': instance.preferredLessons,
+      'studentsEnrolled': const StudentsEnrolledConverter().toJson(
+        instance.studentsEnrolled,
+      ),
     };
+
+_StudentEnrollmentModel _$StudentEnrollmentModelFromJson(
+  Map<String, dynamic> json,
+) => _StudentEnrollmentModel(
+  difficulty:
+      $enumDecodeNullable(
+        _$DifficultyEnumEnumMap,
+        json['difficulty'],
+        unknownValue: DifficultyEnum.basic,
+      ) ??
+      DifficultyEnum.basic,
+  name: json['name'] as String? ?? '',
+  examination:
+      (json['examination'] as List<dynamic>?)
+          ?.map((e) => ExamEntryModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const <ExamEntryModel>[],
+  assessment:
+      (json['assessment'] as List<dynamic>?)
+          ?.map((e) => AssessmentEntryModel.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const <AssessmentEntryModel>[],
+);
+
+Map<String, dynamic> _$StudentEnrollmentModelToJson(
+  _StudentEnrollmentModel instance,
+) => <String, dynamic>{
+  'difficulty': _$DifficultyEnumEnumMap[instance.difficulty]!,
+  'name': instance.name,
+  'examination': instance.examination.map((e) => e.toJson()).toList(),
+  'assessment': instance.assessment.map((e) => e.toJson()).toList(),
+};
+
+const _$DifficultyEnumEnumMap = {
+  DifficultyEnum.basic: 'basic',
+  DifficultyEnum.intermediate: 'intermediate',
+  DifficultyEnum.advance: 'advance',
+};
+
+_ExamEntryModel _$ExamEntryModelFromJson(Map<String, dynamic> json) =>
+    _ExamEntryModel(
+      qid: json['qid'] as String? ?? '',
+      lid: json['lid'] as String? ?? '',
+      answer: AnswerModel.fromJson(json['answer'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$ExamEntryModelToJson(_ExamEntryModel instance) =>
+    <String, dynamic>{
+      'qid': instance.qid,
+      'lid': instance.lid,
+      'answer': instance.answer.toJson(),
+    };
+
+_AnswerModel _$AnswerModelFromJson(Map<String, dynamic> json) => _AnswerModel(
+  id: json['id'] as String? ?? '',
+  choice: json['choice'] as String? ?? '',
+  isCorrectChoice: json['isCorrectChoice'] as bool? ?? false,
+);
+
+Map<String, dynamic> _$AnswerModelToJson(_AnswerModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'choice': instance.choice,
+      'isCorrectChoice': instance.isCorrectChoice,
+    };
+
+_AssessmentEntryModel _$AssessmentEntryModelFromJson(
+  Map<String, dynamic> json,
+) => _AssessmentEntryModel(
+  qid: json['qid'] as String? ?? '',
+  answerIndex: json['answerIndex'] as String? ?? '',
+);
+
+Map<String, dynamic> _$AssessmentEntryModelToJson(
+  _AssessmentEntryModel instance,
+) => <String, dynamic>{
+  'qid': instance.qid,
+  'answerIndex': instance.answerIndex,
+};
 
 _AssessmentAnswer _$AssessmentAnswerFromJson(Map<String, dynamic> json) =>
     _AssessmentAnswer(

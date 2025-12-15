@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:edutainstem/domain/repositories/accounts_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'switch_cubit.freezed.dart';
@@ -25,7 +24,6 @@ class SwitchCubit extends Cubit<SwitchState> {
       uid: docId,
       enabled: newBool,
     );
-    debugPrint('RESULT: $result');
 
     result.fold(
       (l) {

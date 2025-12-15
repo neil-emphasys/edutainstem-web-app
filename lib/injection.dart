@@ -9,6 +9,7 @@ import 'package:edutainstem/core/constants/constants.dart';
 import 'package:edutainstem/core/services/dialog_services.dart';
 import 'package:edutainstem/core/services/json_download_service.dart';
 import 'package:edutainstem/core/services/loader_services.dart';
+import 'package:edutainstem/core/services/toastification_service.dart';
 import 'package:edutainstem/core/services/validator_service.dart';
 import 'package:edutainstem/data/repositories/accounts_repository_impl.dart';
 import 'package:edutainstem/data/repositories/firebase_auth_repository_impl.dart';
@@ -36,6 +37,9 @@ Future<void> init() async {
   it.registerLazySingleton<JsonDownloadService>(() => JsonDownloadService());
   it.registerLazySingleton<LoaderServices>(() => LoaderServices());
   it.registerLazySingleton<DialogService>(() => DialogService());
+  it.registerLazySingleton<ToastificationService>(
+    () => ToastificationService.I,
+  );
 
   // * [DIO / API]
   final Dio dio = Dio();

@@ -35,6 +35,19 @@ class ValidatorService {
     };
   }
 
+  FormFieldValidator<String> boolean(bool status, {String error = 'Error'}) {
+    debugPrint('STATUS: $status');
+    return (value) {
+      // final v = value ?? '';
+      // if (v.isEmpty) return null;
+      return status ? error : null;
+    };
+  }
+
+  FormFieldValidator<String> external(String? Function() messageProvider) {
+    return (_) => messageProvider();
+  }
+
   FormFieldValidator<String> minLen(int min, {String? fieldName}) {
     return (value) {
       final v = value ?? '';

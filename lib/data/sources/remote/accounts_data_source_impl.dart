@@ -3,7 +3,6 @@ import 'package:edutainstem/core/constants/firebase_constants.dart';
 import 'package:edutainstem/data/sources/remote/accounts_data_source.dart';
 import 'package:edutainstem/domain/models/auth/auth_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class AccountsDataSourceImpl implements AccountsDataSource {
   final _db = FirebaseFirestore.instance;
@@ -58,7 +57,6 @@ class AccountsDataSourceImpl implements AccountsDataSource {
 
       return enabled;
     } catch (e) {
-      debugPrint('setUserEnabled Error: $e');
       rethrow;
     }
   }

@@ -253,7 +253,6 @@ class _DoneWidget extends StatelessWidget {
         renderer: (ctx) {
           final userModel = ctx.row.cells['actions']!.value as UserModel;
           final cubit = SwitchCubit(it())..setInitialState(userModel.enabled);
-          debugPrint('USERMODEL: $userModel');
 
           return BlocConsumer<SwitchCubit, SwitchState>(
             listener: (context, state) => state.whenOrNull(

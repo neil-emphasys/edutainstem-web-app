@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:edutainstem/core/enums/difficulty_enum.dart';
 import 'package:edutainstem/core/network/base_state.dart';
 import 'package:edutainstem/data/sources/remote/room_data_source.dart';
 import 'package:edutainstem/domain/models/assessments/assessments_model.dart';
+import 'package:edutainstem/domain/models/help_requests/help_request_model.dart';
 import 'package:edutainstem/domain/models/lessons/lesson_model.dart';
 import 'package:edutainstem/domain/models/rooms/room_model.dart';
 import 'package:edutainstem/domain/repositories/room_repository.dart';
+import 'package:flutter/foundation.dart';
 
 class RoomRepositoryImpl implements RoomRepository {
   final RoomDataSource _dataSource;
@@ -148,6 +151,104 @@ class RoomRepositoryImpl implements RoomRepository {
       return Right(SuccessState(result));
     } catch (e) {
       return Left(FailedState(message: e.toString()));
+    }
+  }
+
+  @override
+  Stream<
+    Either<
+      FailedState,
+      SuccessState<Map<DifficultyEnum, List<PollChoiceGroup>>>
+    >
+  >
+  watchQuizStatistics({
+    required RoomModel room,
+    String questionDocId = 'trjNujthLLZTK1cN0j8r',
+    bool uniquePerStudent = true,
+  }) async* {
+    final src = _dataSource.watchQuizStatistics(
+      room: room,
+      questionDocId: questionDocId,
+      uniquePerStudent: uniquePerStudent,
+    ); // Stream<RoomModel>
+    try {
+      await for (final exam in src) {
+        yield right(
+          SuccessState<Map<DifficultyEnum, List<PollChoiceGroup>>>(exam),
+        );
+      }
+    } on FirebaseException catch (e) {
+      yield left(
+        FailedState(
+          message: e.message ?? e.code,
+          code: _mapFirestoreCode(e.code),
+        ),
+      );
+    } catch (e) {
+      yield left(FailedState(message: e.toString()));
+    }
+  }
+
+  @override
+  Stream<Either<FailedState, SuccessState<List<HelpRequestModel>>>>
+  streamPendingRequests(String roomId) async* {
+    final src = _dataSource.streamPendingRequests(roomId); // Stream<RoomModel>
+    try {
+      await for (final requests in src) {
+        yield right(SuccessState<List<HelpRequestModel>>(requests));
+      }
+    } on FirebaseException catch (e) {
+      debugPrint('E: $e');
+      yield left(
+        FailedState(
+          message: e.message ?? e.code,
+          code: _mapFirestoreCode(e.code),
+        ),
+      );
+    } catch (e) {
+      debugPrint('E: $e');
+      yield left(FailedState(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<FailedState, SuccessState<void>>> updateRequestStatus({
+    required String roomId,
+    required String requestId,
+    required HelpQueueStatus status,
+  }) async {
+    try {
+      final result = await _dataSource.updateRequestStatus(
+        roomId: roomId,
+        requestId: requestId,
+        status: status,
+      );
+      return Right(SuccessState(result));
+    } catch (e) {
+      return Left(FailedState(message: e.toString()));
+    }
+  }
+
+  @override
+  Stream<Either<FailedState, SuccessState<List<String>>>> streamJournalFeedback(
+    String roomId,
+  ) async* {
+    final src = _dataSource.streamJournalFeedback(roomId); // Stream<RoomModel>
+    try {
+      await for (final requests in src) {
+        yield right(SuccessState<List<String>>(requests));
+      }
+    } on FirebaseException catch (e) {
+      debugPrint('E: $e');
+      yield left(
+        FailedState(
+          message: e.message ?? e.code,
+          code: _mapFirestoreCode(e.code),
+        ),
+      );
+    } catch (e) {
+      debugPrint('E: $e');
+      yield left(FailedState(message: e.toString()));
     }
   }
 }

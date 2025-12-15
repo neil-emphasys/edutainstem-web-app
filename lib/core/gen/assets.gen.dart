@@ -30,6 +30,10 @@ class $AssetsLottieGen {
   /// File path: assets/lottie/error.json
   LottieGenImage get error => const LottieGenImage('assets/lottie/error.json');
 
+  /// File path: assets/lottie/finished.json
+  LottieGenImage get finished =>
+      const LottieGenImage('assets/lottie/finished.json');
+
   /// File path: assets/lottie/info.json
   LottieGenImage get info => const LottieGenImage('assets/lottie/info.json');
 
@@ -52,6 +56,7 @@ class $AssetsLottieGen {
   /// List of all assets
   List<LottieGenImage> get values => [
     error,
+    finished,
     info,
     loading,
     question,
@@ -78,6 +83,9 @@ class $AssetsIconsPngGen {
   /// File path: assets/icons/png/logout.png
   AssetGenImage get logout =>
       const AssetGenImage('assets/icons/png/logout.png');
+
+  /// File path: assets/icons/png/quote.png
+  AssetGenImage get quote => const AssetGenImage('assets/icons/png/quote.png');
 
   /// File path: assets/icons/png/side-menu-dashboard.png
   AssetGenImage get sideMenuDashboard =>
@@ -117,6 +125,7 @@ class $AssetsIconsPngGen {
     goBack,
     google,
     logout,
+    quote,
     sideMenuDashboard,
     sideMenuLesson,
     sideMenuProfile,

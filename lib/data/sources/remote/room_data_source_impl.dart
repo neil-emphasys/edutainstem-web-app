@@ -2,9 +2,12 @@ import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edutainstem/core/constants/firebase_constants.dart';
+import 'package:edutainstem/core/enums/difficulty_enum.dart';
 import 'package:edutainstem/data/sources/remote/room_data_source.dart';
 import 'package:edutainstem/domain/models/assessments/assessments_model.dart';
+import 'package:edutainstem/domain/models/help_requests/help_request_model.dart';
 import 'package:edutainstem/domain/models/lessons/lesson_model.dart';
+import 'package:edutainstem/domain/models/post_question/post_question_model.dart';
 import 'package:edutainstem/domain/models/rooms/room_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +54,12 @@ class RoomDataSourceImpl implements RoomDataSource {
         final docRef = _db
             .collection(FirebaseConstants.room.name)
             .doc(); // auto-ID
-        await docRef.set(newRoom.toJson());
+
+        final payload = {...newRoom.toJson(), 'studentsEnrolled': []};
+
+        await docRef.set(payload);
+
+        // await docRef.set(newRoom.toJson());
 
         return newRoom.copyWith(id: docRef.id);
       });
@@ -133,9 +141,16 @@ class RoomDataSourceImpl implements RoomDataSource {
   @override
   Future<List<RoomModel>> getRooms() async {
     try {
+      final user = FirebaseAuth.instance.currentUser;
+
+      if (user == null) throw Exception('User not signed in');
+
       final snap = await _db
           .collection(FirebaseConstants.room.name)
-          // .where('isOpen', isEqualTo: true) // <- optional filter
+          .where(
+            FirebaseConstants.room.createdById,
+            isEqualTo: user.uid,
+          ) // <- optional filter
           // .orderBy('title') // optional ordering
           .get();
 
@@ -448,6 +463,148 @@ class RoomDataSourceImpl implements RoomDataSource {
       rethrow;
     }
   }
+
+  @override
+  Stream<Map<DifficultyEnum, List<PollChoiceGroup>>> watchQuizStatistics({
+    required RoomModel room,
+    String questionDocId = 'trjNujthLLZTK1cN0j8r',
+    bool uniquePerStudent = true,
+  }) async* {
+    try {
+      final eleDocs = await getDocsByIds(
+        collectionPath: FirebaseConstants.ele.name,
+        ids: room.preferredLessons,
+      );
+
+      final eles = eleDocs.map((e) => LessonModel.fromDoc(e)).toList();
+
+      final roomRef = _db.collection(FirebaseConstants.room.name).doc(room.id);
+
+      yield* roomRef.snapshots().map((roomSnap) {
+        if (!roomSnap.exists) {
+          throw StateError('Room not found: $room');
+        }
+
+        final roomData = roomSnap.data() as Map<String, dynamic>;
+
+        final raw =
+            roomData[FirebaseConstants.room.studentsEnrolled] ?? const [];
+        final list = List<dynamic>.from(raw as List);
+        final students = list
+            .map(
+              (e) => StudentEnrollmentModel.fromArrayEntry(
+                Map<String, dynamic>.from(e as Map),
+              ),
+            )
+            .toList();
+
+        final List<ExamStatModel> appendedExams = [];
+
+        for (final i in students) {
+          final difficulty = i.difficulty;
+
+          final exams = i.examination.map((e) {
+            final lesson = eles.firstWhere((element) => element.id == e.lid);
+            final questionLists = lesson.exam.getDiffQuestions(difficulty);
+            PostQuestionModel question = questionLists.firstWhere(
+              (element) => element.id == e.qid,
+            );
+            final answer = PostQuestionChoicesModel(
+              id: e.answer.id,
+              choice: e.answer.choice,
+              isCorrectChoice: e.answer.isCorrectChoice,
+            );
+            question = question.copyWith(answer: answer);
+
+            final ExamStatModel exam = ExamStatModel(
+              question: question,
+              difficulty: difficulty,
+            );
+
+            return exam;
+          }).toList();
+
+          appendedExams.addAll(exams);
+        }
+
+        return appendedExams.toPollGroupsByDifficulty();
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  CollectionReference<Map<String, dynamic>> _queueCol(
+    String roomId,
+  ) => _db.collection(
+    '${FirebaseConstants.room.name}/$roomId/${FirebaseConstants.room.helpRequests}',
+  );
+
+  /// WEB: live stream of PENDING requests (newest first)
+  @override
+  Stream<List<HelpRequestModel>> streamPendingRequests(String roomId) {
+    return _queueCol(roomId)
+        .where('status', isEqualTo: HelpQueueStatus.pending.name)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map(
+          (q) =>
+              q.docs.map((d) => HelpRequestModel.fromJson(d.data())).toList(),
+        );
+  }
+
+  /// WEB: mark a request as DONE (or other status)
+  @override
+  Future<void> updateRequestStatus({
+    required String roomId,
+    required String requestId,
+    required HelpQueueStatus status,
+  }) async {
+    await _queueCol(roomId).doc(requestId).update({
+      'status': status.name,
+      'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  @override
+  Stream<List<String>> streamJournalFeedback(String roomId) async* {
+    try {
+      final roomRef = _db.collection(FirebaseConstants.room.name).doc(roomId);
+
+      yield* roomRef.snapshots().map((roomSnap) {
+        if (!roomSnap.exists) {
+          throw StateError('Room not found: $roomId');
+        }
+
+        final roomData = roomSnap.data() as Map<String, dynamic>;
+
+        final raw =
+            roomData[FirebaseConstants.room.studentsEnrolled] ?? const [];
+        final list = List<dynamic>.from(raw as List);
+        // debugPrint('LIST: $list');
+        final feedbacks = list.map((e) {
+          final map = Map<String, dynamic>.from(e as Map);
+          final key = map.keys.first;
+          final data = map[key] as Map<String, dynamic>;
+          final bool hasFeedback = data.containsKey('journalFeedback');
+          final String? feedback = hasFeedback
+              ? data['journalFeedback'] as String?
+              : null;
+          // debugPrint('FEEDBACK: $feedback');
+
+          if (hasFeedback) {
+            return feedback;
+          }
+        }).toList();
+
+        final List<String> cleaned = feedbacks.whereType<String>().toList();
+
+        return cleaned;
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
 
 String genCodeExcluding({
@@ -471,4 +628,37 @@ String genCodeExcluding({
   throw Exception(
     'Unable to generate a unique code after $maxAttempts attempts.',
   );
+}
+
+Future<List<DocumentSnapshot<Map<String, dynamic>>>> getDocsByIds({
+  required String collectionPath,
+  required List<String> ids,
+}) async {
+  if (ids.isEmpty) return [];
+
+  // whereIn allows max 10 items, so chunk the IDs.
+  const int chunkSize = 10;
+  final chunks = <List<String>>[];
+  for (var i = 0; i < ids.length; i += chunkSize) {
+    chunks.add(
+      ids.sublist(i, i + chunkSize > ids.length ? ids.length : i + chunkSize),
+    );
+  }
+
+  final futures = chunks.map((chunk) {
+    return FirebaseFirestore.instance
+        .collection(collectionPath)
+        .where(FieldPath.documentId, whereIn: chunk)
+        .get();
+  });
+
+  final snapshots = await Future.wait(futures);
+  final allDocs = snapshots.expand((q) => q.docs).toList();
+
+  // Optional: return in the same order as the input ids
+  final byId = {for (final d in allDocs) d.id: d};
+  return ids
+      .map((id) => byId[id])
+      .whereType<DocumentSnapshot<Map<String, dynamic>>>()
+      .toList();
 }

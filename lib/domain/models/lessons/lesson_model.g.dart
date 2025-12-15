@@ -15,6 +15,7 @@ _LessonModel _$LessonModelFromJson(Map<String, dynamic> json) => _LessonModel(
   theoryContent: TheoryContent.fromJson(
     json['theoryContent'] as Map<String, dynamic>,
   ),
+  exam: Exam.fromJson(json['exam'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$LessonModelToJson(_LessonModel instance) =>
@@ -25,6 +26,7 @@ Map<String, dynamic> _$LessonModelToJson(_LessonModel instance) =>
       'ageRange': instance.ageRange,
       'tags': instance.tags,
       'theoryContent': instance.theoryContent,
+      'exam': instance.exam,
     };
 
 _AgeRange _$AgeRangeFromJson(Map<String, dynamic> json) => _AgeRange(
@@ -42,10 +44,38 @@ _TheoryContent _$TheoryContentFromJson(Map<String, dynamic> json) =>
       basic: (json['basic'] as List<dynamic>)
           .map((e) => Slide.fromJson(e as Map<String, dynamic>))
           .toList(),
+      intermediate: (json['intermediate'] as List<dynamic>)
+          .map((e) => Slide.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      advanced: (json['advanced'] as List<dynamic>)
+          .map((e) => Slide.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$TheoryContentToJson(_TheoryContent instance) =>
-    <String, dynamic>{'basic': instance.basic};
+    <String, dynamic>{
+      'basic': instance.basic,
+      'intermediate': instance.intermediate,
+      'advanced': instance.advanced,
+    };
+
+_Exam _$ExamFromJson(Map<String, dynamic> json) => _Exam(
+  basic: (json['basic'] as List<dynamic>)
+      .map((e) => PostQuestionModel.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  intermediate: (json['intermediate'] as List<dynamic>)
+      .map((e) => PostQuestionModel.fromJson(e as Map<String, dynamic>))
+      .toList(),
+  advanced: (json['advanced'] as List<dynamic>)
+      .map((e) => PostQuestionModel.fromJson(e as Map<String, dynamic>))
+      .toList(),
+);
+
+Map<String, dynamic> _$ExamToJson(_Exam instance) => <String, dynamic>{
+  'basic': instance.basic,
+  'intermediate': instance.intermediate,
+  'advanced': instance.advanced,
+};
 
 _Slide _$SlideFromJson(Map<String, dynamic> json) => _Slide(
   title: json['title'] as String?,

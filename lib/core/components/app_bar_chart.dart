@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/domain/models/assessments/assessments_model.dart';
+import 'package:edutainstem/domain/models/rooms/room_model.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,8 +9,9 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 
 class PollWidget extends StatelessWidget {
   final List<PollChoiceGroup> questions;
+  final RoomModel room;
 
-  const PollWidget({super.key, required this.questions});
+  const PollWidget({super.key, required this.questions, required this.room});
 
   // int get total => choices.fold(0, (sum, c) => sum + c.count);
 
@@ -34,9 +36,29 @@ class PollWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final totalStudents = room.studentsEnrolled.entries.length;
+    final totalStudentsFinishedAssessment = room.studentsEnrolled.entries
+        .map((e) => e.value.assessment.isNotEmpty)
+        .length;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Container(
+          alignment: Alignment.centerRight,
+          child: Text(
+            '$totalStudentsFinishedAssessment / $totalStudents Students are Done Answering Assessments',
+            style: AppTextStyles.getStyle(
+              AppTextStyle.bodySmall,
+              modifier: (base) => base.copyWith(
+                fontWeight: FontWeight.bold,
+                letterSpacing: 0.3.sp,
+                color: AppColors.white,
+              ),
+            ).copyWith(color: AppColors.primary),
+            textAlign: TextAlign.center,
+          ),
+        ),
         for (final PollChoiceGroup i in questions) ...[
           Container(
             padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 6.w),

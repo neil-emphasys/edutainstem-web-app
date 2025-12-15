@@ -1,3 +1,5 @@
+const String _genericError = 'Something went wrong. Please try again!';
+
 class FirebaseConstants {
   static const ELE ele = ELE();
   static const Room room = Room();
@@ -33,6 +35,8 @@ class Room {
   String get isOpen => 'isOpen';
   String get studentsEnrolled => 'studentsEnrolled';
   String get difficulty => 'difficulty';
+  String get createdById => 'createdById';
+  String get helpRequests => 'helpRequests';
 
   // * [SPECIFIC ERROR CODES]
   String get roomNotExist => 'ROOM_NOT_EXIST';
@@ -65,9 +69,17 @@ class Users {
   String get userNotExist => 'USER_NOT_EXIST';
   String get emailExist => 'EMAIL_EXIST';
   String get googleCancelledAuth => 'GOOGLE_CANCELLED_AUTH';
+  String get errorSigninNotExist => 'SIGNIN_NOT_EXIST';
 
   // * [SPECIFIC ERROR CODES (LONG TEXTS)]
   String get userNotExistLT =>
-      'We couldn’t find an open room with that code. Try again, or double-check with your teacher (the room might be closed).';
+      'We couldn\'t find an open room with that code. Try again, or double-check with your teacher (the room might be closed).';
   String get emailExistLT => 'The email entered is already registered.';
+  String get errorSigninNotExistLT =>
+      'We couldn\'t find any user registered to this credential. Please try again.';
+
+  String mapErrorCodes(String errorCode) {
+    if (errorCode == errorSigninNotExist) return errorSigninNotExistLT;
+    return _genericError;
+  }
 }

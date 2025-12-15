@@ -89,6 +89,7 @@ abstract class PollChoice with _$PollChoice {
     required int count,
     String? subLabel,
     @JsonKey(includeFromJson: false, includeToJson: false) Color? color,
+    @Default(false) bool isAnswer,
   }) = _PollChoice;
 
   factory PollChoice.fromJson(Map<String, dynamic> json) =>

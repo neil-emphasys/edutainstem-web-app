@@ -10,7 +10,7 @@ import 'package:edutainstem/core/services/dialog_services.dart';
 import 'package:edutainstem/core/services/validator_service.dart';
 import 'package:edutainstem/domain/models/auth/auth_model.dart';
 import 'package:edutainstem/injection.dart';
-import 'package:edutainstem/presentation/pages/home_screen.dart';
+import 'package:edutainstem/presentation/pages/sign_up_done_screen.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +46,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return BlocListener<SignUpBloc, SignUpState>(
       listener: (context, state) {
         state.whenOrNull(
-          signedUp: (user) => context.goNamed(HomeScreen.routeName),
+          signedUp: (user) => context.goNamed(SignUpDoneScreen.routeName),
           error: (title, message) => it<DialogService>().showGiffyDialog(
             context,
             type: GiffyDialogType.error,

@@ -53,6 +53,7 @@ _PollChoice _$PollChoiceFromJson(Map<String, dynamic> json) => _PollChoice(
   label: json['label'] as String,
   count: (json['count'] as num).toInt(),
   subLabel: json['subLabel'] as String?,
+  isAnswer: json['isAnswer'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$PollChoiceToJson(_PollChoice instance) =>
@@ -60,6 +61,7 @@ Map<String, dynamic> _$PollChoiceToJson(_PollChoice instance) =>
       'label': instance.label,
       'count': instance.count,
       'subLabel': instance.subLabel,
+      'isAnswer': instance.isAnswer,
     };
 
 _PollChoiceGroup _$PollChoiceGroupFromJson(Map<String, dynamic> json) =>

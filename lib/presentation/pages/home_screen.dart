@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     //! TEMP: FOR DEV ONLY
     // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   DevFirebaseFunctions().addEleTopic({});
+    //   DevFirebaseFunctions().getRoomDetails({});
     // });
   }
 

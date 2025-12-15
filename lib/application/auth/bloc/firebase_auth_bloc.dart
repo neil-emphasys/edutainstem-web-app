@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:edutainstem/core/constants/constants.dart';
+import 'package:edutainstem/core/constants/firebase_constants.dart';
 import 'package:edutainstem/core/enums/sign_in_type_enum.dart';
 import 'package:edutainstem/core/services/auth_storage_services.dart';
+import 'package:edutainstem/core/services/loader_services.dart';
 import 'package:edutainstem/domain/models/auth/auth_model.dart';
 import 'package:edutainstem/domain/repositories/firebase_auth_repository.dart';
+import 'package:edutainstem/injection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'firebase_auth_bloc.freezed.dart';
@@ -38,7 +40,6 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
       if (user == null && userModel == null) {
         add(const FirebaseAuthEvent.authChanged(null));
       } else {
-        debugPrint('HEEEEERE');
         add(FirebaseAuthEvent.authChanged(user, userModel: userModel));
       }
     });
@@ -104,12 +105,25 @@ class FirebaseAuthBloc extends Bloc<FirebaseAuthEvent, FirebaseAuthState> {
 
     on<_EventSignIn>((event, emit) async {
       emit(const FirebaseAuthState.loading());
+
+      it<LoaderServices>().show(status: 'Signing In...');
+
       final result = await firebaseAuthRepository.signIn(
         event.email,
         event.password,
       );
+
+      it<LoaderServices>().dismiss();
+
       result.fold(
-        (failure) => emit(FirebaseAuthState.error(message: failure.message)),
+        (failure) {
+          emit(
+            FirebaseAuthState.error(
+              message: FirebaseConstants.users.mapErrorCodes(failure.message),
+            ),
+          );
+          // emit(const FirebaseAuthState.initial());
+        },
         (resp) {
           final user = FirebaseAuth.instance.currentUser;
 

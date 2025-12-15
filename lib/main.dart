@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:motion/motion.dart';
+import 'package:toastification/toastification.dart';
 
 void main() async {
   final WidgetsBinding widgetsBinding =
@@ -59,21 +60,23 @@ class MainApp extends StatelessWidget {
         designSize: const Size(360, 690),
         minTextAdapt: true,
         builder: (_, child) {
-          return MaterialApp.router(
-            routerConfig: router,
+          return ToastificationWrapper(
+            child: MaterialApp.router(
+              routerConfig: router,
 
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              // primaryColor: AppColors.primary,
-              colorSchemeSeed: AppColors.primary,
-              // fontFamily: FontFamily.roboto,
-              textTheme: GoogleFonts.robotoTextTheme(),
-              visualDensity: VisualDensity.adaptivePlatformDensity,
-            ),
-            builder: EasyLoading.init(
-              builder: (context, child) => KeyboardVisibilityProvider(
-                child: KeyboardDismissOnTap(
-                  child: child ?? const SizedBox.shrink(),
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                // primaryColor: AppColors.primary,
+                colorSchemeSeed: AppColors.primary,
+                // fontFamily: FontFamily.roboto,
+                textTheme: GoogleFonts.robotoTextTheme(),
+                visualDensity: VisualDensity.adaptivePlatformDensity,
+              ),
+              builder: EasyLoading.init(
+                builder: (context, child) => KeyboardVisibilityProvider(
+                  child: KeyboardDismissOnTap(
+                    child: child ?? const SizedBox.shrink(),
+                  ),
                 ),
               ),
             ),

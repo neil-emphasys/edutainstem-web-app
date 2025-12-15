@@ -1,16 +1,11 @@
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
 import 'package:edutainstem/core/components/app_bar_chart.dart';
-import 'package:edutainstem/core/components/app_button.dart';
-import 'package:edutainstem/core/gen/assets.gen.dart';
-import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/domain/models/assessments/assessments_model.dart';
 import 'package:edutainstem/domain/models/rooms/room_model.dart';
 import 'package:edutainstem/domain/repositories/room_repository.dart';
 import 'package:edutainstem/injection.dart';
-import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class RoomStatisticsWidget extends StatelessWidget {
@@ -71,7 +66,7 @@ class RoomStatisticsWidget extends StatelessWidget {
 
         // mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
+          /* Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -110,23 +105,24 @@ class RoomStatisticsWidget extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: 40.h),
-
+          SizedBox(height: 40.h), */
           StreamBuilder(
             stream: repo.watchAssessmentStatistics(roomId: room.id ?? ''),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Skeletonizer(
                   enabled: true,
-                  child: PollWidget(questions: loadingPollChoiceGroup),
+                  child: PollWidget(
+                    questions: loadingPollChoiceGroup,
+                    room: room,
+                  ),
                 );
               }
 
               final either = snapshot.data!;
-              return either.fold(
-                (f) => Text('Error: $f'),
-                (answers) => PollWidget(questions: answers.data),
-              );
+              return either.fold((f) => Text('Error: $f'), (answers) {
+                return PollWidget(questions: answers.data, room: room);
+              });
             },
           ),
           // PollWidget(questions: seeSamplePolls),

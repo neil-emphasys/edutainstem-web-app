@@ -1,10 +1,7 @@
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
 import 'package:edutainstem/core/components/app_button.dart';
-import 'package:edutainstem/core/components/app_dropdown_field.dart';
-import 'package:edutainstem/core/components/app_text_form_field.dart';
-import 'package:edutainstem/core/enums/difficulty_enum.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
-import 'package:edutainstem/core/helpers/string_helpers.dart';
+import 'package:edutainstem/domain/models/help_requests/help_request_model.dart';
 import 'package:edutainstem/domain/models/rooms/room_model.dart';
 import 'package:edutainstem/domain/repositories/room_repository.dart';
 import 'package:edutainstem/injection.dart';
@@ -12,8 +9,8 @@ import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class RoomDifficultyChartWidget extends StatefulWidget {
-  const RoomDifficultyChartWidget({
+class RoomSupportRequestsWidget extends StatefulWidget {
+  const RoomSupportRequestsWidget({
     required this.blocInstance,
     required this.room,
     super.key,
@@ -23,11 +20,11 @@ class RoomDifficultyChartWidget extends StatefulWidget {
   final RoomModel room;
 
   @override
-  State<RoomDifficultyChartWidget> createState() =>
+  State<RoomSupportRequestsWidget> createState() =>
       _DifficultyChartWidgetState();
 }
 
-class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
+class _DifficultyChartWidgetState extends State<RoomSupportRequestsWidget> {
   final List<StudentEnrollment> changedDifficulty = [];
 
   void changed(StudentEnrollment student) {
@@ -105,7 +102,7 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
           ),
           SizedBox(height: 40.h), */
           StreamBuilder(
-            stream: repo.watchAssessmentStudents(roomId: widget.room.id ?? ''),
+            stream: repo.streamPendingRequests(widget.room.id ?? ''),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const CircularProgressIndicator();
               final either = snapshot.data!;
@@ -117,14 +114,8 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                   final listStudentsAnswers = answers.data;
                   final totalStudents = listStudentsAnswers
                       .length; // this is the total of students that should have done the assessment before closing the assessment
-                  final totalStudentsFinishedAssessment = listStudentsAnswers
-                      .where((element) {
-                        final difficulty = element.difficulty;
-
-                        return difficulty != null && difficulty.isNotEmpty;
-                      })
-                      .toList()
-                      .length;
+                  final totalStudentsFinishedAssessment =
+                      listStudentsAnswers.length;
 
                   final columnTitleTextStyle = AppTextStyles.getStyle(
                     AppTextStyle.bodySmall,
@@ -144,7 +135,7 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Text(
-                            'Name',
+                            'Student Name',
                             style: columnTitleTextStyle,
                             textAlign: TextAlign.center,
                           ),
@@ -156,7 +147,7 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Text(
-                            'Current Assigned Difficulty',
+                            'Requester\'s Note',
                             style: columnTitleTextStyle,
                             textAlign: TextAlign.center,
                           ),
@@ -168,7 +159,7 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Text(
-                            'Change Difficulty to',
+                            'Is Done?',
                             style: columnTitleTextStyle,
                             textAlign: TextAlign.center,
                           ),
@@ -182,28 +173,13 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                   rows.add(rowCellsColumnTitle);
 
                   for (int i = 0; i < listStudentsAnswers.length; i++) {
-                    final studentInstance = listStudentsAnswers[i];
-                    final difficulty = listStudentsAnswers[i].difficulty ?? '';
-
-                    if (difficulty.isEmpty) continue;
-
-                    final preferredLanguageController =
-                        TextEditingController.fromValue(
-                          TextEditingValue(
-                            text: listStudentsAnswers[i].difficulty ?? '',
-                          ),
-                        );
-
-                    preferredLanguageController.text =
-                        listStudentsAnswers[i].difficulty ?? '';
-
                     final rowCells = <Widget>[
                       Container(
                         alignment: Alignment.center,
                         child: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Text(
-                            listStudentsAnswers[i].name,
+                            listStudentsAnswers[i].requesterName,
                             style: AppTextStyles.getStyle(
                               AppTextStyle.bodySmall,
                               modifier: (base) => base.copyWith(
@@ -220,8 +196,9 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                         child: Padding(
                           padding: const EdgeInsets.all(12),
                           child: Text(
-                            listStudentsAnswers[i].difficulty?.capitalize() ??
-                                '',
+                            listStudentsAnswers[i].note.isNotEmpty
+                                ? listStudentsAnswers[i].note
+                                : 'N/A',
                             style: AppTextStyles.getStyle(
                               AppTextStyle.bodySmall,
                               modifier: (base) => base.copyWith(
@@ -236,31 +213,15 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                       Padding(
                         padding: const EdgeInsets.all(12),
                         child: Center(
-                          child: AppDropdownField(
-                            fieldTitle: '',
-                            initialValue: preferredLanguageController.text
-                                .capitalize(),
-                            controller: preferredLanguageController,
-                            fieldType: AppTextFormFieldType.filled,
-                            isFieldTitleSeparated: false,
-                            dropdownItems: DifficultyEnum.values
-                                .map((e) => e.name.toString().capitalize())
-                                .toList(),
-                            onChanged: (p0) => changed(
-                              studentInstance.copyWith(
-                                changedDifficulty: p0.toLowerCase(),
-                              ),
-                            ),
-                            style: AppTextStyles.getStyle(
-                              AppTextStyle.bodySmall,
-                              modifier: (base) => base.copyWith(
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0.3.sp,
-                              ),
-                            ),
-                            // validator: validator.compose([
-                            //   validator.required(fieldName: 'Preferred Language'),
-                            // ]),
+                          child: AppButton(
+                            title: 'Done',
+                            onPressed: () {
+                              repo.updateRequestStatus(
+                                roomId: widget.room.id ?? '',
+                                requestId: listStudentsAnswers[i].id,
+                                status: HelpQueueStatus.done,
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -277,46 +238,57 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                     rows.add(TableRow(children: rowCells));
                   }
 
-                  return Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          '$totalStudentsFinishedAssessment / $totalStudents Students are Done Answering Assessments',
+                  return listStudentsAnswers.isEmpty
+                      ? Text(
+                          'No support request/s needed so far',
                           style: columnTitleTextStyle.copyWith(
-                            color: AppColors.primary,
+                            color: AppColors.black,
                           ),
                           textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.r),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 1.5),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: Table(
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            border: const TableBorder.symmetric(
-                              inside: BorderSide(
-                                color: Colors.black,
-                                width: 1.2,
-                              ), // inner borders
+                        )
+                      : Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                '$totalStudents Student/s needs help',
+                                style: columnTitleTextStyle.copyWith(
+                                  color: AppColors.primary,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
-                            children: rows,
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
+                            SizedBox(height: 8.h),
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8.r),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 1.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                                child: Table(
+                                  defaultVerticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                  border: const TableBorder.symmetric(
+                                    inside: BorderSide(
+                                      color: Colors.black,
+                                      width: 1.2,
+                                    ), // inner borders
+                                  ),
+                                  children: rows,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
                 },
               );
             },
           ),
-          SizedBox(height: 24.h),
+          /* SizedBox(height: 24.h),
           Align(
             alignment: Alignment.centerRight,
             child: AppButton(
@@ -379,7 +351,7 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                 ),
               );
             },
-          ),
+          ), */
         ],
       ),
     );

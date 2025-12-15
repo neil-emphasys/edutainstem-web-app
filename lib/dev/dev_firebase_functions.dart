@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edutainstem/core/constants/firebase_constants.dart';
+import 'package:edutainstem/core/services/json_download_service.dart';
+import 'package:edutainstem/injection.dart';
 
 class DevFirebaseFunctions {
   Future<void> addEleTopic(Map<String, dynamic> topicData) async {
@@ -117,6 +120,22 @@ class DevFirebaseFunctions {
       };
 
       await FirebaseFirestore.instance.collection('ele').add(topicData);
+
+      print("✅ Topic added successfully to 'ele' collection.");
+    } catch (e) {
+      print('❌ Failed to add topic: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> getRoomDetails(Map<String, dynamic> topicData) async {
+    try {
+      final result = await FirebaseFirestore.instance
+          .collection(FirebaseConstants.room.name)
+          .doc('zzLB3TVghIj9INHrdWoX')
+          .get();
+
+      await it<JsonDownloadService>().saveJson(input: result.data() ?? {});
 
       print("✅ Topic added successfully to 'ele' collection.");
     } catch (e) {

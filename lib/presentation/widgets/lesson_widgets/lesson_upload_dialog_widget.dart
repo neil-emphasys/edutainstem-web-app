@@ -10,6 +10,7 @@ import 'package:edutainstem/core/components/app_time_picker_dialog.dart';
 import 'package:edutainstem/core/gen/assets.gen.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/domain/models/assessments/assessments_model.dart';
+import 'package:edutainstem/domain/models/rooms/room_model.dart';
 import 'package:edutainstem/domain/models/steps/step_model.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:expandable/expandable.dart';
@@ -1053,7 +1054,7 @@ class _SampleBarChartWidget extends StatelessWidget {
             ],
           ),
           SizedBox(height: 40.h),
-          PollWidget(questions: seeSamplePolls),
+          PollWidget(questions: seeSamplePolls, room: RoomModel.initial()),
         ],
       ),
     );

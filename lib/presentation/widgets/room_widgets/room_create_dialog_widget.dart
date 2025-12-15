@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:choice/choice.dart';
 import 'package:edutainstem/application/rooms/room_bloc/room_bloc.dart';
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
@@ -6,17 +8,19 @@ import 'package:edutainstem/core/components/app_easy_stepper.dart';
 import 'package:edutainstem/core/components/app_step_animated_container.dart';
 import 'package:edutainstem/core/components/app_text_form_field.dart';
 import 'package:edutainstem/core/components/app_time_picker_dialog.dart';
+import 'package:edutainstem/core/enums/difficulty_enum.dart';
 import 'package:edutainstem/core/gen/assets.gen.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/core/services/loader_services.dart';
 import 'package:edutainstem/core/services/validator_service.dart';
+import 'package:edutainstem/data/sources/remote/room_data_source_impl.dart';
+import 'package:edutainstem/domain/models/assessments/assessments_model.dart';
 import 'package:edutainstem/domain/models/lessons/lesson_model.dart';
 import 'package:edutainstem/domain/models/rooms/room_model.dart';
 import 'package:edutainstem/domain/models/steps/step_model.dart';
 import 'package:edutainstem/injection.dart';
 import 'package:edutainstem/presentation/widgets/room_widgets/room_code_widget.dart';
-import 'package:edutainstem/presentation/widgets/room_widgets/room_difficulty_chart_widget.dart';
-import 'package:edutainstem/presentation/widgets/room_widgets/room_statistics_widget.dart';
+import 'package:edutainstem/presentation/widgets/room_widgets/room_main_stat_wrapper_widget.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,9 +85,25 @@ class _RoomCreateDialogWidgetState extends State<RoomCreateDialogWidget> {
     return Duration(hours: hours, minutes: minutes).inMinutes;
   }
 
+  StreamSubscription<Map<DifficultyEnum, List<PollChoiceGroup>>>? _sub;
+
   @override
   void initState() {
     super.initState();
+
+    // “Tap” the stream here
+    _sub = RoomDataSourceImpl()
+        .watchQuizStatistics(room: widget.room ?? RoomModel.initial())
+        .listen(
+          (value) {
+            if (!mounted) return;
+            // setState(() => _latest = value);
+          },
+          onError: (e, st) {
+            // handle/log error
+          },
+          cancelOnError: false,
+        );
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.room != null) {
@@ -92,6 +112,12 @@ class _RoomCreateDialogWidgetState extends State<RoomCreateDialogWidget> {
         blocInstance.add(const RoomCreateEvent.setInitialData(maxStep: 3));
       }
     });
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel(); // IMPORTANT to avoid leaks
+    super.dispose();
   }
 
   @override
@@ -143,7 +169,8 @@ class _RoomCreateDialogWidgetState extends State<RoomCreateDialogWidget> {
                 created: (data, refetch) =>
                     RoomCodeWidget(blocInstance: blocInstance),
                 // closed: (room, refetch) => _SampleBarChartWidget(
-                closed: (room, refetch, isDifficultyView) => (isDifficultyView)
+                closed:
+                    (room, refetch, isDifficultyView) => /* (isDifficultyView)
                     ? RoomDifficultyChartWidget(
                         blocInstance: blocInstance,
                         room: room,
@@ -151,7 +178,10 @@ class _RoomCreateDialogWidgetState extends State<RoomCreateDialogWidget> {
                     : RoomStatisticsWidget(
                         blocInstance: blocInstance,
                         room: room,
-                      ),
+                      ) */ RoomMainStatWrapperWidget(
+                      blocInstance: blocInstance,
+                      room: room,
+                    ),
                 done: (data, lessons) => Container(
                   // color: Colors.red,
                   // constraints: BoxConstraints(minHeight: 0.6.sh),
@@ -251,9 +281,14 @@ class _RoomCreateDialogWidgetState extends State<RoomCreateDialogWidget> {
                                         int.tryParse(minutesController.text) ??
                                             0,
                                       ),
-                                      preferredLessons: lessonsSelected
-                                          .map((e) => e.id ?? '')
-                                          .toList(),
+                                      preferredLessons:
+                                          (lessonsSelected.isEmpty)
+                                          ? lessons
+                                                .map((e) => e.id ?? '')
+                                                .toList()
+                                          : lessonsSelected
+                                                .map((e) => e.id ?? '')
+                                                .toList(),
                                     ),
                                   );
                                 }

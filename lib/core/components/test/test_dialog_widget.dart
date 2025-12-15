@@ -1,5 +1,4 @@
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
-import 'package:edutainstem/core/components/app_bar_chart.dart';
 import 'package:edutainstem/core/gen/assets.gen.dart';
 import 'package:edutainstem/domain/models/assessments/assessments_model.dart';
 import 'package:edutainstem/injection.dart';
@@ -145,7 +144,7 @@ class _TestDialogWidgetState extends State<TestDialogWidget> {
                         ],
                       ),
                       SizedBox(height: 40.h),
-                      PollWidget(questions: seeSamplePolls),
+                      // PollWidget(questions: seeSamplePolls),
                     ],
                   ),
                 ),

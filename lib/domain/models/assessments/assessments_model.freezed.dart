@@ -589,7 +589,7 @@ as String,
 /// @nodoc
 mixin _$PollChoice {
 
- String get label; int get count; String? get subLabel;@JsonKey(includeFromJson: false, includeToJson: false) Color? get color;
+ String get label; int get count; String? get subLabel;@JsonKey(includeFromJson: false, includeToJson: false) Color? get color; bool get isAnswer;
 /// Create a copy of PollChoice
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -602,16 +602,16 @@ $PollChoiceCopyWith<PollChoice> get copyWith => _$PollChoiceCopyWithImpl<PollCho
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollChoice&&(identical(other.label, label) || other.label == label)&&(identical(other.count, count) || other.count == count)&&(identical(other.subLabel, subLabel) || other.subLabel == subLabel)&&(identical(other.color, color) || other.color == color));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollChoice&&(identical(other.label, label) || other.label == label)&&(identical(other.count, count) || other.count == count)&&(identical(other.subLabel, subLabel) || other.subLabel == subLabel)&&(identical(other.color, color) || other.color == color)&&(identical(other.isAnswer, isAnswer) || other.isAnswer == isAnswer));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,label,count,subLabel,color);
+int get hashCode => Object.hash(runtimeType,label,count,subLabel,color,isAnswer);
 
 @override
 String toString() {
-  return 'PollChoice(label: $label, count: $count, subLabel: $subLabel, color: $color)';
+  return 'PollChoice(label: $label, count: $count, subLabel: $subLabel, color: $color, isAnswer: $isAnswer)';
 }
 
 
@@ -622,7 +622,7 @@ abstract mixin class $PollChoiceCopyWith<$Res>  {
   factory $PollChoiceCopyWith(PollChoice value, $Res Function(PollChoice) _then) = _$PollChoiceCopyWithImpl;
 @useResult
 $Res call({
- String label, int count, String? subLabel,@JsonKey(includeFromJson: false, includeToJson: false) Color? color
+ String label, int count, String? subLabel,@JsonKey(includeFromJson: false, includeToJson: false) Color? color, bool isAnswer
 });
 
 
@@ -639,13 +639,14 @@ class _$PollChoiceCopyWithImpl<$Res>
 
 /// Create a copy of PollChoice
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? label = null,Object? count = null,Object? subLabel = freezed,Object? color = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? label = null,Object? count = null,Object? subLabel = freezed,Object? color = freezed,Object? isAnswer = null,}) {
   return _then(_self.copyWith(
 label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int,subLabel: freezed == subLabel ? _self.subLabel : subLabel // ignore: cast_nullable_to_non_nullable
 as String?,color: freezed == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
-as Color?,
+as Color?,isAnswer: null == isAnswer ? _self.isAnswer : isAnswer // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -730,10 +731,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color,  bool isAnswer)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PollChoice() when $default != null:
-return $default(_that.label,_that.count,_that.subLabel,_that.color);case _:
+return $default(_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswer);case _:
   return orElse();
 
 }
@@ -751,10 +752,10 @@ return $default(_that.label,_that.count,_that.subLabel,_that.color);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color,  bool isAnswer)  $default,) {final _that = this;
 switch (_that) {
 case _PollChoice():
-return $default(_that.label,_that.count,_that.subLabel,_that.color);case _:
+return $default(_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswer);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -771,10 +772,10 @@ return $default(_that.label,_that.count,_that.subLabel,_that.color);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color,  bool isAnswer)?  $default,) {final _that = this;
 switch (_that) {
 case _PollChoice() when $default != null:
-return $default(_that.label,_that.count,_that.subLabel,_that.color);case _:
+return $default(_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswer);case _:
   return null;
 
 }
@@ -786,13 +787,14 @@ return $default(_that.label,_that.count,_that.subLabel,_that.color);case _:
 @JsonSerializable()
 
 class _PollChoice implements PollChoice {
-  const _PollChoice({required this.label, required this.count, this.subLabel, @JsonKey(includeFromJson: false, includeToJson: false) this.color});
+  const _PollChoice({required this.label, required this.count, this.subLabel, @JsonKey(includeFromJson: false, includeToJson: false) this.color, this.isAnswer = false});
   factory _PollChoice.fromJson(Map<String, dynamic> json) => _$PollChoiceFromJson(json);
 
 @override final  String label;
 @override final  int count;
 @override final  String? subLabel;
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  Color? color;
+@override@JsonKey() final  bool isAnswer;
 
 /// Create a copy of PollChoice
 /// with the given fields replaced by the non-null parameter values.
@@ -807,16 +809,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollChoice&&(identical(other.label, label) || other.label == label)&&(identical(other.count, count) || other.count == count)&&(identical(other.subLabel, subLabel) || other.subLabel == subLabel)&&(identical(other.color, color) || other.color == color));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollChoice&&(identical(other.label, label) || other.label == label)&&(identical(other.count, count) || other.count == count)&&(identical(other.subLabel, subLabel) || other.subLabel == subLabel)&&(identical(other.color, color) || other.color == color)&&(identical(other.isAnswer, isAnswer) || other.isAnswer == isAnswer));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,label,count,subLabel,color);
+int get hashCode => Object.hash(runtimeType,label,count,subLabel,color,isAnswer);
 
 @override
 String toString() {
-  return 'PollChoice(label: $label, count: $count, subLabel: $subLabel, color: $color)';
+  return 'PollChoice(label: $label, count: $count, subLabel: $subLabel, color: $color, isAnswer: $isAnswer)';
 }
 
 
@@ -827,7 +829,7 @@ abstract mixin class _$PollChoiceCopyWith<$Res> implements $PollChoiceCopyWith<$
   factory _$PollChoiceCopyWith(_PollChoice value, $Res Function(_PollChoice) _then) = __$PollChoiceCopyWithImpl;
 @override @useResult
 $Res call({
- String label, int count, String? subLabel,@JsonKey(includeFromJson: false, includeToJson: false) Color? color
+ String label, int count, String? subLabel,@JsonKey(includeFromJson: false, includeToJson: false) Color? color, bool isAnswer
 });
 
 
@@ -844,13 +846,14 @@ class __$PollChoiceCopyWithImpl<$Res>
 
 /// Create a copy of PollChoice
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? label = null,Object? count = null,Object? subLabel = freezed,Object? color = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? label = null,Object? count = null,Object? subLabel = freezed,Object? color = freezed,Object? isAnswer = null,}) {
   return _then(_PollChoice(
 label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int,subLabel: freezed == subLabel ? _self.subLabel : subLabel // ignore: cast_nullable_to_non_nullable
 as String?,color: freezed == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
-as Color?,
+as Color?,isAnswer: null == isAnswer ? _self.isAnswer : isAnswer // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

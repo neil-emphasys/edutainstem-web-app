@@ -21,6 +21,7 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
   @override
   Future<UserModel> signInWithCredentials() async {
     try {
+      debugPrint('ZXCZXCZXCX');
       // --- Web: use Firebase Auth's popup flow (recommended) ---
       final provider = GoogleAuthProvider();
       final userCred = await FirebaseAuth.instance.signInWithPopup(provider);
@@ -35,10 +36,11 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
       debugPrint(
         'FirebaseAuthException in signInWithCredentials: ${e.code} ${e.message}',
       );
-      debugPrintStack(stackTrace: st);
+      // debugPrintStack(stackTrace: st);
       rethrow;
     } catch (e, st) {
-      debugPrintStack(stackTrace: st);
+      debugPrint('FirebaseAuthException in signInWithCredentials: $e');
+      // debugPrintStack(stackTrace: st);
       rethrow;
     }
   }
@@ -100,13 +102,26 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
       //     .limit(1)
       //     .get();
 
-      if (qs.docs.isEmpty) throw (FirebaseConstants.users.userNotExist);
+      if (qs.docs.isEmpty) throw (FirebaseConstants.users.errorSigninNotExist);
 
       final doc = qs.docs.first;
       final user = UserModel.fromJson(Map<String, dynamic>.from(doc.data()));
 
       return user;
+    } on FirebaseAuthException catch (e, st) {
+      debugPrint(
+        'FirebaseAuthException in signInWithCredentials: ${e.code} ${e.message}',
+      );
+
+      switch (e.code) {
+        case 'invalid-credential':
+          throw (FirebaseConstants.users.errorSigninNotExist);
+      }
+
+      // debugPrintStack(stackTrace: st);
+      rethrow;
     } catch (e) {
+      debugPrint('SIGN IN ERROR: $e');
       rethrow;
     }
   }

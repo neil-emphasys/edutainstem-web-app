@@ -1,60 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:edutainstem/core/enums/difficulty_enum.dart';
+import 'package:edutainstem/domain/models/post_question/post_question_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/v4.dart';
 
 part 'lesson_model.freezed.dart';
-part 'lesson_model.g.dart'; // only if you're using json_serializable
-
-// @freezed
-// abstract class LessonModel with _$LessonModel {
-//   const factory LessonModel({
-//     required String id,
-//     required String title,
-//     required String description,
-//     required int hours,
-//     required int minutes,
-//     required String subject,
-//     required String topic,
-//     required List<LessonSlidesModel> slides,
-//     // Add tag properties here
-//   }) = _LessonModel;
-
-//   factory LessonModel.fromJson(Map<String, dynamic> json) =>
-//       _$LessonModelFromJson(json);
-
-//   factory LessonModel.initial() {
-//     return LessonModel(
-//       id: const UuidV4().generate(),
-//       title: '',
-//       description: '',
-//       hours: 0,
-//       minutes: 0,
-//       subject: '',
-//       topic: '',
-//       slides: [],
-//     );
-//   }
-// }
-
-// @freezed
-// abstract class LessonSlidesModel with _$LessonSlidesModel {
-//   const factory LessonSlidesModel({
-//     required String id,
-//     required String title,
-//     required String content,
-//     // Add tag properties here
-//   }) = _LessonSlidesModel;
-
-//   factory LessonSlidesModel.fromJson(Map<String, dynamic> json) =>
-//       _$LessonSlidesModelFromJson(json);
-
-//   factory LessonSlidesModel.initial() {
-//     return LessonSlidesModel(
-//       id: const UuidV4().generate(),
-//       title: '',
-//       content: '',
-//     );
-//   }
-// }
+part 'lesson_model.g.dart';
 
 /// ---- Converters ----
 
@@ -90,13 +41,13 @@ enum SlideType {
 @freezed
 abstract class LessonModel with _$LessonModel {
   const factory LessonModel({
-    // required String id,
     required String title,
     required String description,
     @NumToInt() required int durationMinutes,
     required AgeRange ageRange,
     required List<String> tags,
     required TheoryContent theoryContent,
+    required Exam exam,
 
     /// Optional: keep Firestore doc id if you want it
     @JsonKey(includeFromJson: false, includeToJson: false) String? id,
@@ -115,19 +66,25 @@ abstract class LessonModel with _$LessonModel {
     return model.copyWith(id: doc.id); // attach doc id
   }
 
+  /// Firestore-ready map for writes (id is ignored)
+  // Map<String, dynamic> toDoc() => toJson();
+
   factory LessonModel.initial() {
-    return const LessonModel(
+    return LessonModel(
+      id: const UuidV4().generate(),
       title: '',
       description: '',
       durationMinutes: 0,
-      ageRange: AgeRange(max: 0, min: 0),
+      ageRange: const AgeRange(max: 0, min: 0),
       tags: [],
-      theoryContent: TheoryContent(basic: []),
+      theoryContent: const TheoryContent(
+        basic: [],
+        intermediate: [],
+        advanced: [],
+      ),
+      exam: const Exam(basic: [], intermediate: [], advanced: []),
     );
   }
-
-  /// Firestore-ready map for writes (id is ignored)
-  // Map<String, dynamic> toDoc() => toJson();
 }
 
 @freezed
@@ -143,10 +100,40 @@ abstract class AgeRange with _$AgeRange {
 
 @freezed
 abstract class TheoryContent with _$TheoryContent {
-  const factory TheoryContent({required List<Slide> basic}) = _TheoryContent;
+  const factory TheoryContent({
+    required List<Slide> basic,
+    required List<Slide> intermediate,
+    required List<Slide> advanced,
+  }) = _TheoryContent;
 
   factory TheoryContent.fromJson(Map<String, dynamic> json) =>
       _$TheoryContentFromJson(json);
+}
+
+@freezed
+abstract class Exam with _$Exam {
+  const factory Exam({
+    required List<PostQuestionModel> basic,
+    required List<PostQuestionModel> intermediate,
+    required List<PostQuestionModel> advanced,
+  }) = _Exam;
+
+  factory Exam.fromJson(Map<String, dynamic> json) => _$ExamFromJson(json);
+}
+
+extension ExamHelper on Exam {
+  List<PostQuestionModel> getDiffQuestions(DifficultyEnum difficulty) {
+    switch (difficulty) {
+      case DifficultyEnum.basic:
+        return basic;
+      case DifficultyEnum.intermediate:
+        return intermediate;
+      case DifficultyEnum.advance:
+        return advanced;
+      default:
+        return [];
+    }
+  }
 }
 
 @freezed
@@ -161,5 +148,83 @@ abstract class Slide with _$Slide {
     required SlideType type,
   }) = _Slide;
 
+  /* factory Slide.fromJson(Map<String, dynamic> json) {
+    final asd = _$SlideFromJson(json);
+    return asd;
+  } */
+
   factory Slide.fromJson(Map<String, dynamic> json) => _$SlideFromJson(json);
+}
+
+// @freezed
+// abstract class LessonSlideModel with _$LessonSlideModel {
+//   const factory LessonSlideModel({
+//     String? title,
+//     String? content,
+//     String? caption,
+//     String? imageURL,
+//     String? videoURL,
+//     String? link,
+//     required SlideType type,
+//   }) = _LessonSlideModel;
+
+//   factory LessonSlideModel.fromJson(Map<String, dynamic> json) =>
+//       _$LessonSlideModelFromJson(json);
+// }
+
+// extension LessonModelHelper on LessonModel {}
+
+extension LessonModelHelper on LessonModel {
+  List<PostQuestionModel> getExam({required DifficultyEnum difficulty}) {
+    List<PostQuestionModel> slides = [];
+
+    switch (difficulty) {
+      case DifficultyEnum.basic:
+        slides = exam.basic;
+        break;
+      case DifficultyEnum.intermediate:
+        slides = exam.intermediate;
+        break;
+      case DifficultyEnum.advance:
+        slides = exam.advanced;
+        break;
+    }
+
+    return slides;
+  }
+
+  List<Slide> getSlides({required DifficultyEnum difficulty}) {
+    List<Slide> slides = [];
+
+    switch (difficulty) {
+      case DifficultyEnum.basic:
+        slides = theoryContent.basic;
+        break;
+      case DifficultyEnum.intermediate:
+        slides = theoryContent.intermediate;
+        break;
+      case DifficultyEnum.advance:
+        slides = theoryContent.advanced;
+        break;
+    }
+
+    return slides;
+  }
+}
+
+extension ListLessonModelHelper on List<LessonModel> {
+  List<PostQuestionModel> getExamQuestions({
+    required DifficultyEnum difficulty,
+  }) {
+    switch (difficulty) {
+      case DifficultyEnum.basic:
+        return expand((lesson) => lesson.exam.basic).toList();
+
+      case DifficultyEnum.intermediate:
+        return expand((lesson) => lesson.exam.intermediate).toList();
+
+      case DifficultyEnum.advance:
+        return expand((lesson) => lesson.exam.advanced).toList();
+    }
+  }
 }

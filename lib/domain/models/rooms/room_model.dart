@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:edutainstem/core/enums/difficulty_enum.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/v4.dart';
 
@@ -20,13 +20,23 @@ abstract class RoomModel with _$RoomModel {
     required String createdByName,
     required int duration,
     required List<String> preferredLessons,
+
+    /// Accepts either:
+    /// 1) Map<String, StudentEnrollmentModel>
+    /// 2) List<Map<String, StudentEnrollmentModel>>  (like your sample)
+    @StudentsEnrolledConverter()
+    @Default(<String, StudentEnrollmentModel>{})
+    Map<String, StudentEnrollmentModel> studentsEnrolled,
     // Add tag properties here
   }) = _RoomModel;
 
   factory RoomModel.fromJson(Map<String, dynamic> json) =>
       _$RoomModelFromJson(json);
 
-  factory RoomModel.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
+  factory RoomModel.fromDoc(
+    DocumentSnapshot<Map<String, dynamic>> doc, {
+    String,
+  }) {
     final data = doc.data();
     if (data == null) {
       throw StateError('Missing data for document: ${doc.id}');
@@ -51,41 +61,103 @@ abstract class RoomModel with _$RoomModel {
   }
 }
 
-/* @freezed
-abstract class RoomStudentsEnrolledModel with _$RoomStudentsEnrolledModel {
-  const factory RoomStudentsEnrolledModel({
-    @JsonKey(includeFromJson: false, includeToJson: false) String? id,
-    required String userID,
-    required String name,
+@freezed
+abstract class StudentEnrollmentModel with _$StudentEnrollmentModel {
+  @JsonSerializable(explicitToJson: true)
+  const factory StudentEnrollmentModel({
+    @JsonKey(unknownEnumValue: DifficultyEnum.basic)
+    @Default(DifficultyEnum.basic)
+    DifficultyEnum difficulty,
+    @Default('') String name,
+    @Default(<ExamEntryModel>[]) List<ExamEntryModel> examination,
+    @Default(<AssessmentEntryModel>[]) List<AssessmentEntryModel> assessment,
+  }) = _StudentEnrollmentModel;
 
-  }) = _RoomStudentsEnrolledModel;
+  factory StudentEnrollmentModel.fromJson(Map<String, dynamic> json) =>
+      _$StudentEnrollmentModelFromJson(json);
 
-  factory RoomStudentsEnrolledModel.fromJson(Map<String, dynamic> json) =>
-      _$RoomStudentsEnrolledModelFromJson(json);
-
-  factory RoomStudentsEnrolledModel.fromDoc(
-    DocumentSnapshot<Map<String, dynamic>> doc,
-  ) {
-    final data = doc.data();
-    if (data == null) {
-      throw StateError('Missing data for document: ${doc.id}');
+  factory StudentEnrollmentModel.fromArrayEntry(Map<String, dynamic> entry) {
+    if (entry.length != 1) {
+      throw ArgumentError('Invalid studentsEnrolled entry: $entry');
     }
-    return RoomStudentsEnrolledModel.fromJson({...data, 'Document ID': doc.id});
-  }
+    final uid = entry.keys.first;
+    final value = entry[uid];
 
-  /* factory RoomModel.initial() {
-    return RoomModel(
-      id: const UuidV4().generate(),
-      title: '',
-      description: '',
-      isAssessmentOpen: false,
-      isOpen: true,
-      roomCode: '',
-      duration: 0,
-      preferredLessons: [],
-    );
-  } */
-} */
+    // Normal (recommended) shape
+    if (value is Map) {
+      final inner = Map<String, dynamic>.from(value);
+      final name = (inner['name'] ?? '') as String;
+      final difficulty = DifficultyEnum.fromString(
+        (inner['difficulty'] ?? '') as String,
+      );
+
+      final rawAssess = (inner['examination'] ?? const []) as List<dynamic>;
+      final examination = rawAssess
+          .map(
+            (e) => ExamEntryModel.fromJson(Map<String, dynamic>.from(e as Map)),
+          )
+          .toList();
+
+      return StudentEnrollmentModel(
+        name: name,
+        examination: examination,
+        difficulty: difficulty,
+      );
+    }
+
+    // Legacy shape: { uid: [ {qid, answerIndex}, ... ] }
+    /* if (value is List) {
+      final assessment = value
+          .map(
+            (e) =>
+                AssessmentAnswer.fromJson(Map<String, dynamic>.from(e as Map)),
+          )
+          .toList();
+      return StudentEnrollment(uid: uid, name: '', assessment: assessment);
+    } */
+
+    // Unknown shape; return minimal
+    return const StudentEnrollmentModel();
+  }
+}
+
+@freezed
+abstract class ExamEntryModel with _$ExamEntryModel {
+  @JsonSerializable(explicitToJson: true)
+  const factory ExamEntryModel({
+    @Default('') String qid,
+    @Default('') String lid,
+    required AnswerModel answer,
+  }) = _ExamEntryModel;
+
+  factory ExamEntryModel.fromJson(Map<String, dynamic> json) =>
+      _$ExamEntryModelFromJson(json);
+}
+
+@freezed
+abstract class AnswerModel with _$AnswerModel {
+  const factory AnswerModel({
+    @Default('') String id,
+    @Default('') String choice,
+    @Default(false) bool isCorrectChoice,
+  }) = _AnswerModel;
+
+  factory AnswerModel.fromJson(Map<String, dynamic> json) =>
+      _$AnswerModelFromJson(json);
+}
+
+@freezed
+abstract class AssessmentEntryModel with _$AssessmentEntryModel {
+  const factory AssessmentEntryModel({
+    @Default('') String qid,
+
+    /// Source uses string indices ("1", "2", etc.)
+    @Default('') String answerIndex,
+  }) = _AssessmentEntryModel;
+
+  factory AssessmentEntryModel.fromJson(Map<String, dynamic> json) =>
+      _$AssessmentEntryModelFromJson(json);
+}
 
 @freezed
 abstract class AssessmentAnswer with _$AssessmentAnswer {
@@ -170,6 +242,57 @@ abstract class StudentEnrollment with _$StudentEnrollment {
       'assessment': assessment.map((a) => a.toJson()).toList(),
     },
   }; */
+}
+
+/// Converts the `studentsEnrolled` field from either:
+/// - Map<String, dynamic>  (preferred)
+/// - List<dynamic> of single-entry maps (your sample)
+class StudentsEnrolledConverter
+    implements JsonConverter<Map<String, StudentEnrollmentModel>, Object?> {
+  const StudentsEnrolledConverter();
+
+  @override
+  Map<String, StudentEnrollmentModel> fromJson(Object? json) {
+    if (json == null) return <String, StudentEnrollmentModel>{};
+
+    // Case 1: Already a map keyed by uid
+    if (json is Map<String, dynamic>) {
+      return json.map(
+        (key, value) => MapEntry(
+          key,
+          StudentEnrollmentModel.fromJson(
+            value is Map<String, dynamic> ? value : <String, dynamic>{},
+          ),
+        ),
+      );
+    }
+
+    // Case 2: List of single-entry maps [{uid: {...}}, ...]
+    if (json is List) {
+      final result = <String, StudentEnrollmentModel>{};
+      for (final item in json) {
+        if (item is Map) {
+          item.forEach((key, value) {
+            if (key is String && value is Map) {
+              result[key] = StudentEnrollmentModel.fromJson(
+                Map<String, dynamic>.from(value),
+              );
+            }
+          });
+        }
+      }
+      return result;
+    }
+
+    // Fallback: empty map
+    return <String, StudentEnrollmentModel>{};
+  }
+
+  @override
+  Object toJson(Map<String, StudentEnrollmentModel> object) {
+    // Serialize as a plain map keyed by uid — easier to query/merge in Firestore.
+    return object.map((key, value) => MapEntry(key, value.toJson()));
+  }
 }
 
 extension RoomModelHelper on RoomModel {

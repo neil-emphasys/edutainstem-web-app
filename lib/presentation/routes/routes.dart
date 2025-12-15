@@ -8,6 +8,7 @@ import 'package:edutainstem/presentation/pages/main_dashboard_screen.dart';
 import 'package:edutainstem/presentation/pages/redirection_screens.dart';
 import 'package:edutainstem/presentation/pages/rooms_screen.dart';
 import 'package:edutainstem/presentation/pages/sign_in_screen.dart';
+import 'package:edutainstem/presentation/pages/sign_up_done_screen.dart';
 import 'package:edutainstem/presentation/pages/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -100,6 +101,13 @@ class Routes {
           name: SignUpScreen.routeName,
           builder: (context, state) => const SignUpScreen(),
         ),
+        GoRoute(
+          path: SignUpDoneScreen.routeName,
+          name: SignUpDoneScreen.routeName,
+          // builder: (context, state) => const RoomsScreen(),
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: SignUpDoneScreen()),
+        ),
 
         // Protected shell (sidebar + child pages)
         ShellRoute(
@@ -154,6 +162,8 @@ class Routes {
 
       // Centralized redirect that runs on every nav & when the bloc emits
       redirect: (context, state) {
+        // return SignUpDoneScreen.routeName;
+
         final status = authBloc.status; // from your bloc.getter
         final path = state.matchedLocation; // normalized path
         final full = state.uri.toString(); // keep query/fragment
