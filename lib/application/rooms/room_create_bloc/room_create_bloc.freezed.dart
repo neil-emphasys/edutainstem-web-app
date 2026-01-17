@@ -61,7 +61,7 @@ extension RoomCreateEventPatterns on RoomCreateEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _SetInitialData value)?  setInitialData,TResult Function( _PreviousStep value)?  previousStep,TResult Function( _NextStep value)?  nextStep,TResult Function( _CreateRoom value)?  createRoom,TResult Function( _SetRoom value)?  setRoom,TResult Function( _Close value)?  close,TResult Function( _ReOpen value)?  reOpen,TResult Function( _StartLesson value)?  startLesson,TResult Function( _UpdateEnrollmentsDifficulty value)?  updateEnrollmentsDifficulty,TResult Function( _SwitchCloseView value)?  switchCloseView,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( _SetInitialData value)?  setInitialData,TResult Function( _PreviousStep value)?  previousStep,TResult Function( _NextStep value)?  nextStep,TResult Function( _CreateRoom value)?  createRoom,TResult Function( _SetRoom value)?  setRoom,TResult Function( _Close value)?  close,TResult Function( _ReOpen value)?  reOpen,TResult Function( _StartLesson value)?  startLesson,TResult Function( _UpdateEnrollmentsDifficulty value)?  updateEnrollmentsDifficulty,TResult Function( _SwitchCloseView value)?  switchCloseView,TResult Function( _SetPreferredLessons value)?  setPreferredLessons,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case _SetInitialData() when setInitialData != null:
@@ -74,7 +74,8 @@ return close(_that);case _ReOpen() when reOpen != null:
 return reOpen(_that);case _StartLesson() when startLesson != null:
 return startLesson(_that);case _UpdateEnrollmentsDifficulty() when updateEnrollmentsDifficulty != null:
 return updateEnrollmentsDifficulty(_that);case _SwitchCloseView() when switchCloseView != null:
-return switchCloseView(_that);case _:
+return switchCloseView(_that);case _SetPreferredLessons() when setPreferredLessons != null:
+return setPreferredLessons(_that);case _:
   return orElse();
 
 }
@@ -92,7 +93,7 @@ return switchCloseView(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _SetInitialData value)  setInitialData,required TResult Function( _PreviousStep value)  previousStep,required TResult Function( _NextStep value)  nextStep,required TResult Function( _CreateRoom value)  createRoom,required TResult Function( _SetRoom value)  setRoom,required TResult Function( _Close value)  close,required TResult Function( _ReOpen value)  reOpen,required TResult Function( _StartLesson value)  startLesson,required TResult Function( _UpdateEnrollmentsDifficulty value)  updateEnrollmentsDifficulty,required TResult Function( _SwitchCloseView value)  switchCloseView,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( _SetInitialData value)  setInitialData,required TResult Function( _PreviousStep value)  previousStep,required TResult Function( _NextStep value)  nextStep,required TResult Function( _CreateRoom value)  createRoom,required TResult Function( _SetRoom value)  setRoom,required TResult Function( _Close value)  close,required TResult Function( _ReOpen value)  reOpen,required TResult Function( _StartLesson value)  startLesson,required TResult Function( _UpdateEnrollmentsDifficulty value)  updateEnrollmentsDifficulty,required TResult Function( _SwitchCloseView value)  switchCloseView,required TResult Function( _SetPreferredLessons value)  setPreferredLessons,}){
 final _that = this;
 switch (_that) {
 case _SetInitialData():
@@ -105,7 +106,8 @@ return close(_that);case _ReOpen():
 return reOpen(_that);case _StartLesson():
 return startLesson(_that);case _UpdateEnrollmentsDifficulty():
 return updateEnrollmentsDifficulty(_that);case _SwitchCloseView():
-return switchCloseView(_that);case _:
+return switchCloseView(_that);case _SetPreferredLessons():
+return setPreferredLessons(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -122,7 +124,7 @@ return switchCloseView(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _SetInitialData value)?  setInitialData,TResult? Function( _PreviousStep value)?  previousStep,TResult? Function( _NextStep value)?  nextStep,TResult? Function( _CreateRoom value)?  createRoom,TResult? Function( _SetRoom value)?  setRoom,TResult? Function( _Close value)?  close,TResult? Function( _ReOpen value)?  reOpen,TResult? Function( _StartLesson value)?  startLesson,TResult? Function( _UpdateEnrollmentsDifficulty value)?  updateEnrollmentsDifficulty,TResult? Function( _SwitchCloseView value)?  switchCloseView,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( _SetInitialData value)?  setInitialData,TResult? Function( _PreviousStep value)?  previousStep,TResult? Function( _NextStep value)?  nextStep,TResult? Function( _CreateRoom value)?  createRoom,TResult? Function( _SetRoom value)?  setRoom,TResult? Function( _Close value)?  close,TResult? Function( _ReOpen value)?  reOpen,TResult? Function( _StartLesson value)?  startLesson,TResult? Function( _UpdateEnrollmentsDifficulty value)?  updateEnrollmentsDifficulty,TResult? Function( _SwitchCloseView value)?  switchCloseView,TResult? Function( _SetPreferredLessons value)?  setPreferredLessons,}){
 final _that = this;
 switch (_that) {
 case _SetInitialData() when setInitialData != null:
@@ -135,7 +137,8 @@ return close(_that);case _ReOpen() when reOpen != null:
 return reOpen(_that);case _StartLesson() when startLesson != null:
 return startLesson(_that);case _UpdateEnrollmentsDifficulty() when updateEnrollmentsDifficulty != null:
 return updateEnrollmentsDifficulty(_that);case _SwitchCloseView() when switchCloseView != null:
-return switchCloseView(_that);case _:
+return switchCloseView(_that);case _SetPreferredLessons() when setPreferredLessons != null:
+return setPreferredLessons(_that);case _:
   return null;
 
 }
@@ -152,7 +155,7 @@ return switchCloseView(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int maxStep)?  setInitialData,TResult Function()?  previousStep,TResult Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)?  nextStep,TResult Function()?  createRoom,TResult Function( RoomModel room)?  setRoom,TResult Function( RoomModel room)?  close,TResult Function()?  reOpen,TResult Function()?  startLesson,TResult Function( RoomModel room,  List<StudentEnrollment> enrollments)?  updateEnrollmentsDifficulty,TResult Function( bool isDifficultyView)?  switchCloseView,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int maxStep)?  setInitialData,TResult Function()?  previousStep,TResult Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)?  nextStep,TResult Function()?  createRoom,TResult Function( RoomModel room)?  setRoom,TResult Function( RoomModel room)?  close,TResult Function()?  reOpen,TResult Function()?  startLesson,TResult Function( RoomModel room,  List<StudentEnrollment> enrollments)?  updateEnrollmentsDifficulty,TResult Function( bool isDifficultyView)?  switchCloseView,TResult Function( List<String>? lessons)?  setPreferredLessons,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SetInitialData() when setInitialData != null:
 return setInitialData(_that.maxStep);case _PreviousStep() when previousStep != null:
@@ -164,7 +167,8 @@ return close(_that.room);case _ReOpen() when reOpen != null:
 return reOpen();case _StartLesson() when startLesson != null:
 return startLesson();case _UpdateEnrollmentsDifficulty() when updateEnrollmentsDifficulty != null:
 return updateEnrollmentsDifficulty(_that.room,_that.enrollments);case _SwitchCloseView() when switchCloseView != null:
-return switchCloseView(_that.isDifficultyView);case _:
+return switchCloseView(_that.isDifficultyView);case _SetPreferredLessons() when setPreferredLessons != null:
+return setPreferredLessons(_that.lessons);case _:
   return orElse();
 
 }
@@ -182,7 +186,7 @@ return switchCloseView(_that.isDifficultyView);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int maxStep)  setInitialData,required TResult Function()  previousStep,required TResult Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)  nextStep,required TResult Function()  createRoom,required TResult Function( RoomModel room)  setRoom,required TResult Function( RoomModel room)  close,required TResult Function()  reOpen,required TResult Function()  startLesson,required TResult Function( RoomModel room,  List<StudentEnrollment> enrollments)  updateEnrollmentsDifficulty,required TResult Function( bool isDifficultyView)  switchCloseView,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int maxStep)  setInitialData,required TResult Function()  previousStep,required TResult Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)  nextStep,required TResult Function()  createRoom,required TResult Function( RoomModel room)  setRoom,required TResult Function( RoomModel room)  close,required TResult Function()  reOpen,required TResult Function()  startLesson,required TResult Function( RoomModel room,  List<StudentEnrollment> enrollments)  updateEnrollmentsDifficulty,required TResult Function( bool isDifficultyView)  switchCloseView,required TResult Function( List<String>? lessons)  setPreferredLessons,}) {final _that = this;
 switch (_that) {
 case _SetInitialData():
 return setInitialData(_that.maxStep);case _PreviousStep():
@@ -194,7 +198,8 @@ return close(_that.room);case _ReOpen():
 return reOpen();case _StartLesson():
 return startLesson();case _UpdateEnrollmentsDifficulty():
 return updateEnrollmentsDifficulty(_that.room,_that.enrollments);case _SwitchCloseView():
-return switchCloseView(_that.isDifficultyView);case _:
+return switchCloseView(_that.isDifficultyView);case _SetPreferredLessons():
+return setPreferredLessons(_that.lessons);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -211,7 +216,7 @@ return switchCloseView(_that.isDifficultyView);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int maxStep)?  setInitialData,TResult? Function()?  previousStep,TResult? Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)?  nextStep,TResult? Function()?  createRoom,TResult? Function( RoomModel room)?  setRoom,TResult? Function( RoomModel room)?  close,TResult? Function()?  reOpen,TResult? Function()?  startLesson,TResult? Function( RoomModel room,  List<StudentEnrollment> enrollments)?  updateEnrollmentsDifficulty,TResult? Function( bool isDifficultyView)?  switchCloseView,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int maxStep)?  setInitialData,TResult? Function()?  previousStep,TResult? Function( String? title,  String? description,  int? duration,  List<String>? preferredLessons)?  nextStep,TResult? Function()?  createRoom,TResult? Function( RoomModel room)?  setRoom,TResult? Function( RoomModel room)?  close,TResult? Function()?  reOpen,TResult? Function()?  startLesson,TResult? Function( RoomModel room,  List<StudentEnrollment> enrollments)?  updateEnrollmentsDifficulty,TResult? Function( bool isDifficultyView)?  switchCloseView,TResult? Function( List<String>? lessons)?  setPreferredLessons,}) {final _that = this;
 switch (_that) {
 case _SetInitialData() when setInitialData != null:
 return setInitialData(_that.maxStep);case _PreviousStep() when previousStep != null:
@@ -223,7 +228,8 @@ return close(_that.room);case _ReOpen() when reOpen != null:
 return reOpen();case _StartLesson() when startLesson != null:
 return startLesson();case _UpdateEnrollmentsDifficulty() when updateEnrollmentsDifficulty != null:
 return updateEnrollmentsDifficulty(_that.room,_that.enrollments);case _SwitchCloseView() when switchCloseView != null:
-return switchCloseView(_that.isDifficultyView);case _:
+return switchCloseView(_that.isDifficultyView);case _SetPreferredLessons() when setPreferredLessons != null:
+return setPreferredLessons(_that.lessons);case _:
   return null;
 
 }
@@ -858,6 +864,86 @@ class __$SwitchCloseViewCopyWithImpl<$Res>
   return _then(_SwitchCloseView(
 isDifficultyView: null == isDifficultyView ? _self.isDifficultyView : isDifficultyView // ignore: cast_nullable_to_non_nullable
 as bool,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class _SetPreferredLessons with DiagnosticableTreeMixin implements RoomCreateEvent {
+  const _SetPreferredLessons({final  List<String>? lessons}): _lessons = lessons;
+  
+
+ final  List<String>? _lessons;
+ List<String>? get lessons {
+  final value = _lessons;
+  if (value == null) return null;
+  if (_lessons is EqualUnmodifiableListView) return _lessons;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+
+/// Create a copy of RoomCreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SetPreferredLessonsCopyWith<_SetPreferredLessons> get copyWith => __$SetPreferredLessonsCopyWithImpl<_SetPreferredLessons>(this, _$identity);
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'RoomCreateEvent.setPreferredLessons'))
+    ..add(DiagnosticsProperty('lessons', lessons));
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetPreferredLessons&&const DeepCollectionEquality().equals(other._lessons, _lessons));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_lessons));
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'RoomCreateEvent.setPreferredLessons(lessons: $lessons)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$SetPreferredLessonsCopyWith<$Res> implements $RoomCreateEventCopyWith<$Res> {
+  factory _$SetPreferredLessonsCopyWith(_SetPreferredLessons value, $Res Function(_SetPreferredLessons) _then) = __$SetPreferredLessonsCopyWithImpl;
+@useResult
+$Res call({
+ List<String>? lessons
+});
+
+
+
+
+}
+/// @nodoc
+class __$SetPreferredLessonsCopyWithImpl<$Res>
+    implements _$SetPreferredLessonsCopyWith<$Res> {
+  __$SetPreferredLessonsCopyWithImpl(this._self, this._then);
+
+  final _SetPreferredLessons _self;
+  final $Res Function(_SetPreferredLessons) _then;
+
+/// Create a copy of RoomCreateEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? lessons = freezed,}) {
+  return _then(_SetPreferredLessons(
+lessons: freezed == lessons ? _self._lessons : lessons // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 

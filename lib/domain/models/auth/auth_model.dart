@@ -28,6 +28,7 @@ abstract class UserModel with _$UserModel {
     @JsonKey(includeFromJson: false, includeToJson: false) String? password,
     required LanguageEnum preferredLanguage,
     required bool enabled,
+    @Default([]) List<String> specializedTags,
   }) = _UserModel;
 
   // 👇 Needed to define custom methods/getters with bodies

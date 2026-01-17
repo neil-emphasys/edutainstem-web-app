@@ -41,7 +41,7 @@ dependencies:
   giffy_dialog: ^2.3.0
   glass_kit: ^4.0.1
   go_router: ^16.0.0
-  google_fonts: ^6.2.1
+  google_fonts: ^7.0.0
   google_sign_in: ^6.2.2
   hugeicons: ^1.1.0
   json_annotation: ^4.9.0

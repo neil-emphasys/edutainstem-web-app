@@ -66,44 +66,7 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
       width: 0.5.sw,
       padding: EdgeInsets.symmetric(vertical: 16.r, horizontal: 20.r),
       child: Column(
-        // shrinkWrap: true,
-
-        // mainAxisSize: MainAxisSize.min,
         children: [
-          /*  Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => context.pop(),
-                    icon: Image.asset(Assets.icons.png.goBack.path, width: 4.w),
-                  ),
-                  SizedBox(width: 4.w),
-                  Text(
-                    'Assigned Difficulty Modifiers',
-                    style: AppTextStyles.getStyle(
-                      AppTextStyle.bodySmall,
-                      modifier: (base) => base.copyWith(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.3.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              AppButton(
-                width: 48.w,
-                title: 'Switch View',
-                backgroundColor: AppColors.tigerEyeOrange,
-                onPressed: () => widget.blocInstance.add(
-                  const RoomCreateEvent.switchCloseView(),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 40.h), */
           StreamBuilder(
             stream: repo.watchAssessmentStudents(roomId: widget.room.id ?? ''),
             builder: (context, snapshot) {
@@ -277,40 +240,53 @@ class _DifficultyChartWidgetState extends State<RoomDifficultyChartWidget> {
                     rows.add(TableRow(children: rowCells));
                   }
 
-                  return Column(
-                    children: [
-                      Container(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          '$totalStudentsFinishedAssessment / $totalStudents Students are Done Answering Assessments',
-                          style: columnTitleTextStyle.copyWith(
-                            color: AppColors.primary,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(height: 8.h),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(8.r),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black, width: 1.5),
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                          child: Table(
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            border: const TableBorder.symmetric(
-                              inside: BorderSide(
-                                color: Colors.black,
-                                width: 1.2,
-                              ), // inner borders
+                  return Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 6.w,
+                      vertical: 6.w,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.shade50.withAlpha(100),
+                      borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            '$totalStudentsFinishedAssessment / $totalStudents student(s) have completed the assessment',
+                            style: columnTitleTextStyle.copyWith(
+                              color: AppColors.primary,
                             ),
-                            children: rows,
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 16.h),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8.r),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.black,
+                                width: 1.5,
+                              ),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Table(
+                              defaultVerticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              border: const TableBorder.symmetric(
+                                inside: BorderSide(
+                                  color: Colors.black,
+                                  width: 1.2,
+                                ), // inner borders
+                              ),
+                              children: rows,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 },
               );

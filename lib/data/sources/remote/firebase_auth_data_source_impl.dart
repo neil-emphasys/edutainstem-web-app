@@ -105,7 +105,10 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
       if (qs.docs.isEmpty) throw (FirebaseConstants.users.errorSigninNotExist);
 
       final doc = qs.docs.first;
-      final user = UserModel.fromJson(Map<String, dynamic>.from(doc.data()));
+      // final user = UserModel.fromJson(Map<String, dynamic>.from(doc.data()));
+      final user = UserModel.fromJson(
+        Map<String, dynamic>.from(doc.data()),
+      ).copyWith(specializedTags: ['Science', 'Technology', 'SEL']);
 
       return user;
     } on FirebaseAuthException catch (e, st) {

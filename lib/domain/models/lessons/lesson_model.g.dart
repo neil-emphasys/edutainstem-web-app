@@ -16,6 +16,7 @@ _LessonModel _$LessonModelFromJson(Map<String, dynamic> json) => _LessonModel(
     json['theoryContent'] as Map<String, dynamic>,
   ),
   exam: Exam.fromJson(json['exam'] as Map<String, dynamic>),
+  isActive: json['isActive'] as bool? ?? true,
 );
 
 Map<String, dynamic> _$LessonModelToJson(_LessonModel instance) =>
@@ -23,10 +24,11 @@ Map<String, dynamic> _$LessonModelToJson(_LessonModel instance) =>
       'title': instance.title,
       'description': instance.description,
       'durationMinutes': const NumToInt().toJson(instance.durationMinutes),
-      'ageRange': instance.ageRange,
+      'ageRange': instance.ageRange.toJson(),
       'tags': instance.tags,
-      'theoryContent': instance.theoryContent,
-      'exam': instance.exam,
+      'theoryContent': instance.theoryContent.toJson(),
+      'exam': instance.exam.toJson(),
+      'isActive': instance.isActive,
     };
 
 _AgeRange _$AgeRangeFromJson(Map<String, dynamic> json) => _AgeRange(
@@ -54,9 +56,9 @@ _TheoryContent _$TheoryContentFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$TheoryContentToJson(_TheoryContent instance) =>
     <String, dynamic>{
-      'basic': instance.basic,
-      'intermediate': instance.intermediate,
-      'advanced': instance.advanced,
+      'basic': instance.basic.map((e) => e.toJson()).toList(),
+      'intermediate': instance.intermediate.map((e) => e.toJson()).toList(),
+      'advanced': instance.advanced.map((e) => e.toJson()).toList(),
     };
 
 _Exam _$ExamFromJson(Map<String, dynamic> json) => _Exam(
@@ -72,9 +74,9 @@ _Exam _$ExamFromJson(Map<String, dynamic> json) => _Exam(
 );
 
 Map<String, dynamic> _$ExamToJson(_Exam instance) => <String, dynamic>{
-  'basic': instance.basic,
-  'intermediate': instance.intermediate,
-  'advanced': instance.advanced,
+  'basic': instance.basic.map((e) => e.toJson()).toList(),
+  'intermediate': instance.intermediate.map((e) => e.toJson()).toList(),
+  'advanced': instance.advanced.map((e) => e.toJson()).toList(),
 };
 
 _Slide _$SlideFromJson(Map<String, dynamic> json) => _Slide(
@@ -85,6 +87,9 @@ _Slide _$SlideFromJson(Map<String, dynamic> json) => _Slide(
   videoURL: json['videoURL'] as String?,
   link: json['link'] as String?,
   type: $enumDecode(_$SlideTypeEnumMap, json['type']),
+  hints: (json['hints'] as List<dynamic>?)
+      ?.map((e) => Hint.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$SlideToJson(_Slide instance) => <String, dynamic>{
@@ -95,6 +100,7 @@ Map<String, dynamic> _$SlideToJson(_Slide instance) => <String, dynamic>{
   'videoURL': instance.videoURL,
   'link': instance.link,
   'type': _$SlideTypeEnumMap[instance.type]!,
+  'hints': instance.hints?.map((e) => e.toJson()).toList(),
 };
 
 const _$SlideTypeEnumMap = {
@@ -103,4 +109,16 @@ const _$SlideTypeEnumMap = {
   SlideType.image: 'image',
   SlideType.video: 'video',
   SlideType.textWithLink: 'textWithLink',
+};
+
+_Hint _$HintFromJson(Map<String, dynamic> json) => _Hint(
+  imageURL: json['imageURL'] as String?,
+  title: json['title'] as String?,
+  content: json['content'] as String?,
+);
+
+Map<String, dynamic> _$HintToJson(_Hint instance) => <String, dynamic>{
+  'imageURL': instance.imageURL,
+  'title': instance.title,
+  'content': instance.content,
 };

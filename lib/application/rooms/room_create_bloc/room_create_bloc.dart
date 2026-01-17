@@ -95,6 +95,7 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
 
       emit(const _Loading(loaderString: 'Creating Room...'));
 
+      debugPrint('CURRENTSTATE.DATA.DATA: ${currentState.data.data}');
       final result = await roomRepository.createRoom(
         room: currentState.data.data,
       );
@@ -161,6 +162,22 @@ class RoomCreateBloc extends Bloc<RoomCreateEvent, RoomCreateState> {
         // roomId: currentState.data.id ?? '',
         roomId: event.room.id ?? '',
         enrollments: event._enrollments,
+      );
+    });
+
+    on<_SetPreferredLessons>((event, emit) async {
+      final currentState = state as _Done;
+
+      emit(
+        currentState.copyWith(
+          data: currentState.data.copyWith(
+            data: currentState.data.data.copyWith(
+              preferredLessons: (event.lessons != null)
+                  ? event.lessons!
+                  : currentState.data.data.preferredLessons,
+            ),
+          ),
+        ),
       );
     });
   }

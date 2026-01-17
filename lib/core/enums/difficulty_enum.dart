@@ -1,3 +1,6 @@
+import 'package:edutainstem/core/gen/colors.gen.dart';
+import 'package:flutter/material.dart';
+
 enum DifficultyEnum {
   basic,
   intermediate,
@@ -21,21 +24,15 @@ enum DifficultyEnum {
   }
 }
 
-/* extension DifficultyEnumHelper on DifficultyEnum {
-  String get getLocaleString {
+extension DifficultyEnumHelper on DifficultyEnum {
+  Color get toColor {
     switch (this) {
       case DifficultyEnum.basic:
-        return 'en';
-      case DifficultyEnum.dutch:
-        return 'nl';
-      case DifficultyEnum.italian:
-        return 'it';
-      case LanguageEnum.portuguese:
-        return 'pt';
-      case LanguageEnum.hungarian:
-        return 'hu';
-      case LanguageEnum.greek:
-        return 'el';
+        return AppColors.green;
+      case DifficultyEnum.intermediate:
+        return AppColors.yellow;
+      case DifficultyEnum.advance:
+        return AppColors.red;
     }
   }
-} */
+}

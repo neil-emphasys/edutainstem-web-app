@@ -80,6 +80,7 @@ class _RoomMainStatWrapperWidgetState extends State<RoomMainStatWrapperWidget>
               AppButton(
                 width: 40.w,
                 title: 'ReOpen',
+                backgroundColor: AppColors.orange,
                 onPressed: () =>
                     widget.blocInstance.add(const RoomCreateEvent.reOpen()),
               ),

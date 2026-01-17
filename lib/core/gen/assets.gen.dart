@@ -107,6 +107,9 @@ class $AssetsIconsPngGen {
   AssetGenImage get sideMenuSettings =>
       const AssetGenImage('assets/icons/png/side-menu-settings.png');
 
+  /// File path: assets/icons/png/swap.png
+  AssetGenImage get swap => const AssetGenImage('assets/icons/png/swap.png');
+
   /// File path: assets/icons/png/table-delete.png
   AssetGenImage get tableDelete =>
       const AssetGenImage('assets/icons/png/table-delete.png');
@@ -131,6 +134,7 @@ class $AssetsIconsPngGen {
     sideMenuProfile,
     sideMenuRoom,
     sideMenuSettings,
+    swap,
     tableDelete,
     tableEdit,
     tableView,

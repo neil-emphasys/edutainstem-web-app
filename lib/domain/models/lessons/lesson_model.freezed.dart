@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$LessonModel {
 
- String get title; String get description;@NumToInt() int get durationMinutes; AgeRange get ageRange; List<String> get tags; TheoryContent get theoryContent; Exam get exam;/// Optional: keep Firestore doc id if you want it
+ String get title; String get description;@NumToInt() int get durationMinutes; AgeRange get ageRange; List<String> get tags; TheoryContent get theoryContent; Exam get exam; bool get isActive;/// Optional: keep Firestore doc id if you want it
 @JsonKey(includeFromJson: false, includeToJson: false) String? get id;
 /// Create a copy of LessonModel
 /// with the given fields replaced by the non-null parameter values.
@@ -29,16 +29,16 @@ $LessonModelCopyWith<LessonModel> get copyWith => _$LessonModelCopyWithImpl<Less
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LessonModel&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.durationMinutes, durationMinutes) || other.durationMinutes == durationMinutes)&&(identical(other.ageRange, ageRange) || other.ageRange == ageRange)&&const DeepCollectionEquality().equals(other.tags, tags)&&(identical(other.theoryContent, theoryContent) || other.theoryContent == theoryContent)&&(identical(other.exam, exam) || other.exam == exam)&&(identical(other.id, id) || other.id == id));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LessonModel&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.durationMinutes, durationMinutes) || other.durationMinutes == durationMinutes)&&(identical(other.ageRange, ageRange) || other.ageRange == ageRange)&&const DeepCollectionEquality().equals(other.tags, tags)&&(identical(other.theoryContent, theoryContent) || other.theoryContent == theoryContent)&&(identical(other.exam, exam) || other.exam == exam)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.id, id) || other.id == id));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,description,durationMinutes,ageRange,const DeepCollectionEquality().hash(tags),theoryContent,exam,id);
+int get hashCode => Object.hash(runtimeType,title,description,durationMinutes,ageRange,const DeepCollectionEquality().hash(tags),theoryContent,exam,isActive,id);
 
 @override
 String toString() {
-  return 'LessonModel(title: $title, description: $description, durationMinutes: $durationMinutes, ageRange: $ageRange, tags: $tags, theoryContent: $theoryContent, exam: $exam, id: $id)';
+  return 'LessonModel(title: $title, description: $description, durationMinutes: $durationMinutes, ageRange: $ageRange, tags: $tags, theoryContent: $theoryContent, exam: $exam, isActive: $isActive, id: $id)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $LessonModelCopyWith<$Res>  {
   factory $LessonModelCopyWith(LessonModel value, $Res Function(LessonModel) _then) = _$LessonModelCopyWithImpl;
 @useResult
 $Res call({
- String title, String description,@NumToInt() int durationMinutes, AgeRange ageRange, List<String> tags, TheoryContent theoryContent, Exam exam,@JsonKey(includeFromJson: false, includeToJson: false) String? id
+ String title, String description,@NumToInt() int durationMinutes, AgeRange ageRange, List<String> tags, TheoryContent theoryContent, Exam exam, bool isActive,@JsonKey(includeFromJson: false, includeToJson: false) String? id
 });
 
 
@@ -66,7 +66,7 @@ class _$LessonModelCopyWithImpl<$Res>
 
 /// Create a copy of LessonModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? description = null,Object? durationMinutes = null,Object? ageRange = null,Object? tags = null,Object? theoryContent = null,Object? exam = null,Object? id = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? description = null,Object? durationMinutes = null,Object? ageRange = null,Object? tags = null,Object? theoryContent = null,Object? exam = null,Object? isActive = null,Object? id = freezed,}) {
   return _then(_self.copyWith(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
@@ -75,7 +75,8 @@ as int,ageRange: null == ageRange ? _self.ageRange : ageRange // ignore: cast_nu
 as AgeRange,tags: null == tags ? _self.tags : tags // ignore: cast_nullable_to_non_nullable
 as List<String>,theoryContent: null == theoryContent ? _self.theoryContent : theoryContent // ignore: cast_nullable_to_non_nullable
 as TheoryContent,exam: null == exam ? _self.exam : exam // ignore: cast_nullable_to_non_nullable
-as Exam,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as Exam,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -188,10 +189,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String description, @NumToInt()  int durationMinutes,  AgeRange ageRange,  List<String> tags,  TheoryContent theoryContent,  Exam exam, @JsonKey(includeFromJson: false, includeToJson: false)  String? id)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  String description, @NumToInt()  int durationMinutes,  AgeRange ageRange,  List<String> tags,  TheoryContent theoryContent,  Exam exam,  bool isActive, @JsonKey(includeFromJson: false, includeToJson: false)  String? id)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _LessonModel() when $default != null:
-return $default(_that.title,_that.description,_that.durationMinutes,_that.ageRange,_that.tags,_that.theoryContent,_that.exam,_that.id);case _:
+return $default(_that.title,_that.description,_that.durationMinutes,_that.ageRange,_that.tags,_that.theoryContent,_that.exam,_that.isActive,_that.id);case _:
   return orElse();
 
 }
@@ -209,10 +210,10 @@ return $default(_that.title,_that.description,_that.durationMinutes,_that.ageRan
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String description, @NumToInt()  int durationMinutes,  AgeRange ageRange,  List<String> tags,  TheoryContent theoryContent,  Exam exam, @JsonKey(includeFromJson: false, includeToJson: false)  String? id)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  String description, @NumToInt()  int durationMinutes,  AgeRange ageRange,  List<String> tags,  TheoryContent theoryContent,  Exam exam,  bool isActive, @JsonKey(includeFromJson: false, includeToJson: false)  String? id)  $default,) {final _that = this;
 switch (_that) {
 case _LessonModel():
-return $default(_that.title,_that.description,_that.durationMinutes,_that.ageRange,_that.tags,_that.theoryContent,_that.exam,_that.id);case _:
+return $default(_that.title,_that.description,_that.durationMinutes,_that.ageRange,_that.tags,_that.theoryContent,_that.exam,_that.isActive,_that.id);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -229,10 +230,10 @@ return $default(_that.title,_that.description,_that.durationMinutes,_that.ageRan
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String description, @NumToInt()  int durationMinutes,  AgeRange ageRange,  List<String> tags,  TheoryContent theoryContent,  Exam exam, @JsonKey(includeFromJson: false, includeToJson: false)  String? id)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  String description, @NumToInt()  int durationMinutes,  AgeRange ageRange,  List<String> tags,  TheoryContent theoryContent,  Exam exam,  bool isActive, @JsonKey(includeFromJson: false, includeToJson: false)  String? id)?  $default,) {final _that = this;
 switch (_that) {
 case _LessonModel() when $default != null:
-return $default(_that.title,_that.description,_that.durationMinutes,_that.ageRange,_that.tags,_that.theoryContent,_that.exam,_that.id);case _:
+return $default(_that.title,_that.description,_that.durationMinutes,_that.ageRange,_that.tags,_that.theoryContent,_that.exam,_that.isActive,_that.id);case _:
   return null;
 
 }
@@ -241,10 +242,10 @@ return $default(_that.title,_that.description,_that.durationMinutes,_that.ageRan
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _LessonModel implements LessonModel {
-  const _LessonModel({required this.title, required this.description, @NumToInt() required this.durationMinutes, required this.ageRange, required final  List<String> tags, required this.theoryContent, required this.exam, @JsonKey(includeFromJson: false, includeToJson: false) this.id}): _tags = tags;
+  const _LessonModel({required this.title, required this.description, @NumToInt() required this.durationMinutes, required this.ageRange, required final  List<String> tags, required this.theoryContent, required this.exam, this.isActive = true, @JsonKey(includeFromJson: false, includeToJson: false) this.id}): _tags = tags;
   factory _LessonModel.fromJson(Map<String, dynamic> json) => _$LessonModelFromJson(json);
 
 @override final  String title;
@@ -260,6 +261,7 @@ class _LessonModel implements LessonModel {
 
 @override final  TheoryContent theoryContent;
 @override final  Exam exam;
+@override@JsonKey() final  bool isActive;
 /// Optional: keep Firestore doc id if you want it
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  String? id;
 
@@ -276,16 +278,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LessonModel&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.durationMinutes, durationMinutes) || other.durationMinutes == durationMinutes)&&(identical(other.ageRange, ageRange) || other.ageRange == ageRange)&&const DeepCollectionEquality().equals(other._tags, _tags)&&(identical(other.theoryContent, theoryContent) || other.theoryContent == theoryContent)&&(identical(other.exam, exam) || other.exam == exam)&&(identical(other.id, id) || other.id == id));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LessonModel&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.durationMinutes, durationMinutes) || other.durationMinutes == durationMinutes)&&(identical(other.ageRange, ageRange) || other.ageRange == ageRange)&&const DeepCollectionEquality().equals(other._tags, _tags)&&(identical(other.theoryContent, theoryContent) || other.theoryContent == theoryContent)&&(identical(other.exam, exam) || other.exam == exam)&&(identical(other.isActive, isActive) || other.isActive == isActive)&&(identical(other.id, id) || other.id == id));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,description,durationMinutes,ageRange,const DeepCollectionEquality().hash(_tags),theoryContent,exam,id);
+int get hashCode => Object.hash(runtimeType,title,description,durationMinutes,ageRange,const DeepCollectionEquality().hash(_tags),theoryContent,exam,isActive,id);
 
 @override
 String toString() {
-  return 'LessonModel(title: $title, description: $description, durationMinutes: $durationMinutes, ageRange: $ageRange, tags: $tags, theoryContent: $theoryContent, exam: $exam, id: $id)';
+  return 'LessonModel(title: $title, description: $description, durationMinutes: $durationMinutes, ageRange: $ageRange, tags: $tags, theoryContent: $theoryContent, exam: $exam, isActive: $isActive, id: $id)';
 }
 
 
@@ -296,7 +298,7 @@ abstract mixin class _$LessonModelCopyWith<$Res> implements $LessonModelCopyWith
   factory _$LessonModelCopyWith(_LessonModel value, $Res Function(_LessonModel) _then) = __$LessonModelCopyWithImpl;
 @override @useResult
 $Res call({
- String title, String description,@NumToInt() int durationMinutes, AgeRange ageRange, List<String> tags, TheoryContent theoryContent, Exam exam,@JsonKey(includeFromJson: false, includeToJson: false) String? id
+ String title, String description,@NumToInt() int durationMinutes, AgeRange ageRange, List<String> tags, TheoryContent theoryContent, Exam exam, bool isActive,@JsonKey(includeFromJson: false, includeToJson: false) String? id
 });
 
 
@@ -313,7 +315,7 @@ class __$LessonModelCopyWithImpl<$Res>
 
 /// Create a copy of LessonModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? description = null,Object? durationMinutes = null,Object? ageRange = null,Object? tags = null,Object? theoryContent = null,Object? exam = null,Object? id = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? description = null,Object? durationMinutes = null,Object? ageRange = null,Object? tags = null,Object? theoryContent = null,Object? exam = null,Object? isActive = null,Object? id = freezed,}) {
   return _then(_LessonModel(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
@@ -322,7 +324,8 @@ as int,ageRange: null == ageRange ? _self.ageRange : ageRange // ignore: cast_nu
 as AgeRange,tags: null == tags ? _self._tags : tags // ignore: cast_nullable_to_non_nullable
 as List<String>,theoryContent: null == theoryContent ? _self.theoryContent : theoryContent // ignore: cast_nullable_to_non_nullable
 as TheoryContent,exam: null == exam ? _self.exam : exam // ignore: cast_nullable_to_non_nullable
-as Exam,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as Exam,isActive: null == isActive ? _self.isActive : isActive // ignore: cast_nullable_to_non_nullable
+as bool,id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -820,8 +823,8 @@ return $default(_that.basic,_that.intermediate,_that.advanced);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _TheoryContent implements TheoryContent {
   const _TheoryContent({required final  List<Slide> basic, required final  List<Slide> intermediate, required final  List<Slide> advanced}): _basic = basic,_intermediate = intermediate,_advanced = advanced;
   factory _TheoryContent.fromJson(Map<String, dynamic> json) => _$TheoryContentFromJson(json);
@@ -1107,8 +1110,8 @@ return $default(_that.basic,_that.intermediate,_that.advanced);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _Exam implements Exam {
   const _Exam({required final  List<PostQuestionModel> basic, required final  List<PostQuestionModel> intermediate, required final  List<PostQuestionModel> advanced}): _basic = basic,_intermediate = intermediate,_advanced = advanced;
   factory _Exam.fromJson(Map<String, dynamic> json) => _$ExamFromJson(json);
@@ -1201,7 +1204,7 @@ as List<PostQuestionModel>,
 /// @nodoc
 mixin _$Slide {
 
- String? get title; String? get content; String? get caption; String? get imageURL; String? get videoURL; String? get link; SlideType get type;
+ String? get title; String? get content; String? get caption; String? get imageURL; String? get videoURL; String? get link; SlideType get type; List<Hint>? get hints;
 /// Create a copy of Slide
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1214,16 +1217,16 @@ $SlideCopyWith<Slide> get copyWith => _$SlideCopyWithImpl<Slide>(this as Slide, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Slide&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.imageURL, imageURL) || other.imageURL == imageURL)&&(identical(other.videoURL, videoURL) || other.videoURL == videoURL)&&(identical(other.link, link) || other.link == link)&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Slide&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.imageURL, imageURL) || other.imageURL == imageURL)&&(identical(other.videoURL, videoURL) || other.videoURL == videoURL)&&(identical(other.link, link) || other.link == link)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.hints, hints));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,content,caption,imageURL,videoURL,link,type);
+int get hashCode => Object.hash(runtimeType,title,content,caption,imageURL,videoURL,link,type,const DeepCollectionEquality().hash(hints));
 
 @override
 String toString() {
-  return 'Slide(title: $title, content: $content, caption: $caption, imageURL: $imageURL, videoURL: $videoURL, link: $link, type: $type)';
+  return 'Slide(title: $title, content: $content, caption: $caption, imageURL: $imageURL, videoURL: $videoURL, link: $link, type: $type, hints: $hints)';
 }
 
 
@@ -1234,7 +1237,7 @@ abstract mixin class $SlideCopyWith<$Res>  {
   factory $SlideCopyWith(Slide value, $Res Function(Slide) _then) = _$SlideCopyWithImpl;
 @useResult
 $Res call({
- String? title, String? content, String? caption, String? imageURL, String? videoURL, String? link, SlideType type
+ String? title, String? content, String? caption, String? imageURL, String? videoURL, String? link, SlideType type, List<Hint>? hints
 });
 
 
@@ -1251,7 +1254,7 @@ class _$SlideCopyWithImpl<$Res>
 
 /// Create a copy of Slide
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = freezed,Object? content = freezed,Object? caption = freezed,Object? imageURL = freezed,Object? videoURL = freezed,Object? link = freezed,Object? type = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = freezed,Object? content = freezed,Object? caption = freezed,Object? imageURL = freezed,Object? videoURL = freezed,Object? link = freezed,Object? type = null,Object? hints = freezed,}) {
   return _then(_self.copyWith(
 title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
@@ -1260,7 +1263,8 @@ as String?,imageURL: freezed == imageURL ? _self.imageURL : imageURL // ignore: 
 as String?,videoURL: freezed == videoURL ? _self.videoURL : videoURL // ignore: cast_nullable_to_non_nullable
 as String?,link: freezed == link ? _self.link : link // ignore: cast_nullable_to_non_nullable
 as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as SlideType,
+as SlideType,hints: freezed == hints ? _self.hints : hints // ignore: cast_nullable_to_non_nullable
+as List<Hint>?,
   ));
 }
 
@@ -1345,10 +1349,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? title,  String? content,  String? caption,  String? imageURL,  String? videoURL,  String? link,  SlideType type)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? title,  String? content,  String? caption,  String? imageURL,  String? videoURL,  String? link,  SlideType type,  List<Hint>? hints)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Slide() when $default != null:
-return $default(_that.title,_that.content,_that.caption,_that.imageURL,_that.videoURL,_that.link,_that.type);case _:
+return $default(_that.title,_that.content,_that.caption,_that.imageURL,_that.videoURL,_that.link,_that.type,_that.hints);case _:
   return orElse();
 
 }
@@ -1366,10 +1370,10 @@ return $default(_that.title,_that.content,_that.caption,_that.imageURL,_that.vid
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? title,  String? content,  String? caption,  String? imageURL,  String? videoURL,  String? link,  SlideType type)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? title,  String? content,  String? caption,  String? imageURL,  String? videoURL,  String? link,  SlideType type,  List<Hint>? hints)  $default,) {final _that = this;
 switch (_that) {
 case _Slide():
-return $default(_that.title,_that.content,_that.caption,_that.imageURL,_that.videoURL,_that.link,_that.type);case _:
+return $default(_that.title,_that.content,_that.caption,_that.imageURL,_that.videoURL,_that.link,_that.type,_that.hints);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1386,10 +1390,10 @@ return $default(_that.title,_that.content,_that.caption,_that.imageURL,_that.vid
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? title,  String? content,  String? caption,  String? imageURL,  String? videoURL,  String? link,  SlideType type)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? title,  String? content,  String? caption,  String? imageURL,  String? videoURL,  String? link,  SlideType type,  List<Hint>? hints)?  $default,) {final _that = this;
 switch (_that) {
 case _Slide() when $default != null:
-return $default(_that.title,_that.content,_that.caption,_that.imageURL,_that.videoURL,_that.link,_that.type);case _:
+return $default(_that.title,_that.content,_that.caption,_that.imageURL,_that.videoURL,_that.link,_that.type,_that.hints);case _:
   return null;
 
 }
@@ -1398,10 +1402,10 @@ return $default(_that.title,_that.content,_that.caption,_that.imageURL,_that.vid
 }
 
 /// @nodoc
-@JsonSerializable()
 
+@JsonSerializable(explicitToJson: true)
 class _Slide implements Slide {
-  const _Slide({this.title, this.content, this.caption, this.imageURL, this.videoURL, this.link, required this.type});
+  const _Slide({this.title, this.content, this.caption, this.imageURL, this.videoURL, this.link, required this.type, final  List<Hint>? hints}): _hints = hints;
   factory _Slide.fromJson(Map<String, dynamic> json) => _$SlideFromJson(json);
 
 @override final  String? title;
@@ -1411,6 +1415,15 @@ class _Slide implements Slide {
 @override final  String? videoURL;
 @override final  String? link;
 @override final  SlideType type;
+ final  List<Hint>? _hints;
+@override List<Hint>? get hints {
+  final value = _hints;
+  if (value == null) return null;
+  if (_hints is EqualUnmodifiableListView) return _hints;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of Slide
 /// with the given fields replaced by the non-null parameter values.
@@ -1425,16 +1438,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Slide&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.imageURL, imageURL) || other.imageURL == imageURL)&&(identical(other.videoURL, videoURL) || other.videoURL == videoURL)&&(identical(other.link, link) || other.link == link)&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Slide&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content)&&(identical(other.caption, caption) || other.caption == caption)&&(identical(other.imageURL, imageURL) || other.imageURL == imageURL)&&(identical(other.videoURL, videoURL) || other.videoURL == videoURL)&&(identical(other.link, link) || other.link == link)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._hints, _hints));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,content,caption,imageURL,videoURL,link,type);
+int get hashCode => Object.hash(runtimeType,title,content,caption,imageURL,videoURL,link,type,const DeepCollectionEquality().hash(_hints));
 
 @override
 String toString() {
-  return 'Slide(title: $title, content: $content, caption: $caption, imageURL: $imageURL, videoURL: $videoURL, link: $link, type: $type)';
+  return 'Slide(title: $title, content: $content, caption: $caption, imageURL: $imageURL, videoURL: $videoURL, link: $link, type: $type, hints: $hints)';
 }
 
 
@@ -1445,7 +1458,7 @@ abstract mixin class _$SlideCopyWith<$Res> implements $SlideCopyWith<$Res> {
   factory _$SlideCopyWith(_Slide value, $Res Function(_Slide) _then) = __$SlideCopyWithImpl;
 @override @useResult
 $Res call({
- String? title, String? content, String? caption, String? imageURL, String? videoURL, String? link, SlideType type
+ String? title, String? content, String? caption, String? imageURL, String? videoURL, String? link, SlideType type, List<Hint>? hints
 });
 
 
@@ -1462,7 +1475,7 @@ class __$SlideCopyWithImpl<$Res>
 
 /// Create a copy of Slide
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = freezed,Object? content = freezed,Object? caption = freezed,Object? imageURL = freezed,Object? videoURL = freezed,Object? link = freezed,Object? type = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = freezed,Object? content = freezed,Object? caption = freezed,Object? imageURL = freezed,Object? videoURL = freezed,Object? link = freezed,Object? type = null,Object? hints = freezed,}) {
   return _then(_Slide(
 title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
@@ -1471,7 +1484,277 @@ as String?,imageURL: freezed == imageURL ? _self.imageURL : imageURL // ignore: 
 as String?,videoURL: freezed == videoURL ? _self.videoURL : videoURL // ignore: cast_nullable_to_non_nullable
 as String?,link: freezed == link ? _self.link : link // ignore: cast_nullable_to_non_nullable
 as String?,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as SlideType,
+as SlideType,hints: freezed == hints ? _self._hints : hints // ignore: cast_nullable_to_non_nullable
+as List<Hint>?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$Hint {
+
+ String? get imageURL; String? get title; String? get content;
+/// Create a copy of Hint
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$HintCopyWith<Hint> get copyWith => _$HintCopyWithImpl<Hint>(this as Hint, _$identity);
+
+  /// Serializes this Hint to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Hint&&(identical(other.imageURL, imageURL) || other.imageURL == imageURL)&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,imageURL,title,content);
+
+@override
+String toString() {
+  return 'Hint(imageURL: $imageURL, title: $title, content: $content)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $HintCopyWith<$Res>  {
+  factory $HintCopyWith(Hint value, $Res Function(Hint) _then) = _$HintCopyWithImpl;
+@useResult
+$Res call({
+ String? imageURL, String? title, String? content
+});
+
+
+
+
+}
+/// @nodoc
+class _$HintCopyWithImpl<$Res>
+    implements $HintCopyWith<$Res> {
+  _$HintCopyWithImpl(this._self, this._then);
+
+  final Hint _self;
+  final $Res Function(Hint) _then;
+
+/// Create a copy of Hint
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? imageURL = freezed,Object? title = freezed,Object? content = freezed,}) {
+  return _then(_self.copyWith(
+imageURL: freezed == imageURL ? _self.imageURL : imageURL // ignore: cast_nullable_to_non_nullable
+as String?,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [Hint].
+extension HintPatterns on Hint {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Hint value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _Hint() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Hint value)  $default,){
+final _that = this;
+switch (_that) {
+case _Hint():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Hint value)?  $default,){
+final _that = this;
+switch (_that) {
+case _Hint() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? imageURL,  String? title,  String? content)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _Hint() when $default != null:
+return $default(_that.imageURL,_that.title,_that.content);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? imageURL,  String? title,  String? content)  $default,) {final _that = this;
+switch (_that) {
+case _Hint():
+return $default(_that.imageURL,_that.title,_that.content);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? imageURL,  String? title,  String? content)?  $default,) {final _that = this;
+switch (_that) {
+case _Hint() when $default != null:
+return $default(_that.imageURL,_that.title,_that.content);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+@JsonSerializable(explicitToJson: true)
+class _Hint implements Hint {
+  const _Hint({this.imageURL, this.title, this.content});
+  factory _Hint.fromJson(Map<String, dynamic> json) => _$HintFromJson(json);
+
+@override final  String? imageURL;
+@override final  String? title;
+@override final  String? content;
+
+/// Create a copy of Hint
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$HintCopyWith<_Hint> get copyWith => __$HintCopyWithImpl<_Hint>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$HintToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Hint&&(identical(other.imageURL, imageURL) || other.imageURL == imageURL)&&(identical(other.title, title) || other.title == title)&&(identical(other.content, content) || other.content == content));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,imageURL,title,content);
+
+@override
+String toString() {
+  return 'Hint(imageURL: $imageURL, title: $title, content: $content)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$HintCopyWith<$Res> implements $HintCopyWith<$Res> {
+  factory _$HintCopyWith(_Hint value, $Res Function(_Hint) _then) = __$HintCopyWithImpl;
+@override @useResult
+$Res call({
+ String? imageURL, String? title, String? content
+});
+
+
+
+
+}
+/// @nodoc
+class __$HintCopyWithImpl<$Res>
+    implements _$HintCopyWith<$Res> {
+  __$HintCopyWithImpl(this._self, this._then);
+
+  final _Hint _self;
+  final $Res Function(_Hint) _then;
+
+/// Create a copy of Hint
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? imageURL = freezed,Object? title = freezed,Object? content = freezed,}) {
+  return _then(_Hint(
+imageURL: freezed == imageURL ? _self.imageURL : imageURL // ignore: cast_nullable_to_non_nullable
+as String?,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

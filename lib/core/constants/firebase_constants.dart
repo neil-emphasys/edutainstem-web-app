@@ -21,6 +21,7 @@ class ELE {
   // String get likesCount => 'likesCount';
   // String get comments => 'comments';
   // String get isPublic => 'isPublic';
+  String get isActive => 'isActive';
 }
 
 class Room {

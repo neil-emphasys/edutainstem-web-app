@@ -47,84 +47,94 @@ class _DifficultyChartWidgetState extends State<RoomJournalFeedbackWidget> {
                 (result) {
                   final feedbacks = result.data;
 
-                  return feedbacks.isEmpty
-                      ? Text(
-                          'No feedbacks given by the students yet',
-                          style: AppTextStyles.getStyle(
-                            AppTextStyle.bodySmall,
-                            modifier: (base) => base.copyWith(
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 0.3.sp,
-                            ),
-                          ),
-                          textAlign: TextAlign.center,
-                        )
-                      : Column(
-                          children: [
-                            Text(
-                              'Here are some feedbacks or journals given by the students',
-                              style: AppTextStyles.getStyle(
-                                AppTextStyle.bodySmall,
-                                modifier: (base) => base.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  letterSpacing: 0.3.sp,
-                                ),
+                  return Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 6.w,
+                      vertical: 6.w,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.shade50.withAlpha(100),
+                      borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                    ),
+                    child: feedbacks.isEmpty
+                        ? Text(
+                            'No feedbacks given by the students yet',
+                            style: AppTextStyles.getStyle(
+                              AppTextStyle.bodySmall,
+                              modifier: (base) => base.copyWith(
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.3.sp,
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                            SizedBox(height: 16.h),
-                            for (final i in feedbacks) ...[
-                              Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 4.w,
-                                  vertical: 16.h,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.diamondBlue.shade50,
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(8.r),
+                            textAlign: TextAlign.center,
+                          )
+                        : Column(
+                            children: [
+                              Text(
+                                'Here are some feedbacks or journals given by the students',
+                                style: AppTextStyles.getStyle(
+                                  AppTextStyle.bodySmall,
+                                  modifier: (base) => base.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    letterSpacing: 0.3.sp,
                                   ),
                                 ),
-                                child: IntrinsicHeight(
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Image.asset(
-                                        Assets.icons.png.quote.path,
-                                        width: 8.w,
-                                        color: AppColors.gray.shade100,
-                                      ),
-                                      VerticalDivider(
-                                        thickness: 4,
-                                        width: 20,
-                                        color: AppColors.gray.shade100,
-                                        radius: BorderRadius.all(
-                                          Radius.circular(0.5.r),
-                                        ),
-                                      ),
-                                      SizedBox(width: 2.w),
-                                      Expanded(
-                                        child: Text(
-                                          i,
-                                          style: AppTextStyles.getStyle(
-                                            AppTextStyle.bodySmall,
-                                            modifier: (base) => base.copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              letterSpacing: 0.3.sp,
-                                            ),
-                                          ),
-                                          textAlign: TextAlign.justify,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                textAlign: TextAlign.center,
                               ),
                               SizedBox(height: 16.h),
+                              for (final i in feedbacks) ...[
+                                Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 4.w,
+                                    vertical: 16.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.diamondBlue.shade200,
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8.r),
+                                    ),
+                                  ),
+                                  child: IntrinsicHeight(
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Image.asset(
+                                          Assets.icons.png.quote.path,
+                                          width: 8.w,
+                                          color: AppColors.gray.shade100,
+                                        ),
+                                        VerticalDivider(
+                                          thickness: 4,
+                                          width: 20,
+                                          color: AppColors.gray.shade100,
+                                          radius: BorderRadius.all(
+                                            Radius.circular(0.5.r),
+                                          ),
+                                        ),
+                                        SizedBox(width: 2.w),
+                                        Expanded(
+                                          child: Text(
+                                            i,
+                                            style: AppTextStyles.getStyle(
+                                              AppTextStyle.bodySmall,
+                                              modifier: (base) => base.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                letterSpacing: 0.3.sp,
+                                              ),
+                                            ),
+                                            textAlign: TextAlign.justify,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 16.h),
+                              ],
                             ],
-                          ],
-                        );
+                          ),
+                  );
                 },
               );
             },

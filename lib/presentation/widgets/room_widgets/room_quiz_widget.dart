@@ -94,55 +94,10 @@ class RoomQuizWidget extends StatelessWidget {
     };
 
     return Container(
-      // color: Colors.red,
-      // constraints: BoxConstraints(minHeight: 0.6.sh),
       width: 0.5.sw,
       padding: EdgeInsets.symmetric(vertical: 16.r, horizontal: 20.r),
       child: Column(
-        // shrinkWrap: true,
-
-        // mainAxisSize: MainAxisSize.min,
         children: [
-          /* Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => context.pop(),
-                    icon: Image.asset(Assets.icons.png.goBack.path, width: 4.w),
-                  ),
-                  SizedBox(width: 4.w),
-                  Text(
-                    'SEE Assessment Statistics',
-                    style: AppTextStyles.getStyle(
-                      AppTextStyle.bodySmall,
-                      modifier: (base) => base.copyWith(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.3.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              AppButton(
-                width: 40.w,
-                title: 'ReOpen',
-                onPressed: () =>
-                    blocInstance.add(const RoomCreateEvent.reOpen()),
-              ),
-              SizedBox(width: 4.w),
-              AppButton(
-                width: 48.w,
-                title: 'Switch View',
-                backgroundColor: AppColors.tigerEyeOrange,
-                onPressed: () =>
-                    blocInstance.add(const RoomCreateEvent.switchCloseView()),
-              ),
-            ],
-          ),
-          SizedBox(height: 40.h), */
           StreamBuilder(
             stream: repo.watchQuizStatistics(room: room),
             builder: (context, snapshot) {
@@ -162,7 +117,6 @@ class RoomQuizWidget extends StatelessWidget {
               });
             },
           ),
-          // PollWidget(questions: seeSamplePolls),
         ],
       ),
     );

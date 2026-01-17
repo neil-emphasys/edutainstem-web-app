@@ -13,22 +13,35 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class RoomCodeWidget extends StatelessWidget {
+class RoomCodeWidget extends StatefulWidget {
   const RoomCodeWidget({required this.blocInstance, super.key});
 
   final RoomCreateBloc blocInstance;
 
   @override
-  Widget build(BuildContext context) {
-    final repo = it<RoomRepository>();
+  State<RoomCodeWidget> createState() => _RoomCodeWidgetState();
+}
 
+class _RoomCodeWidgetState extends State<RoomCodeWidget> {
+  final repo = it<RoomRepository>();
+  late final ExpandableController expandableController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    expandableController = ExpandableController(initialExpanded: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       // color: Colors.red,
       // constraints: BoxConstraints(minHeight: 0.6.sh),
       width: 0.5.sw,
       padding: EdgeInsets.symmetric(vertical: 16.r, horizontal: 20.r),
       child: BlocBuilder<RoomCreateBloc, RoomCreateState>(
-        bloc: blocInstance,
+        bloc: widget.blocInstance,
         buildWhen: (previous, current) => current.maybeWhen(
           orElse: () => true,
           loading: (loaderString) => false,
@@ -81,6 +94,12 @@ class RoomCodeWidget extends StatelessWidget {
                           },
                           (answers) {
                             final listStudentsAnswers = answers.data;
+
+                            if (listStudentsAnswers.isNotEmpty) {
+                              if (!expandableController.expanded) {
+                                expandableController.toggle();
+                              }
+                            }
 
                             // return PollWidget(questions: answers.data);
 
@@ -198,7 +217,7 @@ class RoomCodeWidget extends StatelessWidget {
                 SizedBox(
                   width: 160.w,
                   child: ExpandablePanel(
-                    controller: ExpandableController(initialExpanded: false),
+                    controller: expandableController,
                     header: Padding(
                       padding: EdgeInsets.only(bottom: 8.h),
                       child: Text(
@@ -247,7 +266,7 @@ class RoomCodeWidget extends StatelessWidget {
                   title: 'Close Room and Start SEE Assessment',
                   backgroundColor: AppColors.red,
                   onPressed: () =>
-                      blocInstance.add(RoomCreateEvent.close(data)),
+                      widget.blocInstance.add(RoomCreateEvent.close(data)),
                 ),
               ],
             ),

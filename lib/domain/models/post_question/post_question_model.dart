@@ -80,6 +80,7 @@ extension ExamStatModelListHelper on List<ExamStatModel> {
         final isAnswer = c.isCorrectChoice;
 
         return PollChoice(
+          cid: c.id,
           label: c.choice, // main label
           subLabel: q.type.isMultipleChoice
               ? c.choice
@@ -90,6 +91,7 @@ extension ExamStatModelListHelper on List<ExamStatModel> {
       }).toList();
 
       final group = PollChoiceGroup(
+        qid: q.id,
         question: q.question,
         type: q.type, // PollChoiceGroup.type == question.type
         choices: choices, // choices mirror PostQuestionModel.choices

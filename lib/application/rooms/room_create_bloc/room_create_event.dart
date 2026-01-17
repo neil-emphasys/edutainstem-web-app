@@ -23,4 +23,6 @@ abstract class RoomCreateEvent with _$RoomCreateEvent {
   const factory RoomCreateEvent.switchCloseView({
     @Default(false) bool isDifficultyView,
   }) = _SwitchCloseView;
+  const factory RoomCreateEvent.setPreferredLessons({List<String>? lessons}) =
+      _SetPreferredLessons;
 }

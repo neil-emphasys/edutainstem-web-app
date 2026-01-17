@@ -19,4 +19,6 @@
     <color name="maroon" type="material material-accent">#b32a66</color>
     <color name="tiger-eye-orange" type="material material-accent">#eb9438</color>
     <color name="yankees-blue" type="material material-accent">#111b45</color>
+    <color name="yellow" type="material material-accent">#EDDA0D</color>
+    <color name="green" type="material material-accent">#12AD41</color>
 </resources>

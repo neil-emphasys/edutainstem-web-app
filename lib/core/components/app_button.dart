@@ -295,9 +295,8 @@ class AppButton extends StatelessWidget {
     final alpha = 50;
 
     final contents = [
-      if (hasIcon)
+      if (hasIcon && !wrapButtonContent)
         Row(
-          mainAxisSize: MainAxisSize.min, // ★ keep compact
           children: [
             icon ??
                 const Icon(
@@ -356,10 +355,36 @@ class AppButton extends StatelessWidget {
                 ),
               ),
       child: wrapButtonContent
-          ? Wrap(
+          ? /* Wrap(
               alignment: WrapAlignment.center,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: contents,
+            ) */ Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                if (hasIcon)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      icon ??
+                          const Icon(
+                            Icons.chevron_right_rounded,
+                            size: 28,
+                            color: AppColors.secondary,
+                          ),
+                      SizedBox(width: buttonIconSpacing ?? 0.w),
+                    ],
+                  ),
+                Expanded(
+                  child: Wrap(
+                    alignment: hasIcon
+                        ? WrapAlignment.start
+                        : WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: contents,
+                  ),
+                ),
+              ],
             )
           : Row(
               mainAxisSize: MainAxisSize.min, // ★ critical for shrink

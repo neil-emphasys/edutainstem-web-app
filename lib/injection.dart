@@ -4,6 +4,7 @@ import 'package:edutainstem/application/accounts/switch_cubit/switch_cubit.dart'
 import 'package:edutainstem/application/auth/bloc/firebase_auth_bloc.dart';
 import 'package:edutainstem/application/rooms/room_bloc/room_bloc.dart';
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
+import 'package:edutainstem/application/sidebar/cubit/sidebar_x_cubit.dart';
 import 'package:edutainstem/application/sign_up/bloc/sign_up_bloc.dart';
 import 'package:edutainstem/core/constants/constants.dart';
 import 'package:edutainstem/core/services/dialog_services.dart';
@@ -90,4 +91,5 @@ Future<void> init() async {
   it.registerFactory<FirebaseAuthBloc>(() => FirebaseAuthBloc(it()));
   it.registerFactory<SignUpBloc>(() => SignUpBloc(it()));
   it.registerFactory<AccountsBloc>(() => AccountsBloc(it()));
+  it.registerFactory<SidebarXCubit>(() => SidebarXCubit());
 }

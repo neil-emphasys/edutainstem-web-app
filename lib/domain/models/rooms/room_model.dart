@@ -303,6 +303,18 @@ extension RoomModelHelper on RoomModel {
   }
 }
 
+extension StudentEnrollmentModelHelper on StudentEnrollmentModel {
+  int get totalExamQuestions {
+    return examination.length;
+  }
+
+  int get totalCorrectExamAnswers {
+    return examination
+        .where((element) => element.answer.isCorrectChoice)
+        .length;
+  }
+}
+
 /// Count how many students selected `answerIndex` for `qid`.
 int countAnswersFor(
   List<StudentEnrollment> students, {

@@ -40,6 +40,7 @@ enum SlideType {
 
 @freezed
 abstract class LessonModel with _$LessonModel {
+  @JsonSerializable(explicitToJson: true)
   const factory LessonModel({
     required String title,
     required String description,
@@ -48,6 +49,7 @@ abstract class LessonModel with _$LessonModel {
     required List<String> tags,
     required TheoryContent theoryContent,
     required Exam exam,
+    @Default(true) bool isActive,
 
     /// Optional: keep Firestore doc id if you want it
     @JsonKey(includeFromJson: false, includeToJson: false) String? id,
@@ -100,6 +102,7 @@ abstract class AgeRange with _$AgeRange {
 
 @freezed
 abstract class TheoryContent with _$TheoryContent {
+  @JsonSerializable(explicitToJson: true)
   const factory TheoryContent({
     required List<Slide> basic,
     required List<Slide> intermediate,
@@ -112,6 +115,7 @@ abstract class TheoryContent with _$TheoryContent {
 
 @freezed
 abstract class Exam with _$Exam {
+  @JsonSerializable(explicitToJson: true)
   const factory Exam({
     required List<PostQuestionModel> basic,
     required List<PostQuestionModel> intermediate,
@@ -138,6 +142,7 @@ extension ExamHelper on Exam {
 
 @freezed
 abstract class Slide with _$Slide {
+  @JsonSerializable(explicitToJson: true)
   const factory Slide({
     String? title,
     String? content,
@@ -146,6 +151,7 @@ abstract class Slide with _$Slide {
     String? videoURL,
     String? link,
     required SlideType type,
+    List<Hint>? hints,
   }) = _Slide;
 
   /* factory Slide.fromJson(Map<String, dynamic> json) {
@@ -154,6 +160,20 @@ abstract class Slide with _$Slide {
   } */
 
   factory Slide.fromJson(Map<String, dynamic> json) => _$SlideFromJson(json);
+}
+
+@freezed
+abstract class Hint with _$Hint {
+  @JsonSerializable(explicitToJson: true)
+  const factory Hint({String? imageURL, String? title, String? content}) =
+      _Hint;
+
+  /* factory Slide.fromJson(Map<String, dynamic> json) {
+    final asd = _$SlideFromJson(json);
+    return asd;
+  } */
+
+  factory Hint.fromJson(Map<String, dynamic> json) => _$HintFromJson(json);
 }
 
 // @freezed
@@ -213,6 +233,17 @@ extension LessonModelHelper on LessonModel {
 }
 
 extension ListLessonModelHelper on List<LessonModel> {
+  List<String> getUniqueTags() {
+    final seen = <String>{};
+    final result = <String>[];
+    for (final lesson in this) {
+      for (final tag in lesson.tags) {
+        if (seen.add(tag)) result.add(tag);
+      }
+    }
+    return result;
+  }
+
   List<PostQuestionModel> getExamQuestions({
     required DifficultyEnum difficulty,
   }) {

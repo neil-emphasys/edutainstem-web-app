@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserModel {
 
-@JsonKey(includeFromJson: false, includeToJson: false) String? get docId; String get id; String get firstName; String get lastName; String get email; bool get isAdmin; String get role;@TimestampConverter() DateTime get createdAt;@JsonKey(includeFromJson: false, includeToJson: false) String? get password; LanguageEnum get preferredLanguage; bool get enabled;
+@JsonKey(includeFromJson: false, includeToJson: false) String? get docId; String get id; String get firstName; String get lastName; String get email; bool get isAdmin; String get role;@TimestampConverter() DateTime get createdAt;@JsonKey(includeFromJson: false, includeToJson: false) String? get password; LanguageEnum get preferredLanguage; bool get enabled; List<String> get specializedTags;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserModelCopyWith<UserModel> get copyWith => _$UserModelCopyWithImpl<UserModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.docId, docId) || other.docId == docId)&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin)&&(identical(other.role, role) || other.role == role)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.password, password) || other.password == password)&&(identical(other.preferredLanguage, preferredLanguage) || other.preferredLanguage == preferredLanguage)&&(identical(other.enabled, enabled) || other.enabled == enabled));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.docId, docId) || other.docId == docId)&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin)&&(identical(other.role, role) || other.role == role)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.password, password) || other.password == password)&&(identical(other.preferredLanguage, preferredLanguage) || other.preferredLanguage == preferredLanguage)&&(identical(other.enabled, enabled) || other.enabled == enabled)&&const DeepCollectionEquality().equals(other.specializedTags, specializedTags));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,docId,id,firstName,lastName,email,isAdmin,role,createdAt,password,preferredLanguage,enabled);
+int get hashCode => Object.hash(runtimeType,docId,id,firstName,lastName,email,isAdmin,role,createdAt,password,preferredLanguage,enabled,const DeepCollectionEquality().hash(specializedTags));
 
 @override
 String toString() {
-  return 'UserModel(docId: $docId, id: $id, firstName: $firstName, lastName: $lastName, email: $email, isAdmin: $isAdmin, role: $role, createdAt: $createdAt, password: $password, preferredLanguage: $preferredLanguage, enabled: $enabled)';
+  return 'UserModel(docId: $docId, id: $id, firstName: $firstName, lastName: $lastName, email: $email, isAdmin: $isAdmin, role: $role, createdAt: $createdAt, password: $password, preferredLanguage: $preferredLanguage, enabled: $enabled, specializedTags: $specializedTags)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(includeFromJson: false, includeToJson: false) String? docId, String id, String firstName, String lastName, String email, bool isAdmin, String role,@TimestampConverter() DateTime createdAt,@JsonKey(includeFromJson: false, includeToJson: false) String? password, LanguageEnum preferredLanguage, bool enabled
+@JsonKey(includeFromJson: false, includeToJson: false) String? docId, String id, String firstName, String lastName, String email, bool isAdmin, String role,@TimestampConverter() DateTime createdAt,@JsonKey(includeFromJson: false, includeToJson: false) String? password, LanguageEnum preferredLanguage, bool enabled, List<String> specializedTags
 });
 
 
@@ -65,7 +65,7 @@ class _$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? docId = freezed,Object? id = null,Object? firstName = null,Object? lastName = null,Object? email = null,Object? isAdmin = null,Object? role = null,Object? createdAt = null,Object? password = freezed,Object? preferredLanguage = null,Object? enabled = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? docId = freezed,Object? id = null,Object? firstName = null,Object? lastName = null,Object? email = null,Object? isAdmin = null,Object? role = null,Object? createdAt = null,Object? password = freezed,Object? preferredLanguage = null,Object? enabled = null,Object? specializedTags = null,}) {
   return _then(_self.copyWith(
 docId: freezed == docId ? _self.docId : docId // ignore: cast_nullable_to_non_nullable
 as String?,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
@@ -78,7 +78,8 @@ as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: 
 as DateTime,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String?,preferredLanguage: null == preferredLanguage ? _self.preferredLanguage : preferredLanguage // ignore: cast_nullable_to_non_nullable
 as LanguageEnum,enabled: null == enabled ? _self.enabled : enabled // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,specializedTags: null == specializedTags ? _self.specializedTags : specializedTags // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -163,10 +164,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: false, includeToJson: false)  String? docId,  String id,  String firstName,  String lastName,  String email,  bool isAdmin,  String role, @TimestampConverter()  DateTime createdAt, @JsonKey(includeFromJson: false, includeToJson: false)  String? password,  LanguageEnum preferredLanguage,  bool enabled)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: false, includeToJson: false)  String? docId,  String id,  String firstName,  String lastName,  String email,  bool isAdmin,  String role, @TimestampConverter()  DateTime createdAt, @JsonKey(includeFromJson: false, includeToJson: false)  String? password,  LanguageEnum preferredLanguage,  bool enabled,  List<String> specializedTags)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.docId,_that.id,_that.firstName,_that.lastName,_that.email,_that.isAdmin,_that.role,_that.createdAt,_that.password,_that.preferredLanguage,_that.enabled);case _:
+return $default(_that.docId,_that.id,_that.firstName,_that.lastName,_that.email,_that.isAdmin,_that.role,_that.createdAt,_that.password,_that.preferredLanguage,_that.enabled,_that.specializedTags);case _:
   return orElse();
 
 }
@@ -184,10 +185,10 @@ return $default(_that.docId,_that.id,_that.firstName,_that.lastName,_that.email,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: false, includeToJson: false)  String? docId,  String id,  String firstName,  String lastName,  String email,  bool isAdmin,  String role, @TimestampConverter()  DateTime createdAt, @JsonKey(includeFromJson: false, includeToJson: false)  String? password,  LanguageEnum preferredLanguage,  bool enabled)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(includeFromJson: false, includeToJson: false)  String? docId,  String id,  String firstName,  String lastName,  String email,  bool isAdmin,  String role, @TimestampConverter()  DateTime createdAt, @JsonKey(includeFromJson: false, includeToJson: false)  String? password,  LanguageEnum preferredLanguage,  bool enabled,  List<String> specializedTags)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
-return $default(_that.docId,_that.id,_that.firstName,_that.lastName,_that.email,_that.isAdmin,_that.role,_that.createdAt,_that.password,_that.preferredLanguage,_that.enabled);case _:
+return $default(_that.docId,_that.id,_that.firstName,_that.lastName,_that.email,_that.isAdmin,_that.role,_that.createdAt,_that.password,_that.preferredLanguage,_that.enabled,_that.specializedTags);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -204,10 +205,10 @@ return $default(_that.docId,_that.id,_that.firstName,_that.lastName,_that.email,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeFromJson: false, includeToJson: false)  String? docId,  String id,  String firstName,  String lastName,  String email,  bool isAdmin,  String role, @TimestampConverter()  DateTime createdAt, @JsonKey(includeFromJson: false, includeToJson: false)  String? password,  LanguageEnum preferredLanguage,  bool enabled)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(includeFromJson: false, includeToJson: false)  String? docId,  String id,  String firstName,  String lastName,  String email,  bool isAdmin,  String role, @TimestampConverter()  DateTime createdAt, @JsonKey(includeFromJson: false, includeToJson: false)  String? password,  LanguageEnum preferredLanguage,  bool enabled,  List<String> specializedTags)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.docId,_that.id,_that.firstName,_that.lastName,_that.email,_that.isAdmin,_that.role,_that.createdAt,_that.password,_that.preferredLanguage,_that.enabled);case _:
+return $default(_that.docId,_that.id,_that.firstName,_that.lastName,_that.email,_that.isAdmin,_that.role,_that.createdAt,_that.password,_that.preferredLanguage,_that.enabled,_that.specializedTags);case _:
   return null;
 
 }
@@ -219,7 +220,7 @@ return $default(_that.docId,_that.id,_that.firstName,_that.lastName,_that.email,
 @JsonSerializable()
 
 class _UserModel extends UserModel {
-  const _UserModel({@JsonKey(includeFromJson: false, includeToJson: false) this.docId, required this.id, required this.firstName, required this.lastName, required this.email, required this.isAdmin, required this.role, @TimestampConverter() required this.createdAt, @JsonKey(includeFromJson: false, includeToJson: false) this.password, required this.preferredLanguage, required this.enabled}): super._();
+  const _UserModel({@JsonKey(includeFromJson: false, includeToJson: false) this.docId, required this.id, required this.firstName, required this.lastName, required this.email, required this.isAdmin, required this.role, @TimestampConverter() required this.createdAt, @JsonKey(includeFromJson: false, includeToJson: false) this.password, required this.preferredLanguage, required this.enabled, final  List<String> specializedTags = const []}): _specializedTags = specializedTags,super._();
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  String? docId;
@@ -233,6 +234,13 @@ class _UserModel extends UserModel {
 @override@JsonKey(includeFromJson: false, includeToJson: false) final  String? password;
 @override final  LanguageEnum preferredLanguage;
 @override final  bool enabled;
+ final  List<String> _specializedTags;
+@override@JsonKey() List<String> get specializedTags {
+  if (_specializedTags is EqualUnmodifiableListView) return _specializedTags;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_specializedTags);
+}
+
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
@@ -247,16 +255,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.docId, docId) || other.docId == docId)&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin)&&(identical(other.role, role) || other.role == role)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.password, password) || other.password == password)&&(identical(other.preferredLanguage, preferredLanguage) || other.preferredLanguage == preferredLanguage)&&(identical(other.enabled, enabled) || other.enabled == enabled));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.docId, docId) || other.docId == docId)&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.email, email) || other.email == email)&&(identical(other.isAdmin, isAdmin) || other.isAdmin == isAdmin)&&(identical(other.role, role) || other.role == role)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.password, password) || other.password == password)&&(identical(other.preferredLanguage, preferredLanguage) || other.preferredLanguage == preferredLanguage)&&(identical(other.enabled, enabled) || other.enabled == enabled)&&const DeepCollectionEquality().equals(other._specializedTags, _specializedTags));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,docId,id,firstName,lastName,email,isAdmin,role,createdAt,password,preferredLanguage,enabled);
+int get hashCode => Object.hash(runtimeType,docId,id,firstName,lastName,email,isAdmin,role,createdAt,password,preferredLanguage,enabled,const DeepCollectionEquality().hash(_specializedTags));
 
 @override
 String toString() {
-  return 'UserModel(docId: $docId, id: $id, firstName: $firstName, lastName: $lastName, email: $email, isAdmin: $isAdmin, role: $role, createdAt: $createdAt, password: $password, preferredLanguage: $preferredLanguage, enabled: $enabled)';
+  return 'UserModel(docId: $docId, id: $id, firstName: $firstName, lastName: $lastName, email: $email, isAdmin: $isAdmin, role: $role, createdAt: $createdAt, password: $password, preferredLanguage: $preferredLanguage, enabled: $enabled, specializedTags: $specializedTags)';
 }
 
 
@@ -267,7 +275,7 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(includeFromJson: false, includeToJson: false) String? docId, String id, String firstName, String lastName, String email, bool isAdmin, String role,@TimestampConverter() DateTime createdAt,@JsonKey(includeFromJson: false, includeToJson: false) String? password, LanguageEnum preferredLanguage, bool enabled
+@JsonKey(includeFromJson: false, includeToJson: false) String? docId, String id, String firstName, String lastName, String email, bool isAdmin, String role,@TimestampConverter() DateTime createdAt,@JsonKey(includeFromJson: false, includeToJson: false) String? password, LanguageEnum preferredLanguage, bool enabled, List<String> specializedTags
 });
 
 
@@ -284,7 +292,7 @@ class __$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? docId = freezed,Object? id = null,Object? firstName = null,Object? lastName = null,Object? email = null,Object? isAdmin = null,Object? role = null,Object? createdAt = null,Object? password = freezed,Object? preferredLanguage = null,Object? enabled = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? docId = freezed,Object? id = null,Object? firstName = null,Object? lastName = null,Object? email = null,Object? isAdmin = null,Object? role = null,Object? createdAt = null,Object? password = freezed,Object? preferredLanguage = null,Object? enabled = null,Object? specializedTags = null,}) {
   return _then(_UserModel(
 docId: freezed == docId ? _self.docId : docId // ignore: cast_nullable_to_non_nullable
 as String?,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
@@ -297,7 +305,8 @@ as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: 
 as DateTime,password: freezed == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
 as String?,preferredLanguage: null == preferredLanguage ? _self.preferredLanguage : preferredLanguage // ignore: cast_nullable_to_non_nullable
 as LanguageEnum,enabled: null == enabled ? _self.enabled : enabled // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,specializedTags: null == specializedTags ? _self._specializedTags : specializedTags // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 

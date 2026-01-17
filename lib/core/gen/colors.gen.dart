@@ -136,6 +136,43 @@ class AppColors {
       });
 
   /// MaterialColor:
+  ///   50: #FFE3F5E8
+  ///   100: #FFB8E6C6
+  ///   200: #FF89D6A0
+  ///   300: #FF59C67A
+  ///   400: #FF36B95E
+  ///   500: #FF12AD41
+  ///   600: #FF10A63B
+  ///   700: #FF0D9C32
+  ///   800: #FF0A932A
+  ///   900: #FF05831C
+  static const MaterialColor green = MaterialColor(0xFF12AD41, <int, Color>{
+    50: Color(0xFFE3F5E8),
+    100: Color(0xFFB8E6C6),
+    200: Color(0xFF89D6A0),
+    300: Color(0xFF59C67A),
+    400: Color(0xFF36B95E),
+    500: Color(0xFF12AD41),
+    600: Color(0xFF10A63B),
+    700: Color(0xFF0D9C32),
+    800: Color(0xFF0A932A),
+    900: Color(0xFF05831C),
+  });
+
+  /// MaterialAccentColor:
+  ///   100: #FF8CFF7F
+  ///   200: #FF55FF42
+  ///   400: #FF3FFF28
+  ///   700: #FF31FF19
+  static const MaterialAccentColor greenAccent =
+      MaterialAccentColor(0xFF55FF42, <int, Color>{
+        100: Color(0xFF8CFF7F),
+        200: Color(0xFF55FF42),
+        400: Color(0xFF3FFF28),
+        700: Color(0xFF31FF19),
+      });
+
+  /// MaterialColor:
   ///   50: #FFF6E5ED
   ///   100: #FFE8BFD1
   ///   200: #FFD995B3
@@ -586,5 +623,42 @@ class AppColors {
         200: Color(0xFF006DCF),
         400: Color(0xFF0060B5),
         700: Color(0xFF0058A6),
+      });
+
+  /// MaterialColor:
+  ///   50: #FFFDFBE2
+  ///   100: #FFFAF4B6
+  ///   200: #FFF6ED86
+  ///   300: #FFF2E556
+  ///   400: #FFF0E031
+  ///   500: #FFEDDA0D
+  ///   600: #FFEBD60B
+  ///   700: #FFE8D009
+  ///   800: #FFE5CB07
+  ///   900: #FFE0C203
+  static const MaterialColor yellow = MaterialColor(0xFFEDDA0D, <int, Color>{
+    50: Color(0xFFFDFBE2),
+    100: Color(0xFFFAF4B6),
+    200: Color(0xFFF6ED86),
+    300: Color(0xFFF2E556),
+    400: Color(0xFFF0E031),
+    500: Color(0xFFEDDA0D),
+    600: Color(0xFFEBD60B),
+    700: Color(0xFFE8D009),
+    800: Color(0xFFE5CB07),
+    900: Color(0xFFE0C203),
+  });
+
+  /// MaterialAccentColor:
+  ///   100: #FFFFF9EB
+  ///   200: #FFFFE5AE
+  ///   400: #FFFFDD94
+  ///   700: #FFFFD985
+  static const MaterialAccentColor yellowAccent =
+      MaterialAccentColor(0xFFFFE5AE, <int, Color>{
+        100: Color(0xFFFFF9EB),
+        200: Color(0xFFFFE5AE),
+        400: Color(0xFFFFDD94),
+        700: Color(0xFFFFD985),
       });
 }

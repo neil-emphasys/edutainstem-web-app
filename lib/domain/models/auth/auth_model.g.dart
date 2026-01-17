@@ -19,6 +19,11 @@ _UserModel _$UserModelFromJson(Map<String, dynamic> json) => _UserModel(
     json['preferredLanguage'],
   ),
   enabled: json['enabled'] as bool,
+  specializedTags:
+      (json['specializedTags'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
@@ -32,6 +37,7 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
       'createdAt': const TimestampConverter().toJson(instance.createdAt),
       'preferredLanguage': _$LanguageEnumEnumMap[instance.preferredLanguage]!,
       'enabled': instance.enabled,
+      'specializedTags': instance.specializedTags,
     };
 
 const _$LanguageEnumEnumMap = {

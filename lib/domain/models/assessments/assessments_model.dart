@@ -85,6 +85,7 @@ List<QuestionModel> mapQuestionsDocToList(Map<String, dynamic>? data) {
 @freezed
 abstract class PollChoice with _$PollChoice {
   const factory PollChoice({
+    @Default('') String cid,
     required String label,
     required int count,
     String? subLabel,
@@ -99,6 +100,7 @@ abstract class PollChoice with _$PollChoice {
 @freezed
 abstract class PollChoiceGroup with _$PollChoiceGroup {
   const factory PollChoiceGroup({
+    @Default('') String qid,
     required String question,
     required QuestionTypesEnum type,
     required List<PollChoice> choices,

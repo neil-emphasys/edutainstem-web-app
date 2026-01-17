@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:edutainstem/application/auth/bloc/firebase_auth_bloc.dart';
+import 'package:edutainstem/application/sidebar/cubit/sidebar_x_cubit.dart';
 import 'package:edutainstem/presentation/pages/accounts_screen.dart';
 import 'package:edutainstem/presentation/pages/home_screen.dart';
 import 'package:edutainstem/presentation/pages/lessons_screen.dart';
@@ -11,6 +12,7 @@ import 'package:edutainstem/presentation/pages/sign_in_screen.dart';
 import 'package:edutainstem/presentation/pages/sign_up_done_screen.dart';
 import 'package:edutainstem/presentation/pages/sign_up_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sidebarx/sidebarx.dart';
 
@@ -45,6 +47,42 @@ class Routes {
       }
     } */
     return false;
+  }
+
+  static int? _sidebarIndexForPath(String path) {
+    if (path == HomeScreen.routeName) {
+      return 0;
+    }
+    if (path == RoomsScreen.routeName) {
+      return 1;
+    }
+    if (path == AccountsScreen.routeName) {
+      return 2;
+    }
+    return null;
+  }
+
+  static void _syncSidebarIndex(BuildContext context, GoRouterState state) {
+    final index = _sidebarIndexForPath(state.matchedLocation);
+    if (index == null) {
+      return;
+    }
+
+    final cubit = context.read<SidebarXCubit>();
+    final currentIndex = cubit.state.maybeWhen(
+      initial: (currentIndex) => currentIndex,
+      orElse: () => 0,
+    );
+    if (currentIndex == index) {
+      return;
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!context.mounted) {
+        return;
+      }
+      cubit.setSelectedIndex(index);
+    });
   }
 
   /// This function initializes GoRouter with the correct initial route.
@@ -112,8 +150,10 @@ class Routes {
         // Protected shell (sidebar + child pages)
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
-          builder: (context, state, child) =>
-              MainScreenShell(controller: sidebarController, child: child),
+          builder: (context, state, child) {
+            _syncSidebarIndex(context, state);
+            return MainScreenShell(controller: sidebarController, child: child);
+          },
           routes: [
             GoRoute(
               path: HomeScreen.routeName,

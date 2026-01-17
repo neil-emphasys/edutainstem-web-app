@@ -589,7 +589,7 @@ as String,
 /// @nodoc
 mixin _$PollChoice {
 
- String get label; int get count; String? get subLabel;@JsonKey(includeFromJson: false, includeToJson: false) Color? get color; bool get isAnswer;
+ String get cid; String get label; int get count; String? get subLabel;@JsonKey(includeFromJson: false, includeToJson: false) Color? get color; bool get isAnswer;
 /// Create a copy of PollChoice
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -602,16 +602,16 @@ $PollChoiceCopyWith<PollChoice> get copyWith => _$PollChoiceCopyWithImpl<PollCho
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollChoice&&(identical(other.label, label) || other.label == label)&&(identical(other.count, count) || other.count == count)&&(identical(other.subLabel, subLabel) || other.subLabel == subLabel)&&(identical(other.color, color) || other.color == color)&&(identical(other.isAnswer, isAnswer) || other.isAnswer == isAnswer));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollChoice&&(identical(other.cid, cid) || other.cid == cid)&&(identical(other.label, label) || other.label == label)&&(identical(other.count, count) || other.count == count)&&(identical(other.subLabel, subLabel) || other.subLabel == subLabel)&&(identical(other.color, color) || other.color == color)&&(identical(other.isAnswer, isAnswer) || other.isAnswer == isAnswer));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,label,count,subLabel,color,isAnswer);
+int get hashCode => Object.hash(runtimeType,cid,label,count,subLabel,color,isAnswer);
 
 @override
 String toString() {
-  return 'PollChoice(label: $label, count: $count, subLabel: $subLabel, color: $color, isAnswer: $isAnswer)';
+  return 'PollChoice(cid: $cid, label: $label, count: $count, subLabel: $subLabel, color: $color, isAnswer: $isAnswer)';
 }
 
 
@@ -622,7 +622,7 @@ abstract mixin class $PollChoiceCopyWith<$Res>  {
   factory $PollChoiceCopyWith(PollChoice value, $Res Function(PollChoice) _then) = _$PollChoiceCopyWithImpl;
 @useResult
 $Res call({
- String label, int count, String? subLabel,@JsonKey(includeFromJson: false, includeToJson: false) Color? color, bool isAnswer
+ String cid, String label, int count, String? subLabel,@JsonKey(includeFromJson: false, includeToJson: false) Color? color, bool isAnswer
 });
 
 
@@ -639,9 +639,10 @@ class _$PollChoiceCopyWithImpl<$Res>
 
 /// Create a copy of PollChoice
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? label = null,Object? count = null,Object? subLabel = freezed,Object? color = freezed,Object? isAnswer = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? cid = null,Object? label = null,Object? count = null,Object? subLabel = freezed,Object? color = freezed,Object? isAnswer = null,}) {
   return _then(_self.copyWith(
-label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
+cid: null == cid ? _self.cid : cid // ignore: cast_nullable_to_non_nullable
+as String,label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int,subLabel: freezed == subLabel ? _self.subLabel : subLabel // ignore: cast_nullable_to_non_nullable
 as String?,color: freezed == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
@@ -731,10 +732,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color,  bool isAnswer)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String cid,  String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color,  bool isAnswer)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PollChoice() when $default != null:
-return $default(_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswer);case _:
+return $default(_that.cid,_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswer);case _:
   return orElse();
 
 }
@@ -752,10 +753,10 @@ return $default(_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswe
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color,  bool isAnswer)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String cid,  String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color,  bool isAnswer)  $default,) {final _that = this;
 switch (_that) {
 case _PollChoice():
-return $default(_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswer);case _:
+return $default(_that.cid,_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswer);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -772,10 +773,10 @@ return $default(_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswe
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color,  bool isAnswer)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String cid,  String label,  int count,  String? subLabel, @JsonKey(includeFromJson: false, includeToJson: false)  Color? color,  bool isAnswer)?  $default,) {final _that = this;
 switch (_that) {
 case _PollChoice() when $default != null:
-return $default(_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswer);case _:
+return $default(_that.cid,_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswer);case _:
   return null;
 
 }
@@ -787,9 +788,10 @@ return $default(_that.label,_that.count,_that.subLabel,_that.color,_that.isAnswe
 @JsonSerializable()
 
 class _PollChoice implements PollChoice {
-  const _PollChoice({required this.label, required this.count, this.subLabel, @JsonKey(includeFromJson: false, includeToJson: false) this.color, this.isAnswer = false});
+  const _PollChoice({this.cid = '', required this.label, required this.count, this.subLabel, @JsonKey(includeFromJson: false, includeToJson: false) this.color, this.isAnswer = false});
   factory _PollChoice.fromJson(Map<String, dynamic> json) => _$PollChoiceFromJson(json);
 
+@override@JsonKey() final  String cid;
 @override final  String label;
 @override final  int count;
 @override final  String? subLabel;
@@ -809,16 +811,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollChoice&&(identical(other.label, label) || other.label == label)&&(identical(other.count, count) || other.count == count)&&(identical(other.subLabel, subLabel) || other.subLabel == subLabel)&&(identical(other.color, color) || other.color == color)&&(identical(other.isAnswer, isAnswer) || other.isAnswer == isAnswer));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollChoice&&(identical(other.cid, cid) || other.cid == cid)&&(identical(other.label, label) || other.label == label)&&(identical(other.count, count) || other.count == count)&&(identical(other.subLabel, subLabel) || other.subLabel == subLabel)&&(identical(other.color, color) || other.color == color)&&(identical(other.isAnswer, isAnswer) || other.isAnswer == isAnswer));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,label,count,subLabel,color,isAnswer);
+int get hashCode => Object.hash(runtimeType,cid,label,count,subLabel,color,isAnswer);
 
 @override
 String toString() {
-  return 'PollChoice(label: $label, count: $count, subLabel: $subLabel, color: $color, isAnswer: $isAnswer)';
+  return 'PollChoice(cid: $cid, label: $label, count: $count, subLabel: $subLabel, color: $color, isAnswer: $isAnswer)';
 }
 
 
@@ -829,7 +831,7 @@ abstract mixin class _$PollChoiceCopyWith<$Res> implements $PollChoiceCopyWith<$
   factory _$PollChoiceCopyWith(_PollChoice value, $Res Function(_PollChoice) _then) = __$PollChoiceCopyWithImpl;
 @override @useResult
 $Res call({
- String label, int count, String? subLabel,@JsonKey(includeFromJson: false, includeToJson: false) Color? color, bool isAnswer
+ String cid, String label, int count, String? subLabel,@JsonKey(includeFromJson: false, includeToJson: false) Color? color, bool isAnswer
 });
 
 
@@ -846,9 +848,10 @@ class __$PollChoiceCopyWithImpl<$Res>
 
 /// Create a copy of PollChoice
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? label = null,Object? count = null,Object? subLabel = freezed,Object? color = freezed,Object? isAnswer = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? cid = null,Object? label = null,Object? count = null,Object? subLabel = freezed,Object? color = freezed,Object? isAnswer = null,}) {
   return _then(_PollChoice(
-label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
+cid: null == cid ? _self.cid : cid // ignore: cast_nullable_to_non_nullable
+as String,label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int,subLabel: freezed == subLabel ? _self.subLabel : subLabel // ignore: cast_nullable_to_non_nullable
 as String?,color: freezed == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
@@ -864,7 +867,7 @@ as bool,
 /// @nodoc
 mixin _$PollChoiceGroup {
 
- String get question; QuestionTypesEnum get type; List<PollChoice> get choices;
+ String get qid; String get question; QuestionTypesEnum get type; List<PollChoice> get choices;
 /// Create a copy of PollChoiceGroup
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -877,16 +880,16 @@ $PollChoiceGroupCopyWith<PollChoiceGroup> get copyWith => _$PollChoiceGroupCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollChoiceGroup&&(identical(other.question, question) || other.question == question)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.choices, choices));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollChoiceGroup&&(identical(other.qid, qid) || other.qid == qid)&&(identical(other.question, question) || other.question == question)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.choices, choices));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,question,type,const DeepCollectionEquality().hash(choices));
+int get hashCode => Object.hash(runtimeType,qid,question,type,const DeepCollectionEquality().hash(choices));
 
 @override
 String toString() {
-  return 'PollChoiceGroup(question: $question, type: $type, choices: $choices)';
+  return 'PollChoiceGroup(qid: $qid, question: $question, type: $type, choices: $choices)';
 }
 
 
@@ -897,7 +900,7 @@ abstract mixin class $PollChoiceGroupCopyWith<$Res>  {
   factory $PollChoiceGroupCopyWith(PollChoiceGroup value, $Res Function(PollChoiceGroup) _then) = _$PollChoiceGroupCopyWithImpl;
 @useResult
 $Res call({
- String question, QuestionTypesEnum type, List<PollChoice> choices
+ String qid, String question, QuestionTypesEnum type, List<PollChoice> choices
 });
 
 
@@ -914,9 +917,10 @@ class _$PollChoiceGroupCopyWithImpl<$Res>
 
 /// Create a copy of PollChoiceGroup
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? question = null,Object? type = null,Object? choices = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? qid = null,Object? question = null,Object? type = null,Object? choices = null,}) {
   return _then(_self.copyWith(
-question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
+qid: null == qid ? _self.qid : qid // ignore: cast_nullable_to_non_nullable
+as String,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as QuestionTypesEnum,choices: null == choices ? _self.choices : choices // ignore: cast_nullable_to_non_nullable
 as List<PollChoice>,
@@ -1004,10 +1008,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String question,  QuestionTypesEnum type,  List<PollChoice> choices)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String qid,  String question,  QuestionTypesEnum type,  List<PollChoice> choices)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PollChoiceGroup() when $default != null:
-return $default(_that.question,_that.type,_that.choices);case _:
+return $default(_that.qid,_that.question,_that.type,_that.choices);case _:
   return orElse();
 
 }
@@ -1025,10 +1029,10 @@ return $default(_that.question,_that.type,_that.choices);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String question,  QuestionTypesEnum type,  List<PollChoice> choices)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String qid,  String question,  QuestionTypesEnum type,  List<PollChoice> choices)  $default,) {final _that = this;
 switch (_that) {
 case _PollChoiceGroup():
-return $default(_that.question,_that.type,_that.choices);case _:
+return $default(_that.qid,_that.question,_that.type,_that.choices);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1045,10 +1049,10 @@ return $default(_that.question,_that.type,_that.choices);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String question,  QuestionTypesEnum type,  List<PollChoice> choices)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String qid,  String question,  QuestionTypesEnum type,  List<PollChoice> choices)?  $default,) {final _that = this;
 switch (_that) {
 case _PollChoiceGroup() when $default != null:
-return $default(_that.question,_that.type,_that.choices);case _:
+return $default(_that.qid,_that.question,_that.type,_that.choices);case _:
   return null;
 
 }
@@ -1060,9 +1064,10 @@ return $default(_that.question,_that.type,_that.choices);case _:
 @JsonSerializable()
 
 class _PollChoiceGroup implements PollChoiceGroup {
-  const _PollChoiceGroup({required this.question, required this.type, required final  List<PollChoice> choices}): _choices = choices;
+  const _PollChoiceGroup({this.qid = '', required this.question, required this.type, required final  List<PollChoice> choices}): _choices = choices;
   factory _PollChoiceGroup.fromJson(Map<String, dynamic> json) => _$PollChoiceGroupFromJson(json);
 
+@override@JsonKey() final  String qid;
 @override final  String question;
 @override final  QuestionTypesEnum type;
  final  List<PollChoice> _choices;
@@ -1086,16 +1091,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollChoiceGroup&&(identical(other.question, question) || other.question == question)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._choices, _choices));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollChoiceGroup&&(identical(other.qid, qid) || other.qid == qid)&&(identical(other.question, question) || other.question == question)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._choices, _choices));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,question,type,const DeepCollectionEquality().hash(_choices));
+int get hashCode => Object.hash(runtimeType,qid,question,type,const DeepCollectionEquality().hash(_choices));
 
 @override
 String toString() {
-  return 'PollChoiceGroup(question: $question, type: $type, choices: $choices)';
+  return 'PollChoiceGroup(qid: $qid, question: $question, type: $type, choices: $choices)';
 }
 
 
@@ -1106,7 +1111,7 @@ abstract mixin class _$PollChoiceGroupCopyWith<$Res> implements $PollChoiceGroup
   factory _$PollChoiceGroupCopyWith(_PollChoiceGroup value, $Res Function(_PollChoiceGroup) _then) = __$PollChoiceGroupCopyWithImpl;
 @override @useResult
 $Res call({
- String question, QuestionTypesEnum type, List<PollChoice> choices
+ String qid, String question, QuestionTypesEnum type, List<PollChoice> choices
 });
 
 
@@ -1123,9 +1128,10 @@ class __$PollChoiceGroupCopyWithImpl<$Res>
 
 /// Create a copy of PollChoiceGroup
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? question = null,Object? type = null,Object? choices = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? qid = null,Object? question = null,Object? type = null,Object? choices = null,}) {
   return _then(_PollChoiceGroup(
-question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
+qid: null == qid ? _self.qid : qid // ignore: cast_nullable_to_non_nullable
+as String,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as QuestionTypesEnum,choices: null == choices ? _self._choices : choices // ignore: cast_nullable_to_non_nullable
 as List<PollChoice>,

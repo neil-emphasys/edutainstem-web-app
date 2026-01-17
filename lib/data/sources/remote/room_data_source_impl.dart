@@ -42,6 +42,7 @@ class RoomDataSourceImpl implements RoomDataSource {
         // 2) Generate a unique code
         final newCode = genCodeExcluding(len: 6, excludedCodes: existingCodes);
 
+        debugPrint('ROOM LESSONS: ${room.preferredLessons}');
         // 3) Create new RoomModel with code injected
         final newRoom = room.copyWith(
           roomCode: newCode,
@@ -119,7 +120,10 @@ class RoomDataSourceImpl implements RoomDataSource {
     try {
       final snap = await _db
           .collection(FirebaseConstants.ele.name)
-          // .where('isOpen', isEqualTo: true) // <- optional filter
+          .where(
+            FirebaseConstants.ele.isActive,
+            isEqualTo: true,
+          ) // <- optional filter
           // .orderBy('title') // optional ordering
           .get();
 
@@ -329,7 +333,12 @@ class RoomDataSourceImpl implements RoomDataSource {
             .toList();
 
         poll.add(
-          PollChoiceGroup(question: q.question, type: q.type, choices: choices),
+          PollChoiceGroup(
+            qid: q.id,
+            question: q.question,
+            type: q.type,
+            choices: choices,
+          ),
         );
       }
       return poll;

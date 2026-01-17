@@ -58,49 +58,10 @@ class _DifficultyChartWidgetState extends State<RoomSupportRequestsWidget> {
     final repo = it<RoomRepository>();
 
     return Container(
-      // color: Colors.red,
-      // constraints: BoxConstraints(minHeight: 0.6.sh),
       width: 0.5.sw,
       padding: EdgeInsets.symmetric(vertical: 16.r, horizontal: 20.r),
       child: Column(
-        // shrinkWrap: true,
-
-        // mainAxisSize: MainAxisSize.min,
         children: [
-          /*  Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  IconButton(
-                    onPressed: () => context.pop(),
-                    icon: Image.asset(Assets.icons.png.goBack.path, width: 4.w),
-                  ),
-                  SizedBox(width: 4.w),
-                  Text(
-                    'Assigned Difficulty Modifiers',
-                    style: AppTextStyles.getStyle(
-                      AppTextStyle.bodySmall,
-                      modifier: (base) => base.copyWith(
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.3.sp,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              AppButton(
-                width: 48.w,
-                title: 'Switch View',
-                backgroundColor: AppColors.tigerEyeOrange,
-                onPressed: () => widget.blocInstance.add(
-                  const RoomCreateEvent.switchCloseView(),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 40.h), */
           StreamBuilder(
             stream: repo.streamPendingRequests(widget.room.id ?? ''),
             builder: (context, snapshot) {
@@ -238,52 +199,62 @@ class _DifficultyChartWidgetState extends State<RoomSupportRequestsWidget> {
                     rows.add(TableRow(children: rowCells));
                   }
 
-                  return listStudentsAnswers.isEmpty
-                      ? Text(
-                          'No support request/s needed so far',
-                          style: columnTitleTextStyle.copyWith(
-                            color: AppColors.black,
-                          ),
-                          textAlign: TextAlign.center,
-                        )
-                      : Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                '$totalStudents Student/s needs help',
-                                style: columnTitleTextStyle.copyWith(
-                                  color: AppColors.primary,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
+                  return Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 6.w,
+                      vertical: 6.w,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.shade50.withAlpha(100),
+                      borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                    ),
+                    child: listStudentsAnswers.isEmpty
+                        ? Text(
+                            'No support request/s needed so far',
+                            style: columnTitleTextStyle.copyWith(
+                              color: AppColors.black,
                             ),
-                            SizedBox(height: 8.h),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8.r),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.5,
+                            textAlign: TextAlign.center,
+                          )
+                        : Column(
+                            children: [
+                              Container(
+                                alignment: Alignment.centerRight,
+                                child: Text(
+                                  '$totalStudents Student/s needs help',
+                                  style: columnTitleTextStyle.copyWith(
+                                    color: AppColors.primary,
                                   ),
-                                  borderRadius: BorderRadius.circular(8.r),
+                                  textAlign: TextAlign.center,
                                 ),
-                                child: Table(
-                                  defaultVerticalAlignment:
-                                      TableCellVerticalAlignment.middle,
-                                  border: const TableBorder.symmetric(
-                                    inside: BorderSide(
+                              ),
+                              SizedBox(height: 8.h),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8.r),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
                                       color: Colors.black,
-                                      width: 1.2,
-                                    ), // inner borders
+                                      width: 1.5,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.r),
                                   ),
-                                  children: rows,
+                                  child: Table(
+                                    defaultVerticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                    border: const TableBorder.symmetric(
+                                      inside: BorderSide(
+                                        color: Colors.black,
+                                        width: 1.2,
+                                      ), // inner borders
+                                    ),
+                                    children: rows,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        );
+                            ],
+                          ),
+                  );
                 },
               );
             },
