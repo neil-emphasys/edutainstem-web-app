@@ -74,18 +74,33 @@ class _PollWidgetState extends State<PollWidget> {
     );
   }
 
+  void _recalculateTotals() {
+    final students = widget.room.studentsEnrolled.entries;
+    final total = students.length;
+    final finished = students.where((e) => e.value.assessment.isNotEmpty).length;
+    if (totalStudents != total || totalStudentsFinishedAssessment != finished) {
+      setState(() {
+        totalStudents = total;
+        totalStudentsFinishedAssessment = finished;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      setState(() {
-        totalStudents = widget.room.studentsEnrolled.entries.length;
-        totalStudentsFinishedAssessment = widget.room.studentsEnrolled.entries
-            .map((e) => e.value.assessment.isNotEmpty)
-            .length;
-      });
+      _recalculateTotals();
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant PollWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.room != widget.room) {
+      _recalculateTotals();
+    }
   }
 
   @override

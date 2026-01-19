@@ -25,12 +25,19 @@ class RoomCodeWidget extends StatefulWidget {
 class _RoomCodeWidgetState extends State<RoomCodeWidget> {
   final repo = it<RoomRepository>();
   late final ExpandableController expandableController;
+  int _lastStudentsCount = 0;
 
   @override
   void initState() {
     super.initState();
 
-    expandableController = ExpandableController(initialExpanded: false);
+    expandableController = ExpandableController();
+  }
+
+  @override
+  void dispose() {
+    expandableController.dispose();
+    super.dispose();
   }
 
   @override
@@ -93,13 +100,18 @@ class _RoomCodeWidgetState extends State<RoomCodeWidget> {
                             return Text('Error: $f');
                           },
                           (answers) {
+                            debugPrint('ANSWERS: ${answers.data}');
                             final listStudentsAnswers = answers.data;
-
-                            if (listStudentsAnswers.isNotEmpty) {
-                              if (!expandableController.expanded) {
-                                expandableController.toggle();
-                              }
+                            final currentCount = listStudentsAnswers.length;
+                            if (_lastStudentsCount == 0 && currentCount > 0) {
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (!mounted) return;
+                                if (!expandableController.expanded) {
+                                  expandableController.toggle();
+                                }
+                              });
                             }
+                            _lastStudentsCount = currentCount;
 
                             // return PollWidget(questions: answers.data);
 

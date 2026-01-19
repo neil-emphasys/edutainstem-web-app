@@ -17,6 +17,9 @@ abstract class RoomRepository {
   });
   Future<Either<FailedState, SuccessState<List<LessonModel>>>> getLessons();
   Future<Either<FailedState, SuccessState<List<RoomModel>>>> getRooms();
+  Stream<Either<FailedState, SuccessState<RoomModel>>> watchRoom({
+    required String roomId,
+  });
   Future<Either<FailedState, SuccessState<List<StudentEnrollment>>>>
   getEnrolledStudents({required String roomId});
   Stream<Either<FailedState, SuccessState<List<PollChoiceGroup>>>>

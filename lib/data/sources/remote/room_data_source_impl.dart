@@ -181,6 +181,21 @@ class RoomDataSourceImpl implements RoomDataSource {
   }
 
   @override
+  Stream<RoomModel> watchRoom({required String roomId}) async* {
+    try {
+      final roomRef = _db.collection(FirebaseConstants.room.name).doc(roomId);
+      yield* roomRef.snapshots().map((roomSnap) {
+        if (!roomSnap.exists) {
+          throw StateError('Room not found: $roomId');
+        }
+        return RoomModel.fromDoc(roomSnap);
+      });
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
   Future<List<StudentEnrollment>> getEnrolledStudents({
     required String roomId,
   }) async {
@@ -341,6 +356,8 @@ class RoomDataSourceImpl implements RoomDataSource {
           ),
         );
       }
+      // debugPrint('POLL: ${poll.length}');
+
       return poll;
     });
   }

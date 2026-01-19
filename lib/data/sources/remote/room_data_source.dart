@@ -13,6 +13,7 @@ abstract class RoomDataSource {
   });
   Future<List<LessonModel>> getLessons();
   Future<List<RoomModel>> getRooms();
+  Stream<RoomModel> watchRoom({required String roomId});
   Future<List<StudentEnrollment>> getEnrolledStudents({required String roomId});
   Stream<List<PollChoiceGroup>> watchAssessmentStatistics({
     required String roomId,

@@ -108,7 +108,9 @@ class FirebaseAuthDataSourceImpl implements FirebaseAuthDataSource {
       // final user = UserModel.fromJson(Map<String, dynamic>.from(doc.data()));
       final user = UserModel.fromJson(
         Map<String, dynamic>.from(doc.data()),
-      ).copyWith(specializedTags: ['Science', 'Technology', 'SEL']);
+      ).copyWith();
+
+      FirebaseAuth.instance.currentUser?.updateDisplayName(user.getFullName);
 
       return user;
     } on FirebaseAuthException catch (e, st) {

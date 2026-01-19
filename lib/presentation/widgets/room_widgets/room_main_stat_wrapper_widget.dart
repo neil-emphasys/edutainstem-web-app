@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
 import 'package:edutainstem/core/components/app_button.dart';
 import 'package:edutainstem/core/gen/assets.gen.dart';
 import 'package:edutainstem/core/gen/colors.gen.dart';
+import 'package:edutainstem/core/services/toastification_service.dart';
 import 'package:edutainstem/domain/models/rooms/room_model.dart';
+import 'package:edutainstem/domain/repositories/room_repository.dart';
+import 'package:edutainstem/injection.dart';
 import 'package:edutainstem/presentation/widgets/room_widgets/room_difficulty_chart_widget.dart';
 import 'package:edutainstem/presentation/widgets/room_widgets/room_journal_feedback_widget.dart';
 import 'package:edutainstem/presentation/widgets/room_widgets/room_quiz_widget.dart';
@@ -13,6 +18,7 @@ import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:toastification/toastification.dart';
 
 class RoomMainStatWrapperWidget extends StatefulWidget {
   const RoomMainStatWrapperWidget({
@@ -31,6 +37,11 @@ class RoomMainStatWrapperWidget extends StatefulWidget {
 
 class _RoomMainStatWrapperWidgetState extends State<RoomMainStatWrapperWidget>
     with TickerProviderStateMixin {
+  final RoomRepository _repo = it<RoomRepository>();
+  final ToastificationService _toast = it<ToastificationService>();
+  StreamSubscription? _pendingRequestsSub;
+  int _lastPendingCount = 0;
+  bool _didSeedPendingCount = false;
   late final TabController _tabController;
 
   @override
@@ -38,12 +49,59 @@ class _RoomMainStatWrapperWidgetState extends State<RoomMainStatWrapperWidget>
     super.initState();
     _tabController = TabController(length: 5, vsync: this, initialIndex: 0);
     _tabController.addListener(() => setState(() {}));
+    _startPendingRequestsListener();
   }
 
   @override
   void dispose() {
+    _pendingRequestsSub?.cancel();
     _tabController.dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant RoomMainStatWrapperWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.room.id != widget.room.id ||
+        oldWidget.room.isOpen != widget.room.isOpen) {
+      _startPendingRequestsListener();
+    }
+  }
+
+  void _startPendingRequestsListener() {
+    _pendingRequestsSub?.cancel();
+    _didSeedPendingCount = false;
+    _lastPendingCount = 0;
+
+    final roomId = widget.room.id ?? '';
+    if (roomId.isEmpty || widget.room.isOpen) return;
+
+    _pendingRequestsSub = _repo.streamPendingRequests(roomId).listen((either) {
+      if (!mounted) return;
+      either.fold((_) {}, (success) {
+        final currentCount = success.data.length;
+        if (_didSeedPendingCount && currentCount > _lastPendingCount) {
+          if (_tabController.index != 3) {
+            debugPrint('ZXCXZCZXCZXCXZ');
+            _toast.info(
+              'New support request received. Tap to view.',
+              title: 'Support Requests',
+              context: context,
+              closeOnClick: true,
+              autoClose: const Duration(seconds: 10),
+              callbacks: ToastificationCallbacks(
+                onTap: (_) {
+                  if (!mounted) return;
+                  _tabController.animateTo(3);
+                },
+              ),
+            );
+          }
+        }
+        _lastPendingCount = currentCount;
+        _didSeedPendingCount = true;
+      });
+    });
   }
 
   @override
@@ -81,8 +139,20 @@ class _RoomMainStatWrapperWidgetState extends State<RoomMainStatWrapperWidget>
                 width: 40.w,
                 title: 'ReOpen',
                 backgroundColor: AppColors.orange,
-                onPressed: () =>
-                    widget.blocInstance.add(const RoomCreateEvent.reOpen()),
+                onPressed: () => it<ToastificationService>().info(
+                  'New support request received. Tap to view.',
+                  title: 'Support Requests',
+                  context: context,
+                  closeOnClick: true,
+                  callbacks: ToastificationCallbacks(
+                    onTap: (_) {
+                      if (!mounted) return;
+                      _tabController.animateTo(3);
+                    },
+                  ),
+                ),
+                // onPressed: () =>
+                //     widget.blocInstance.add(const RoomCreateEvent.reOpen()),
               ),
             ],
           ),

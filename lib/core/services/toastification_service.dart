@@ -1,4 +1,5 @@
 // toastification_service.dart
+import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -35,7 +36,8 @@ class ToastificationService {
     ToastificationStyle style = ToastificationStyle.minimal,
     AlignmentGeometry alignment = Alignment.topRight,
     Duration autoClose = const Duration(milliseconds: 2600),
-    bool showProgressBar = false,
+    bool showProgressBar = true,
+    bool? closeOnClick,
     EdgeInsets margin = const EdgeInsets.symmetric(
       horizontal: 16,
       vertical: 12,
@@ -51,6 +53,7 @@ class ToastificationService {
     String? tag,
     Duration dedupeWindow = const Duration(milliseconds: 900),
     BuildContext? context,
+    ToastificationCallbacks callbacks = const ToastificationCallbacks(),
   }) {
     /* if (_shouldSkip(tag, dedupeWindow)) {
       // Return a dummy, no-op item to keep call-sites simple.
@@ -69,7 +72,7 @@ class ToastificationService {
       style: style,
       title: title != null
           ? Text(
-              title,
+              title.toUpperCase(),
               style: AppTextStyles.getStyle(
                 AppTextStyle.subtitle2,
                 modifier: (base) => base.copyWith(
@@ -98,6 +101,8 @@ class ToastificationService {
       foregroundColor: foregroundColor,
       animationDuration: Durations.medium1,
       icon: icon != null ? Icon(icon) : null,
+      closeOnClick: closeOnClick,
+      callbacks: callbacks,
       // You can add animationBuilder/closeButtonBuilder here if you like.
     );
   }
@@ -167,6 +172,8 @@ class ToastificationService {
     String? tag,
     Duration autoClose = const Duration(milliseconds: 2600),
     BuildContext? context,
+    ToastificationCallbacks callbacks = const ToastificationCallbacks(),
+    bool? closeOnClick,
   }) {
     return show(
       title: title,
@@ -176,7 +183,10 @@ class ToastificationService {
       autoClose: autoClose,
       tag: tag,
       context: context,
+      callbacks: callbacks,
+      closeOnClick: closeOnClick,
       icon: Icons.info_rounded,
+      backgroundColor: AppColors.primary,
     );
   }
 

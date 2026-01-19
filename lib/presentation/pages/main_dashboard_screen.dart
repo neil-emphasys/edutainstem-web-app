@@ -6,6 +6,7 @@ import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/presentation/pages/accounts_screen.dart';
 import 'package:edutainstem/presentation/pages/home_screen.dart';
 import 'package:edutainstem/presentation/pages/rooms_screen.dart';
+import 'package:edutainstem/presentation/pages/sign_in_screen.dart';
 import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,7 +62,12 @@ class _MainScreenShellState extends State<MainScreenShell> {
           },
         );
       },
-      child: BlocBuilder<FirebaseAuthBloc, FirebaseAuthState>(
+      child: BlocConsumer<FirebaseAuthBloc, FirebaseAuthState>(
+        listener: (context, state) {
+          state.mapOrNull(
+            unauthenticated: (value) => context.goNamed(SignInScreen.routeName),
+          );
+        },
         builder: (context, state) {
           final visibleAccountsTab = state.maybeWhen(
             orElse: () => false,

@@ -62,9 +62,9 @@ class RoomStatisticsWidget extends StatelessWidget {
       child: Column(
         children: [
           StreamBuilder(
-            stream: repo.watchAssessmentStatistics(roomId: room.id ?? ''),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
+            stream: repo.watchRoom(roomId: room.id ?? ''),
+            builder: (context, asyncSnapshot) {
+              if (!asyncSnapshot.hasData) {
                 return Skeletonizer(
                   enabled: true,
                   child: PollWidget(
@@ -74,9 +74,30 @@ class RoomStatisticsWidget extends StatelessWidget {
                 );
               }
 
-              final either = snapshot.data!;
-              return either.fold((f) => Text('Error: $f'), (answers) {
-                return PollWidget(questions: answers.data, room: room);
+              final eitherRoom = asyncSnapshot.data!;
+              return eitherRoom.fold((f) => Text('Error: $f'), (roomStream) {
+                return StreamBuilder(
+                  stream: repo.watchAssessmentStatistics(roomId: room.id ?? ''),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Skeletonizer(
+                        enabled: true,
+                        child: PollWidget(
+                          questions: loadingPollChoiceGroup,
+                          room: room,
+                        ),
+                      );
+                    }
+
+                    final either = snapshot.data!;
+                    return either.fold((f) => Text('Error: $f'), (answers) {
+                      return PollWidget(
+                        questions: answers.data,
+                        room: roomStream.data,
+                      );
+                    });
+                  },
+                );
               });
             },
           ),

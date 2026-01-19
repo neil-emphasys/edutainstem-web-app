@@ -1,10 +1,12 @@
 import 'package:edutainstem/application/rooms/room_create_bloc/room_create_bloc.dart';
 import 'package:edutainstem/core/enums/difficulty_enum.dart';
+import 'package:edutainstem/core/gen/colors.gen.dart';
 import 'package:edutainstem/domain/models/assessments/assessments_model.dart';
 import 'package:edutainstem/domain/models/rooms/room_model.dart';
 import 'package:edutainstem/domain/repositories/room_repository.dart';
 import 'package:edutainstem/injection.dart';
 import 'package:edutainstem/presentation/widgets/room_widgets/room_quiz_poll_widget.dart';
+import 'package:edutainstem/styles/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -99,9 +101,9 @@ class RoomQuizWidget extends StatelessWidget {
       child: Column(
         children: [
           StreamBuilder(
-            stream: repo.watchQuizStatistics(room: room),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
+            stream: repo.watchRoom(roomId: room.id ?? ''),
+            builder: (context, asyncSnapshot) {
+              if (!asyncSnapshot.hasData) {
                 return Skeletonizer(
                   enabled: true,
                   child: RoomQuizPollWidget(
@@ -111,10 +113,72 @@ class RoomQuizWidget extends StatelessWidget {
                 );
               }
 
-              final either = snapshot.data!;
-              return either.fold((f) => Text('Error: $f'), (answers) {
-                return RoomQuizPollWidget(exams: answers.data, room: room);
-              });
+              final eitherRoom = asyncSnapshot.data!;
+              return eitherRoom.fold(
+                (f) => Text(
+                  'No support request/s needed so far',
+                  style: AppTextStyles.getStyle(
+                    AppTextStyle.bodySmall,
+                    modifier: (base) => base.copyWith(
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.3.sp,
+                      color: AppColors.black,
+                    ),
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                (roomStream) {
+                  return StreamBuilder(
+                    stream: repo.watchQuizStatistics(room: room),
+                    builder: (context, snapshot) {
+                      debugPrint('SNAPSHOT: $snapshot');
+                      if (!snapshot.hasData) {
+                        return Skeletonizer(
+                          enabled: true,
+                          child: RoomQuizPollWidget(
+                            exams: loadingPollChoiceGroup,
+                            room: room,
+                          ),
+                        );
+                      }
+
+                      final either = snapshot.data!;
+                      return either.fold(
+                        (f) => Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 6.w,
+                            vertical: 6.w,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.shade50.withAlpha(100),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(8.r),
+                            ),
+                          ),
+                          child: Text(
+                            'No quizzes have been completed so far by any students',
+                            style: AppTextStyles.getStyle(
+                              AppTextStyle.bodySmall,
+                              modifier: (base) => base.copyWith(
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 0.3.sp,
+                                color: AppColors.black,
+                              ),
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        (answers) {
+                          return RoomQuizPollWidget(
+                            exams: answers.data,
+                            room: room,
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+              );
             },
           ),
         ],

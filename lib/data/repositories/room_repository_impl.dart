@@ -78,6 +78,27 @@ class RoomRepositoryImpl implements RoomRepository {
   }
 
   @override
+  Stream<Either<FailedState, SuccessState<RoomModel>>> watchRoom({
+    required String roomId,
+  }) async* {
+    final src = _dataSource.watchRoom(roomId: roomId);
+    try {
+      await for (final room in src) {
+        yield right(SuccessState<RoomModel>(room));
+      }
+    } on FirebaseException catch (e) {
+      yield left(
+        FailedState(
+          message: e.message ?? e.code,
+          code: _mapFirestoreCode(e.code),
+        ),
+      );
+    } catch (e) {
+      yield left(FailedState(message: e.toString()));
+    }
+  }
+
+  @override
   Future<Either<FailedState, SuccessState<List<StudentEnrollment>>>>
   getEnrolledStudents({required String roomId}) async {
     try {
@@ -173,6 +194,7 @@ class RoomRepositoryImpl implements RoomRepository {
     ); // Stream<RoomModel>
     try {
       await for (final exam in src) {
+        debugPrint('EXAM: $exam');
         yield right(
           SuccessState<Map<DifficultyEnum, List<PollChoiceGroup>>>(exam),
         );
@@ -198,7 +220,6 @@ class RoomRepositoryImpl implements RoomRepository {
         yield right(SuccessState<List<HelpRequestModel>>(requests));
       }
     } on FirebaseException catch (e) {
-      debugPrint('E: $e');
       yield left(
         FailedState(
           message: e.message ?? e.code,
@@ -206,7 +227,6 @@ class RoomRepositoryImpl implements RoomRepository {
         ),
       );
     } catch (e) {
-      debugPrint('E: $e');
       yield left(FailedState(message: e.toString()));
     }
   }
@@ -239,7 +259,6 @@ class RoomRepositoryImpl implements RoomRepository {
         yield right(SuccessState<List<String>>(requests));
       }
     } on FirebaseException catch (e) {
-      debugPrint('E: $e');
       yield left(
         FailedState(
           message: e.message ?? e.code,
@@ -247,7 +266,6 @@ class RoomRepositoryImpl implements RoomRepository {
         ),
       );
     } catch (e) {
-      debugPrint('E: $e');
       yield left(FailedState(message: e.toString()));
     }
   }
